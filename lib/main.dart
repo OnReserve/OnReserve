@@ -1,30 +1,65 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:on_reserve/Pages/Auth/welcome.dart';
+import 'dart:io';
 
-void main() {
-  runApp(const MyApp());
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_reserve/Controllers/theme_controller.dart';
+import 'package:on_reserve/Pages/Auth/welcome.dart';
+import 'package:on_reserve/helpers/routes.dart';
+import 'package:window_manager/window_manager.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await windowManager.ensureInitialized();
+  if (Platform.isWindows) {
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(355, 760),
+      center: false,
+      alwaysOnTop: true,
+      skipTaskbar: false,
+      title: "OnReserve",
+      backgroundColor: Colors.transparent,
+      // skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+      maximumSize: Size(355, 760),
+      minimumSize: Size(355, 760),
+    );
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
+
+  runApp(const OnReserve());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class OnReserve extends StatelessWidget {
+  const OnReserve({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    ThemeController themeController = Get.put(ThemeController());
     return ScreenUtilInit(
         designSize: const Size(1440, 2960),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return MaterialApp(
-            title: 'Flutter Demo',
-            debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
-            ),
-            home: const MyHomePage(title: 'Flutter Demo Home Page'),
-          );
+          return GetBuilder<ThemeController>(builder: (themeController) {
+            return GetMaterialApp(
+              getPages: AppRoutes.pages,
+              title: 'OnReserve',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                primarySwatch: Colors.blue,
+              ),
+              themeMode:
+                  themeController.dark ? ThemeMode.dark : ThemeMode.light,
+              darkTheme: ThemeData.dark(useMaterial3: true),
+              home: const MyHomePage(title: 'Flutter Demo Home Page'),
+            );
+          });
         });
   }
 }

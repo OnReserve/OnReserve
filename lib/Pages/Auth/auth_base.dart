@@ -4,17 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AuthBase extends StatelessWidget {
-  const AuthBase(
-      {super.key,
-      required this.subTitle,
-      required this.background,
-      required this.children,
-      this.reversed = false});
+  const AuthBase({
+    super.key,
+    required this.subTitle,
+    required this.background,
+    required this.children,
+    this.reversed = false,
+    this.getStarted = false,
+  });
 
   final String subTitle;
   final String background;
   final List<Widget> children;
   final bool border = false;
+  final bool getStarted;
   final bool reversed;
 
   @override
@@ -22,16 +25,12 @@ class AuthBase extends StatelessWidget {
     return Stack(
       fit: StackFit.expand,
       children: [
-        !reversed
-            ? Image.asset(
-                background,
-                fit: BoxFit.cover,
-              )
-            : Transform(
-                alignment: Alignment.center,
-                transform: Matrix4.rotationY(pi),
-                child: Image.asset(background),
-              ),
+        Image.asset(
+          background,
+          fit: BoxFit.cover,
+          colorBlendMode: getStarted ? BlendMode.softLight : BlendMode.lighten,
+          color: getStarted ? Colors.black : Colors.transparent,
+        ),
         Container(
           margin: EdgeInsets.symmetric(vertical: 170.h, horizontal: 95.w),
           padding: EdgeInsets.symmetric(vertical: 70.h, horizontal: 50.w),
@@ -49,7 +48,9 @@ class AuthBase extends StatelessWidget {
               Container(
                 padding: EdgeInsets.only(bottom: 60.h),
                 child: Image(
-                  image: const AssetImage('assets/Images/logo.png'),
+                  image: const AssetImage(
+                    'assets/Images/logo.png',
+                  ),
                   width: 219.w,
                   height: 219.h,
                 ),
@@ -60,7 +61,7 @@ class AuthBase extends StatelessWidget {
                   fontSize: 100.sp,
                   fontWeight: FontWeight.bold,
                   fontFamily: "Inter",
-                  color: Colors.white,
+                  color: !getStarted ? Colors.white : Colors.black,
                 ),
               ),
               Padding(
@@ -70,7 +71,7 @@ class AuthBase extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 50.sp,
                     fontFamily: "Inter",
-                    color: Colors.white,
+                    color: !getStarted ? Colors.white : Colors.black,
                   ),
                 ),
               ),

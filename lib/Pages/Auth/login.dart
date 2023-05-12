@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/auth_base.dart';
 import 'package:on_reserve/Pages/Auth/sign_up.dart';
 import 'package:on_reserve/Pages/home.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -83,11 +85,7 @@ class LoginPage extends StatelessWidget {
                     SizedBox(height: 100.h),
                     ElevatedButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const Events()),
-                          );
+                          Get.toNamed(Routes.home);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF3e4c45),
@@ -130,11 +128,7 @@ class LoginPage extends StatelessWidget {
                           TextSpan(
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const SignUpPage()),
-                                );
+                                Get.toNamed(Routes.signUp);
                               },
                             text: 'Sign Up',
                             style: TextStyle(

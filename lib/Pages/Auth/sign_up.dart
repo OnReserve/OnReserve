@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/auth_base.dart';
 import 'package:on_reserve/Pages/Auth/login.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class SignUpPage extends StatelessWidget {
   const SignUpPage({super.key});
@@ -14,7 +16,7 @@ class SignUpPage extends StatelessWidget {
     return Scaffold(
         body: SafeArea(
             child: AuthBase(
-                background: "assets/Images/Login BG.png",
+                background: "assets/Images/Login BG Flipped.png",
                 subTitle: subtitle,
                 reversed: true,
                 children: [
@@ -194,11 +196,7 @@ class SignUpPage extends StatelessWidget {
                           TextSpan(
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginPage()),
-                                );
+                                Get.toNamed(Routes.login);
                               },
                             text: 'Log In',
                             style: TextStyle(

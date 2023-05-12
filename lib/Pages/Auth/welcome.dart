@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/auth_base.dart';
-import 'package:on_reserve/Pages/Auth/login.dart';
 import 'package:on_reserve/Pages/Auth/sign_up.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -12,25 +13,24 @@ class WelcomePage extends StatelessWidget {
     String subtitle =
         "The best online reservation and ticketing system. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur ornare nunc odio, et rhoncus ante consectetur id";
     return AuthBase(
-        background: "assets/Images/Intro slider screen.png",
+        background: "assets/Images/Welcome_BG.png",
         subTitle: subtitle,
+        getStarted: true,
         children: [
           SizedBox(height: 100.h),
           Image.asset(
-            "assets/Images/Brazuca Sitting.png",
+            "assets/Images/Welcome.png",
             fit: BoxFit.cover,
           ),
           SizedBox(height: 350.h),
           Center(
             child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return const SignUpPage();
-                  }));
+                  Get.toNamed(Routes.signUp);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  backgroundColor: Color.fromARGB(168, 0, 0, 0),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50.r),
                   ),

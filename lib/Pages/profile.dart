@@ -20,10 +20,10 @@ class ProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Color.fromARGB(255, 223, 223, 223),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/Map.png'),
-                    fit: BoxFit.fitWidth,
-                    alignment: Alignment.topCenter),
+                // image: DecorationImage(
+                //     image: AssetImage('assets/images/Map.png'),
+                //     fit: BoxFit.fitWidth,
+                //     alignment: Alignment.topCenter),
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -59,6 +59,84 @@ class ProfilePage extends StatelessWidget {
                       ),
                     ),
                   ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+              padding: EdgeInsets.all(15),
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Color.fromARGB(255, 223, 223, 223),
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          'Email',
+                          style: TextStyle(
+                            fontSize: 60.sp,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                      ElevatedButton(
+                          onPressed: () {},
+                          child: Text('Add new'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                          ))
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8.0),
+                    child: Divider(
+                      color: Colors.grey,
+                      thickness: 1,
+                    ),
+                  ),
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxHeight: 450.h),
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: 3,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                            dense: true,
+                            horizontalTitleGap: 0,
+                            title: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Addis Concert ",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.normal,
+                                    fontSize: 55.sp,
+                                  ),
+                                ),
+                                // Image.asset('assets/images/Blue_tick.png',
+                                //     height: 70.r, width: 80.r)
+                              ],
+                            ),
+                            trailing: ElevatedButton(
+                              onPressed: () {},
+                              child: Text(
+                                'Edit',
+                                style: TextStyle(fontSize: 50.sp),
+                              ),
+                            ));
+                      },
+                    ),
+                  )
                 ],
               ),
             ),

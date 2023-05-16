@@ -7,12 +7,23 @@ import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  await windowManager.ensureInitialized();
+  if (Platform.isAndroid) {
+    // Require Hybrid Composition mode on Android.
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      mapsImplementation.useAndroidViewSurface = false;
+    }
+  }
+
   if (Platform.isWindows) {
+    await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
       size: Size(355, 760),
       center: false,

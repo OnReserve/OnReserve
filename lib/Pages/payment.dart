@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class Payment extends StatelessWidget {
   const Payment({super.key});
@@ -133,10 +135,7 @@ class Payment extends StatelessWidget {
                   height: 180.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const Payment()));
+                      Get.toNamed(Routes.profile);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF23538f),

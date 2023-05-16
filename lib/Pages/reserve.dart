@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -76,52 +79,84 @@ class Reserve extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.w500,
-                    fontSize: 58.sp,
+                    decoration: TextDecoration.underline,
+                    fontSize: 68.sp,
                   ),
                 ),
-                Text(
-                  "DATA",
-                  style: TextStyle(
-                    fontSize: 62.sp,
-                  ),
-                ),
-                SizedBox(height: 30.h),
+                SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      "Rophnan's My Generation Concert",
+                      style: TextStyle(
+                        fontSize: 62.sp,
+                      ),
+                      textAlign: TextAlign.end,
+                    )),
+                SizedBox(height: 50.h),
                 Text(
                   "Even Starting Time :",
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.w500,
-                    fontSize: 58.sp,
+                    decoration: TextDecoration.underline,
+                    fontSize: 68.sp,
                   ),
                 ),
-                Text(
-                  "DATA",
-                  style: TextStyle(
-                    fontSize: 62.sp,
+                SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    "Jan 14/2022 03:00",
+                    style: TextStyle(
+                      fontSize: 62.sp,
+                    ),
+                    textAlign: TextAlign.end,
                   ),
                 ),
-                SizedBox(height: 30.h),
+                SizedBox(height: 50.h),
                 Text(
-                  "Your Packages :",
+                  "Choose Packages :",
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.w500,
-                    fontSize: 58.sp,
+                    decoration: TextDecoration.underline,
+                    fontSize: 68.sp,
                   ),
                 ),
-                Text(
-                  "DATA",
-                  style: TextStyle(
-                    fontSize: 60.sp,
-                  ),
+                SizedBox(
+                  height: 40.h,
                 ),
-                SizedBox(height: 30.h),
+                CustomRadioButton(
+                  elevation: 0,
+                  enableShape: true,
+                  unSelectedColor: Theme.of(context).canvasColor,
+                  autoWidth: true,
+                  buttonLables: [
+                    'VIP',
+                    'VVIP',
+                    'Regular',
+                  ],
+                  buttonValues: [
+                    'VIP',
+                    'VVIP',
+                    'Regular',
+                  ],
+                  buttonTextStyle: ButtonTextStyle(
+                      selectedColor: Colors.white,
+                      unSelectedColor: Colors.black,
+                      textStyle: TextStyle(fontSize: 50.sp)),
+                  radioButtonValue: (value) {
+                    print(value);
+                  },
+                  selectedColor: Theme.of(context).primaryColor,
+                ),
+                SizedBox(height: 50.h),
                 Text(
                   "Choose Payment Method :",
                   style: TextStyle(
                     color: Colors.blue,
                     fontWeight: FontWeight.w500,
-                    fontSize: 58.sp,
+                    decoration: TextDecoration.underline,
+                    fontSize: 68.sp,
                   ),
                 ),
                 Text(

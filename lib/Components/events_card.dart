@@ -24,7 +24,7 @@ class EventCard extends StatelessWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(right: 8),
-                    child: Image.asset("assets/images/Logo.png",
+                    child: Image.asset("assets/Images/logo.png",
                         height: 330.r, width: 330.r),
                   ),
                   Expanded(
@@ -49,7 +49,7 @@ class EventCard extends StatelessWidget {
                                 fontSize: 46.sp,
                               ),
                             ),
-                            Image.asset('assets/images/Blue_tick.png',
+                            Image.asset('assets/Images/Blue_tick.png',
                                 height: 70.r, width: 80.r)
                           ],
                         ),

@@ -27,7 +27,7 @@ Future<void> main() async {
     WindowOptions windowOptions = const WindowOptions(
       size: Size(355, 760),
       center: false,
-      alwaysOnTop: true,
+      alwaysOnTop: false,
       skipTaskbar: false,
       title: "OnReserve",
       backgroundColor: Colors.transparent,

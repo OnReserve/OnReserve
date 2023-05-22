@@ -3,9 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
-class Payment extends StatelessWidget {
+class Payment extends StatefulWidget {
   const Payment({super.key});
 
+  @override
+  State<Payment> createState() => _PaymentState();
+}
+
+class _PaymentState extends State<Payment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -135,7 +140,7 @@ class Payment extends StatelessWidget {
                   height: 180.h,
                   child: ElevatedButton(
                     onPressed: () {
-                      Get.toNamed(Routes.profile);
+                      Get.toNamed(Routes.qr);
                     },
                     style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF23538f),

@@ -5,12 +5,14 @@ import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/home.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
+import 'package:on_reserve/Pages/qr_code.dart';
 import 'package:on_reserve/Pages/reserve.dart';
 import 'package:on_reserve/helpers/bindings/event_detail_bindings.dart';
 import 'package:on_reserve/helpers/bindings/home_bindings.dart';
 import 'package:on_reserve/helpers/bindings/login_bindings.dart';
 import 'package:on_reserve/helpers/bindings/payment_bindings.dart';
 import 'package:on_reserve/helpers/bindings/profile_bindings.dart';
+import 'package:on_reserve/helpers/bindings/qr_bindings.dart';
 import 'package:on_reserve/helpers/bindings/reserve_bindings.dart';
 import 'package:on_reserve/helpers/bindings/signup_bindings.dart';
 
@@ -25,6 +27,7 @@ class Routes {
   static const String settings = "/settings";
   static const String pay = "/pay";
   static const String profile = "/profile";
+  static const String qr = "/qrPage";
   static const String reserve = "/reserve";
   static const String root = "/";
 }
@@ -63,5 +66,10 @@ class AppRoutes {
         name: Routes.eventDetail,
         page: () => const Event(),
         binding: EventDetailBindings()),
+    GetPage(
+      name: Routes.qr,
+      page: () => const QRPage(),
+      binding: QrBindings(),
+    ),
   ];
 }

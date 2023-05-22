@@ -71,7 +71,7 @@ class _EventState extends State<Event> {
           SizedBox(
             width: double.infinity,
             height: 770.h,
-            child: Image.asset("assets/images/Rophnan.png", fit: BoxFit.cover),
+            child: Image.asset("assets/Images/Rophnan.png", fit: BoxFit.cover),
           ),
           Expanded(
               child: Padding(

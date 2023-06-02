@@ -1,12 +1,15 @@
 import 'dart:io';
+import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_reserve/Controllers/theme_controller.dart';
-import 'package:on_reserve/Pages/Auth/welcome.dart';
+import 'package:flutter/material.dart';
+import 'package:on_reserve/Pages/onboarding.dart';
 import 'package:on_reserve/helpers/routes.dart';
+import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:window_manager/window_manager.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
 import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
@@ -27,7 +30,7 @@ Future<void> main() async {
     WindowOptions windowOptions = const WindowOptions(
       size: Size(355, 760),
       center: false,
-      alwaysOnTop: false,
+      alwaysOnTop: true,
       skipTaskbar: false,
       title: "OnReserve",
       backgroundColor: Colors.transparent,
@@ -41,6 +44,8 @@ Future<void> main() async {
       await windowManager.focus();
     });
   }
+
+  await dotenv.load();
 
   runApp(const OnReserve());
 }
@@ -68,7 +73,9 @@ class OnReserve extends StatelessWidget {
               themeMode:
                   themeController.dark ? ThemeMode.dark : ThemeMode.light,
               darkTheme: ThemeData.dark(useMaterial3: true),
-              home: const MyHomePage(title: 'Flutter Demo Home Page'),
+              home: themeController.firstTime
+                  ? IntroScreenDemo()
+                  : const MyHomePage(title: 'Flutter Demo Home Page'),
             );
           });
         });

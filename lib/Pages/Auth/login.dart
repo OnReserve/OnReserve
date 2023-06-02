@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/auth_base.dart';
-import 'package:on_reserve/Pages/Auth/sign_up.dart';
-import 'package:on_reserve/Pages/home.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
 class LoginPage extends StatelessWidget {

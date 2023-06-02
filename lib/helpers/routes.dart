@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/login.dart';
 import 'package:on_reserve/Pages/Auth/sign_up.dart';
+import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/home.dart';
 import 'package:on_reserve/Pages/payment.dart';
@@ -29,6 +30,7 @@ class Routes {
   static const String profile = "/profile";
   static const String qr = "/qrPage";
   static const String reserve = "/reserve";
+  static const String welcome = "/welcome";
   static const String root = "/";
 }
 
@@ -70,6 +72,10 @@ class AppRoutes {
       name: Routes.qr,
       page: () => const QRPage(),
       binding: QrBindings(),
+    ),
+    GetPage(
+      name: Routes.welcome,
+      page: () => const WelcomePage(),
     ),
   ];
 }

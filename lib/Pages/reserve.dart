@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:custom_radio_grouped_button/custom_radio_grouped_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:on_reserve/Pages/profile.dart';
+// import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
 class Reserve extends StatelessWidget {

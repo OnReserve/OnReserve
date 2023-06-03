@@ -4,6 +4,7 @@ import 'package:on_reserve/Pages/Auth/sign_up.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/home.dart';
+import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
@@ -53,7 +54,7 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.home,
-      page: () => const Home(),
+      page: () => MainMenu(),
       binding: HomeBindings(),
     ),
     GetPage(

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/qr_controller.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRPage extends StatefulWidget {
   const QRPage({super.key});
@@ -17,34 +17,34 @@ class QRPage extends StatefulWidget {
 class _QRPageState extends State<QRPage> {
   QRController qrController = Get.find<QRController>();
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
-  Barcode? result;
-  QRViewController? controller;
+  // Barcode? result;
+  // QRViewController? controller;
 
-  void onQRViewCreated(QRViewController controller) {
-    this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-      print("CHECKED  ${scanData.code}");
-    });
-  }
+  // void onQRViewCreated(QRViewController controller) {
+  //   this.controller = controller;
+  //   controller.scannedDataStream.listen((scanData) {
+  //     setState(() {
+  //       result = scanData;
+  //     });
+  //     print("CHECKED  ${scanData.code}");
+  //   });
+  // }
 
   @override
   void initState() {
     super.initState();
-    controller?.resumeCamera();
+    // controller?.resumeCamera();
   }
 
   @override
   void reassemble() {
     super.reassemble();
 
-    if (Platform.isAndroid) {
-      controller!.pauseCamera();
-    } else if (Platform.isIOS) {
-      controller!.resumeCamera();
-    }
+    // if (Platform.isAndroid) {
+    //   controller!.pauseCamera();
+    // } else if (Platform.isIOS) {
+    //   controller!.resumeCamera();
+    // }
   }
 
   @override
@@ -88,18 +88,21 @@ class _QRPageState extends State<QRPage> {
         children: [
           Expanded(
             flex: 5,
-            child: QRView(
-              key: qrKey,
-              onQRViewCreated: onQRViewCreated,
-            ),
+            child:
+                // QRView(
+                //   key: qrKey,
+                //   onQRViewCreated: onQRViewCreated,
+                // ),
+                SizedBox(),
           ),
           GetBuilder<QRController>(builder: (qrController) {
             return Expanded(
               flex: 1,
               child: Center(
-                child: (result != null)
-                    ? Text(
-                        'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+                child
+                    // : (result != null)
+                    //     ? Text(
+                    //         'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
                     : Text('Scan a code'),
               ),
             );
@@ -111,7 +114,7 @@ class _QRPageState extends State<QRPage> {
 
   @override
   void dispose() {
-    controller?.dispose();
+    // controller?.dispose();
     super.dispose();
   }
 }

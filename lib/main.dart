@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/onboarding.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
@@ -10,20 +11,20 @@ import 'package:window_manager/window_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:on_reserve/Controllers/theme_controller.dart';
-import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
-import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+// import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+// import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if (Platform.isAndroid) {
-    // Require Hybrid Composition mode on Android.
-    final GoogleMapsFlutterPlatform mapsImplementation =
-        GoogleMapsFlutterPlatform.instance;
-    if (mapsImplementation is GoogleMapsFlutterAndroid) {
-      mapsImplementation.useAndroidViewSurface = false;
-    }
-  }
+  // if (Platform.isAndroid) {
+  //   // Require Hybrid Composition mode on Android.
+  //   final GoogleMapsFlutterPlatform mapsImplementation =
+  //       GoogleMapsFlutterPlatform.instance;
+  //   if (mapsImplementation is GoogleMapsFlutterAndroid) {
+  //     mapsImplementation.useAndroidViewSurface = false;
+  //   }
+  // }
 
   if (Platform.isWindows) {
     await windowManager.ensureInitialized();
@@ -34,7 +35,6 @@ Future<void> main() async {
       skipTaskbar: false,
       title: "OnReserve",
       backgroundColor: Colors.transparent,
-      // skipTaskbar: false,
       titleBarStyle: TitleBarStyle.hidden,
       maximumSize: Size(355, 760),
       minimumSize: Size(355, 760),
@@ -73,17 +73,19 @@ class OnReserve extends StatelessWidget {
               themeMode:
                   themeController.dark ? ThemeMode.dark : ThemeMode.light,
               darkTheme: ThemeData.dark(useMaterial3: true),
-              home: themeController.firstTime
-                  ? IntroScreenDemo()
-                  : const MyHomePage(title: 'Flutter Demo Home Page'),
+              home: themeController.loggedIn
+                  ? MainMenu()
+                  : themeController.firstTime
+                      ? IntroScreenDemo()
+                      : const GetStarted(title: 'OnReserve Get Started'),
             );
           });
         });
   }
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key, required this.title});
+class GetStarted extends StatelessWidget {
+  const GetStarted({super.key, required this.title});
 
   final String title;
 

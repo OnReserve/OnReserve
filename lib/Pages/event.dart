@@ -1,10 +1,10 @@
-import 'dart:async';
-import 'dart:io';
+// import 'dart:async';
+// import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
 class Event extends StatefulWidget {
@@ -15,19 +15,19 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  final Completer<GoogleMapController> controller =
-      Completer<GoogleMapController>();
+  // final Completer<GoogleMapController> controller =
+  //     Completer<GoogleMapController>();
 
-  static const CameraPosition kGooglePlex = CameraPosition(
-    target: LatLng(37.42796133580664, -122.085749655962),
-    zoom: 14.4746,
-  );
+  // static const CameraPosition kGooglePlex = CameraPosition(
+  //   target: LatLng(37.42796133580664, -122.085749655962),
+  //   zoom: 14.4746,
+  // );
 
-  static const CameraPosition kLake = CameraPosition(
-      bearing: 192.8334901395799,
-      target: LatLng(37.43296265331129, -122.08832357078792),
-      tilt: 59.440717697143555,
-      zoom: 19.151926040649414);
+  // static const CameraPosition kLake = CameraPosition(
+  //     bearing: 192.8334901395799,
+  //     target: LatLng(37.43296265331129, -122.08832357078792),
+  //     tilt: 59.440717697143555,
+  //     zoom: 19.151926040649414);
 
   @override
   Widget build(BuildContext context) {
@@ -151,15 +151,16 @@ class _EventState extends State<Event> {
                   height: 50.h,
                 ),
                 SizedBox(
-                  width: double.infinity,
-                  height: 550.h,
-                  child: Platform.isAndroid
-                      ? GoogleMap(
-                          mapType: MapType.hybrid,
-                          initialCameraPosition: kGooglePlex,
-                        )
-                      : SizedBox(),
-                ),
+                    width: double.infinity,
+                    height: 550.h,
+                    child:
+                        // Platform.isAndroid
+                        //     ? GoogleMap(
+                        //         mapType: MapType.hybrid,
+                        //         initialCameraPosition: kGooglePlex,
+                        //       )
+                        //     : SizedBox(),
+                        SizedBox()),
                 SizedBox(
                   height: 300.h,
                 ),

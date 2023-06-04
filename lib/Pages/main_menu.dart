@@ -25,18 +25,6 @@ class MainMenuState extends State<MainMenu> {
     return Scaffold(
       // backgroundColor: Color(0xffF15F60),
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   centerTitle: true,
-      //   title: Text(
-      //     'On Reserve',
-      //     style: TextStyle(
-      //         color: Colors.white,
-      //         fontSize: size.width * .06,
-      //         fontWeight: FontWeight.bold),
-      //   ),
-      // ),
       body: listOfPages[currentIndex],
       extendBody: true,
       bottomNavigationBar: Container(
@@ -58,7 +46,7 @@ class MainMenuState extends State<MainMenu> {
               children: [
                 SizedBox(height: size.width * .014),
                 Icon(listOfIcons[index],
-                    size: size.width * .076, color: Colors.black),
+                    size: size.width * .076, color: const Color(0xFF23538f)),
                 AnimatedContainer(
                   duration: Duration(milliseconds: 1500),
                   curve: Curves.fastLinearToSlowEaseIn,
@@ -70,7 +58,7 @@ class MainMenuState extends State<MainMenu> {
                   width: size.width * .153,
                   height: index == currentIndex ? size.width * .014 : 0,
                   decoration: BoxDecoration(
-                    color: Colors.black,
+                    color: const Color(0xFF23538f),
                     borderRadius: BorderRadius.vertical(
                       top: Radius.circular(20),
                     ),
@@ -86,7 +74,7 @@ class MainMenuState extends State<MainMenu> {
 
   List<IconData> listOfIcons = [
     Icons.home_rounded,
-    Icons.favorite_rounded,
+    Icons.event_rounded,
     Icons.settings_rounded,
     Icons.person_rounded,
   ];

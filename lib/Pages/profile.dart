@@ -34,7 +34,7 @@ class ProfilePage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 15),
                     child: CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage('assets/images/Map.png'),
+                      backgroundImage: AssetImage('assets/Images/Map.png'),
                     ),
                   ),
                   SizedBox(height: 20),

@@ -5,6 +5,7 @@ import 'package:on_reserve/Components/event_card.dart';
 import 'package:on_reserve/Components/shimmer.dart';
 import 'package:on_reserve/Controllers/home_controller.dart';
 import 'package:on_reserve/Controllers/theme_controller.dart';
+import 'package:on_reserve/Models/event_overview.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,8 +18,8 @@ class _HomeState extends State<Home> {
   TextEditingController searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    ThemeController themeController = Get.find();
-    HomeController homeController = Get.find();
+    Get.find<ThemeController>();
+    Get.find<HomeController>();
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -86,19 +87,56 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 25.h),
                 SizedBox(
                     height: 650.h,
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics()),
-                        scrollDirection: Axis.horizontal,
-                        padding: const EdgeInsets.all(10),
-                        itemCount: 3,
-                        itemBuilder: (context, index) {
-                          return ContinueCard(
-                            index: index,
-                            remainingTime: "500.0",
-                            subject: "saved.examData.subject",
-                          );
-                        })),
+                    child:
+                        GetBuilder<HomeController>(builder: (homeController) {
+                      return FutureBuilder(
+                          future: homeController.getPopularEvents(),
+                          initialData: [
+                            EventOverview(
+                                id: 1,
+                                title: "Rophnan Concert",
+                                date: "2021-10-10",
+                                imageURL:
+                                    "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1685919252/onReserve/Profile/q8ehvhsnwygyrnq5h97q.png"),
+                          ],
+                          builder: (context, snapshot) {
+                            return snapshot.connectionState ==
+                                    ConnectionState.done
+                                ? ListView.builder(
+                                    physics: const BouncingScrollPhysics(
+                                        parent:
+                                            AlwaysScrollableScrollPhysics()),
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.all(10),
+                                    itemCount: snapshot.data!.length,
+                                    itemBuilder: (context, index) {
+                                      return ContinueCard(
+                                        index: index,
+                                        date: snapshot.data![index].date,
+                                        title: snapshot.data![index].title,
+                                        bgImage: snapshot.data![index].imageURL,
+                                      );
+                                    })
+                                : ListView.builder(
+                                    physics: const BouncingScrollPhysics(
+                                        parent:
+                                            AlwaysScrollableScrollPhysics()),
+                                    scrollDirection: Axis.horizontal,
+                                    padding: const EdgeInsets.all(10),
+                                    itemCount: 3,
+                                    itemBuilder: (context, index) {
+                                      return Container(
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 20),
+                                        child: ShimmerWidgets.rectangular(
+                                            height: 650.h,
+                                            width: 850.w,
+                                            baseColor: Colors.grey[400]!,
+                                            highlightColor: Colors.grey[100]!),
+                                      );
+                                    });
+                          });
+                    })),
                 SizedBox(height: 105.h),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
@@ -113,9 +151,9 @@ class _HomeState extends State<Home> {
                 SizedBox(height: 50.h),
                 GetBuilder<HomeController>(builder: (homeController) {
                   return SizedBox(
-                    height: 750.h,
+                    height: 850.h,
                     child: FutureBuilder(
-                        future: null,
+                        future: homeController.getCategories(),
                         builder: (context, snapshot) {
                           return GridView.builder(
                             padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -124,19 +162,99 @@ class _HomeState extends State<Home> {
                             gridDelegate:
                                 const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              childAspectRatio: 2.5,
+                              childAspectRatio: 2.2,
                               crossAxisSpacing: 0,
                               mainAxisSpacing: 0,
                             ),
                             itemCount: 6,
                             itemBuilder: (context, index) {
-                              return !snapshot.hasData
+                              return snapshot.connectionState ==
+                                      ConnectionState.done
                                   ? Container(
-                                      margin: const EdgeInsets.all(6),
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 12),
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(18),
-                                        color: Colors.blue,
-                                      ))
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.5),
+                                            spreadRadius: 1,
+                                            blurRadius: 7,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                        ],
+                                        gradient: LinearGradient(
+                                            begin: const Alignment(-1, 1),
+                                            end: const Alignment(1, -1),
+                                            colors: index.isEven
+                                                ? [
+                                                    Color.fromARGB(
+                                                        255, 142, 117, 88),
+                                                    Color.fromARGB(
+                                                        255, 128, 115, 91),
+                                                    Color.fromARGB(
+                                                        255, 111, 102, 79),
+                                                    Color.fromARGB(
+                                                        255, 89, 85, 67),
+                                                  ]
+                                                : [
+                                                    Color.fromARGB(
+                                                        255, 104, 127, 167),
+                                                    Color.fromARGB(
+                                                        255, 112, 121, 154),
+                                                    Color.fromARGB(
+                                                        255, 88, 101, 133),
+                                                  ]),
+                                      ),
+                                      child: Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              margin: EdgeInsets.symmetric(
+                                                  horizontal: 35.w),
+                                              height: 120.h,
+                                              width: 120.w,
+                                              child: Icon(
+                                                Icons.movie_creation_rounded,
+                                                color: Colors.white,
+                                              ),
+                                            ),
+                                            SizedBox(width: 5.w),
+                                            Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  "checkering",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge!
+                                                      .copyWith(
+                                                          fontFamily:
+                                                              'PaytoneOne',
+                                                          fontSize: 50.sp,
+                                                          color: Colors.white),
+                                                ),
+                                                Text(
+                                                  "10 Events",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyLarge!
+                                                      .copyWith(
+                                                          fontFamily:
+                                                              'PaytoneOne',
+                                                          fontSize: 30.sp,
+                                                          color:
+                                                              Colors.white70),
+                                                ),
+                                              ],
+                                            ),
+                                          ]))
                                   : Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),

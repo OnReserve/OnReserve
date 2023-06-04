@@ -3,10 +3,9 @@ import 'dart:async';
 
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:on_reserve/Pages/main_menu.dart';
-import 'package:on_reserve/Pages/onboarding.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
+import 'package:on_reserve/helpers/storage/secure_store.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,7 +17,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // if (Platform.isAndroid) {
-  //   // Require Hybrid Composition mode on Android.
   //   final GoogleMapsFlutterPlatform mapsImplementation =
   //       GoogleMapsFlutterPlatform.instance;
   //   if (mapsImplementation is GoogleMapsFlutterAndroid) {
@@ -45,39 +43,45 @@ Future<void> main() async {
     });
   }
 
+  final firstTime = await SecuredStorage.check(key: SharedKeys.firstTime);
+  final isLoggedIn = await SecuredStorage.check(key: SharedKeys.token);
+  String initialRoute = isLoggedIn
+      ? Routes.home
+      : firstTime
+          ? Routes.onBoarding
+          : Routes.login;
   await dotenv.load();
 
-  runApp(const OnReserve());
+  runApp(OnReserve(initialRoute: initialRoute));
 }
 
 class OnReserve extends StatelessWidget {
-  const OnReserve({super.key});
+  final String initialRoute;
+  const OnReserve({super.key, required this.initialRoute});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    ThemeController themeController = Get.put(ThemeController());
+    Get.put(ThemeController());
+
     return ScreenUtilInit(
         designSize: const Size(1440, 2960),
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
-          return GetBuilder<ThemeController>(builder: (themeController) {
+          return GetBuilder<ThemeController>(builder: (theme) {
+            final apptheme = ThemeData(
+              primarySwatch: Colors.blueGrey,
+              primaryColor: const Color(0xFF23538f),
+            );
             return GetMaterialApp(
+              initialRoute: initialRoute,
               getPages: AppRoutes.pages,
               title: 'OnReserve',
-              debugShowCheckedModeBanner: false,
-              theme: ThemeData(
-                primarySwatch: Colors.blue,
-              ),
-              themeMode:
-                  themeController.dark ? ThemeMode.dark : ThemeMode.light,
+              theme: apptheme,
+              themeMode: theme.dark ? ThemeMode.dark : ThemeMode.light,
               darkTheme: ThemeData.dark(useMaterial3: true),
-              home: themeController.loggedIn
-                  ? MainMenu()
-                  : themeController.firstTime
-                      ? IntroScreenDemo()
-                      : const GetStarted(title: 'OnReserve Get Started'),
+              debugShowCheckedModeBanner: false,
             );
           });
         });

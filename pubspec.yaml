@@ -21,6 +21,16 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.19.6 <3.0.0"
 
+flutter_native_splash:
+  color: "#07958F"
+  color_dark: "#046A65"
+  image: assets/Images/logo.png
+  android: true
+
+  android_12:
+    image: assets/Images/logo.png
+    image_dark: assets/Images/logo.png
+
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -34,7 +44,7 @@ dependencies:
   window_manager: ^0.2.7
   get: ^4.6.5
   dio: ^5.1.2
-  # qr_code_scanner: ^1.0.1
+  qr_code_scanner: ^1.0.1
   flutter_dotenv: ^5.0.2
   mime: ^1.0.4
   path_provider: ^2.0.11
@@ -47,7 +57,8 @@ dependencies:
   # google_maps_flutter: ^2.2.6
   dio_cache_interceptor: ^3.4.2
   form_validator: ">=0.1.1 <2.0.0"
-  introduction_screen: ^3.1.8
+  nice_intro: ^0.2.1
+  flutter_native_splash: ^2.3.0
 
 dev_dependencies:
   flutter_test:
@@ -56,7 +67,7 @@ dev_dependencies:
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  ios: true
+  ios: true00000000
   image_path: "assets/Images/logo.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:

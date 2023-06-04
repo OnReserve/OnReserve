@@ -10,10 +10,13 @@ class SharedKeys {
   static const String package = "package";
   static const String notification = "notification";
   static const List list = [
-    package,
+    token,
+    user,
+    firstTime,
     theme,
     profile,
-    user,
+    package,
+    notification,
   ];
 }
 
@@ -39,7 +42,11 @@ class SecuredStorage {
   static Future<void> clear() async {
     logger(SecuredStorage).i('CLEARING PREFRENCE KEYS !!');
     for (var key in SharedKeys.list) {
-      await storage.delete(key: key);
+      try {
+        await storage.delete(key: key);
+      } catch (e) {
+        logger(SecuredStorage).e('ERROR WHILE CLEARING PREFRENCE KEYS !! $e');
+      }
     }
   }
 

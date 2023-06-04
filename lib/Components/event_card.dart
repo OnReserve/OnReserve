@@ -1,19 +1,21 @@
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
-import 'package:on_reserve/helpers/routes.dart';
+// import 'package:get/get.dart';
+// import 'package:on_reserve/helpers/routes.dart';
 
 class ContinueCard extends StatelessWidget {
   final int index;
-  final String remainingTime;
-  final String subject;
+  final String date;
+  final String title;
+  final String bgImage;
 
   const ContinueCard({
     super.key,
-    required this.remainingTime,
-    required this.subject,
+    required this.date,
+    required this.title,
     required this.index,
+    required this.bgImage,
   });
 
   @override
@@ -23,23 +25,31 @@ class ContinueCard extends StatelessWidget {
         displayWidth > 650 ? Orientation.landscape : Orientation.portrait;
     return GestureDetector(
         onTap: () {
-          Get.toNamed(Routes.contactUs);
+          // Get.toNamed(Routes.contactUs);
         },
         child: Container(
           width: isLandscape == Orientation.portrait ? 820.w : 820.w * 0.65,
           margin: EdgeInsets.only(left: 75.w),
           decoration: BoxDecoration(
+              image: DecorationImage(
+                  image: NetworkImage(bgImage),
+                  fit: BoxFit.cover,
+                  opacity: 0.5),
               gradient: LinearGradient(
                 begin: const Alignment(-1, 1),
                 end: const Alignment(1, -1),
                 colors: index.isEven
                     ? [
-                        const Color(0xFF53D6FF),
-                        const Color(0xFF6B28DC),
+                        Color(0xFFCDB599),
+                        Color(0xFFB2A181),
+                        Color(0xFF978B6F),
+                        Color(0xFF7C765D),
                       ]
                     : [
-                        const Color.fromARGB(228, 217, 3, 103),
-                        const Color.fromARGB(217, 255, 149, 67),
+                        Color(0xFFFFC07F),
+                        Color(0xFFFF6F91),
+                        Color(0xFFC45AFF),
+                        Color(0xFF5F49FF),
                       ],
               ),
               boxShadow: [
@@ -54,12 +64,12 @@ class ContinueCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(50.r),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 150.w,
-                  height: 55.h,
+                  width: 250.w,
+                  height: 105.h,
                   decoration: BoxDecoration(
                     color: Theme.of(context)
                         .colorScheme
@@ -69,7 +79,7 @@ class ContinueCard extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      'Continue',
+                      '$date',
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium
@@ -78,8 +88,7 @@ class ContinueCard extends StatelessWidget {
                   ),
                 ),
                 Container(
-                    width: 350.w,
-                    height: 200.h,
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       color: Theme.of(context)
                           .colorScheme
@@ -92,45 +101,17 @@ class ContinueCard extends StatelessWidget {
                       child: SingleChildScrollView(
                         physics: const BouncingScrollPhysics(
                             parent: AlwaysScrollableScrollPhysics()),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: Text(
-                                'Details',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .headlineMedium
-                                    ?.copyWith(
-                                        fontSize: 10,
-                                        color: Theme.of(context).canvasColor),
-                              ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 10.w),
-                              child: Divider(
-                                color: Theme.of(context)
-                                    .canvasColor, //color of divider
-                                height: 3, //height spacing of divider
-                                thickness: 1, //thickness of divier line
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 4,
-                            ),
-                            Details(
-                              icon: Icons.subject,
-                              text: subject.capitalize!,
-                              shade: true,
-                            ),
-                            const SizedBox(),
-                            Details(
-                              icon: Icons.check_sharp,
-                              text: "Rem. Questions",
-                            )
-                          ],
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 10.w),
+                          child: Text(
+                            '$Title',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                    fontSize: 10,
+                                    color: Theme.of(context).canvasColor),
+                          ),
                         ),
                       ),
                     ))

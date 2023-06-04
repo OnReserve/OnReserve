@@ -6,20 +6,12 @@ class ThemeController extends GetxController {
   bool loggedIn = false;
   bool firstTime = true;
 
-  @override
-  Future<void> onInit() async {
-    firstTime = await SecuredStorage.read(key: SharedKeys.firstTime) == "1"
-        ? true
-        : false;
-    loggedIn =
-        await SecuredStorage.read(key: SharedKeys.token) == "1" ? true : false;
-
-    super.onInit();
+  void reset() async {
+    await SecuredStorage.clear();
   }
 
   void toggle() {
     dark = !dark;
-    // TODO: Save preference
     update();
   }
 

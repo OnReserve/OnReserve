@@ -40,16 +40,16 @@ class ContinueCard extends StatelessWidget {
                 end: const Alignment(1, -1),
                 colors: index.isEven
                     ? [
-                        Color(0xFFCDB599),
-                        Color(0xFFB2A181),
-                        Color(0xFF978B6F),
-                        Color(0xFF7C765D),
+                        Color.fromARGB(255, 136, 102, 63),
+                        Color.fromARGB(255, 139, 111, 59),
+                        Color.fromARGB(255, 105, 87, 44),
+                        Color.fromARGB(255, 60, 54, 32),
                       ]
                     : [
-                        Color(0xFFFFC07F),
-                        Color(0xFFFF6F91),
-                        Color(0xFFC45AFF),
-                        Color(0xFF5F49FF),
+                        Color.fromARGB(255, 163, 110, 56),
+                        Color.fromARGB(255, 178, 59, 87),
+                        Color.fromARGB(255, 138, 52, 185),
+                        Color.fromARGB(255, 47, 33, 156),
                       ],
               ),
               boxShadow: [

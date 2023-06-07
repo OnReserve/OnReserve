@@ -14,14 +14,4 @@ class ThemeController extends GetxController {
     dark = !dark;
     update();
   }
-
-  void setLoggedIn() async {
-    await SecuredStorage.store(key: SharedKeys.token, value: "1");
-    loggedIn = true;
-  }
-
-  void setFirstTime() async {
-    await SecuredStorage.store(key: SharedKeys.firstTime, value: "0");
-    firstTime = false;
-  }
 }

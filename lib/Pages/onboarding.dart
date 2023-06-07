@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:nice_intro/intro_screen.dart';
 import 'package:nice_intro/intro_screens.dart';
+import 'package:on_reserve/helpers/storage/secure_store.dart';
 
 List<IntroScreen> pages = [
   IntroScreen(
@@ -36,7 +36,7 @@ class IntroScreenDemo extends StatelessWidget {
       indicatorType: IndicatorType.CIRCLE,
       slides: pages,
       onDone: () {
-        Get.find<ThemeController>().setFirstTime();
+        SecuredStorage.store(key: SharedKeys.firstTime, value: 'false');
         Get.toNamed(Routes.welcome);
       },
     );

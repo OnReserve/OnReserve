@@ -5,8 +5,8 @@ import 'package:on_reserve/helpers/log/logger.dart';
 
 Interceptor loggerInterceptor = InterceptorsWrapper(
   onRequest: (RequestOptions options, RequestInterceptorHandler handler) {
-    logger(Dio).i('REQUEST[${options.method}] => PATH: ${options.path} => ');
-    // logger(Dio).i('HEADERS: ${options.headers} => BODY: ${options.data}');
+    // logger(Dio).i('REQUEST[${options.method}] => PATH: ${options.path} => ');
+    logger(Dio).i('HEADERS: ${options.headers} => BODY: ${options.data}');
 
     return handler.next(options);
   },

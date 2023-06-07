@@ -28,6 +28,15 @@ class MainMenuState extends State<MainMenu> {
       body: listOfPages[currentIndex],
       extendBody: true,
       bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+          colors: [
+            Theme.of(context).colorScheme.background.withOpacity(.75),
+            Theme.of(context).colorScheme.background
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        )),
         height: size.width * .155,
         child: ListView.builder(
           itemCount: 4,

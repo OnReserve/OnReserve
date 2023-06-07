@@ -32,46 +32,57 @@ class _EventState extends State<Event> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: true,
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              // handle menu item selection
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'menu_item_1',
-                child: Text('Sort by Price'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'menu_item_2',
-                child: Text('Sort by Date'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'menu_item_3',
-                child: Text('Filter by Category'),
-              ),
-            ],
-            icon: const Icon(Icons.more_vert),
-          ),
-          // IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-        ],
-        centerTitle: true,
-        title: SafeArea(
-          child: Text("Event-Details",
-              style: TextStyle(
-                  fontWeight: FontWeight.normal,
-                  fontSize: 65.sp,
-                  fontFamily: "Inter")),
-        ),
-      ),
       body: Column(
         children: [
-          SizedBox(
-            width: double.infinity,
-            height: 770.h,
-            child: Image.asset("assets/Images/Rophnan.png", fit: BoxFit.cover),
+          Stack(
+            children: [
+              ShaderMask(
+                  blendMode: BlendMode.srcATop,
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Theme.of(context).colorScheme.background
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(bounds);
+                  },
+                  child: Image.asset(
+                    "assets/Images/Rophnan.png",
+                    fit: BoxFit.cover,
+                    height: 1100.h,
+                  )),
+              Positioned(
+                top: 180.h,
+                left: 120.w,
+                child: Container(
+                  height: 150.r,
+                  width: 150.r,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .onBackground
+                        .withOpacity(0.65),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 3.0),
+                    child: IconButton(
+                      onPressed: () {
+                        Get.back();
+                      },
+                      icon: Icon(
+                        Icons.arrow_back_ios,
+                        color: Theme.of(context).colorScheme.background,
+                        weight: 2,
+                        size: 60.r,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
           ),
           Expanded(
               child: Padding(
@@ -162,9 +173,6 @@ class _EventState extends State<Event> {
                         //     : SizedBox(),
                         SizedBox()),
                 SizedBox(
-                  height: 300.h,
-                ),
-                SizedBox(
                   width: double.infinity,
                   height: 180.h,
                   child: ElevatedButton(
@@ -183,6 +191,7 @@ class _EventState extends State<Event> {
                           fontSize: 60.sp,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1.7,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontFamily: "Inter"),
                     ),
                   ),

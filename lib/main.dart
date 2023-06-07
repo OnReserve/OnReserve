@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:on_reserve/helpers/routes.dart';
@@ -70,17 +71,42 @@ class OnReserve extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return GetBuilder<ThemeController>(builder: (theme) {
-            final apptheme = ThemeData(
-              primarySwatch: Colors.blueGrey,
-              primaryColor: const Color(0xFF23538f),
-            );
             return GetMaterialApp(
               initialRoute: initialRoute,
               getPages: AppRoutes.pages,
               title: 'OnReserve',
-              theme: apptheme,
+              theme: FlexThemeData.light(
+                scheme: FlexScheme.materialBaseline,
+                surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+                blendLevel: 7,
+                subThemesData: const FlexSubThemesData(
+                  blendOnLevel: 10,
+                  blendOnColors: false,
+                  useTextTheme: true,
+                  useM2StyleDividerInM3: true,
+                ),
+                visualDensity: FlexColorScheme.comfortablePlatformDensity,
+                useMaterial3: true,
+                swapLegacyOnMaterial3: true,
+                // To use the Playground font, add GoogleFonts package and uncomment
+                // fontFamily: GoogleFonts.notoSans().fontFamily,
+              ),
+              darkTheme: FlexThemeData.dark(
+                scheme: FlexScheme.materialBaseline,
+                surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+                blendLevel: 13,
+                subThemesData: const FlexSubThemesData(
+                  blendOnLevel: 20,
+                  useTextTheme: true,
+                  useM2StyleDividerInM3: true,
+                ),
+                visualDensity: FlexColorScheme.comfortablePlatformDensity,
+                useMaterial3: true,
+                swapLegacyOnMaterial3: true,
+                // To use the Playground font, add GoogleFonts package and uncomment
+                // fontFamily: GoogleFonts.notoSans().fontFamily,
+              ),
               themeMode: theme.dark ? ThemeMode.dark : ThemeMode.light,
-              darkTheme: ThemeData.dark(useMaterial3: true),
               debugShowCheckedModeBanner: false,
             );
           });

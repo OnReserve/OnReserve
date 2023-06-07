@@ -9,11 +9,9 @@ Future<Map<String, String>> authToJson(Auth data) async {
       ? {
           'Content-Type': 'application/json',
           'authorization': 'Bearer ${data.token}',
-          // 'Api-Key': dotenv.get('API-KEY', fallback: 'null'),
         }
       : {
           'Content-Type': 'application/json',
-          // 'Api-Key': dotenv.get('API-KEY', fallback: 'null'),
         };
 }
 

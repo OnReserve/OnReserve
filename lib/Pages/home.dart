@@ -37,21 +37,15 @@ class _HomeState extends State<Home> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            height: 20,
-          ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30.0, 20.0, 0.0, 0.0),
+            padding: const EdgeInsets.fromLTRB(30.0, 10.0, 0.0, 0.0),
             child: Text(
               'Explore Events',
-              style: Theme.of(context)
-                  .textTheme
-                  .bodyLarge!
-                  .copyWith(fontFamily: 'PaytoneOne', fontSize: 85.sp),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                  fontFamily: 'PaytoneOne',
+                  fontSize: 85.sp,
+                  fontWeight: FontWeight.bold),
             ),
-          ),
-          SizedBox(
-            height: 10,
           ),
           Container(
             margin: EdgeInsets.fromLTRB(25, 0, 25, 0),
@@ -61,8 +55,7 @@ class _HomeState extends State<Home> {
                 decoration: const InputDecoration(
                   suffixIcon: Icon(Icons.search),
                   hintText: 'Search...',
-                  fillColor: Color(0xFFe4e4e4),
-                  focusColor: Color.fromARGB(255, 203, 203, 203),
+                  // focusColor: Color.fromARGB(255, 203, 203, 203),k
                   filled: true,
                   border: InputBorder.none,
                 ),
@@ -70,7 +63,7 @@ class _HomeState extends State<Home> {
             ),
           ),
           Container(
-            margin: EdgeInsets.only(top: 145.h),
+            margin: EdgeInsets.only(top: 95.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -81,10 +74,16 @@ class _HomeState extends State<Home> {
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontFamily: 'PaytoneOne',
                         fontSize: 75.sp,
-                        color: Colors.grey[800]),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 25.h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Divider(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    thickness: 2,
+                  ),
+                ),
                 SizedBox(
                     height: 650.h,
                     child:
@@ -97,7 +96,7 @@ class _HomeState extends State<Home> {
                                 title: "Rophnan Concert",
                                 date: "2021-10-10",
                                 imageURL:
-                                    "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1685919252/onReserve/Profile/q8ehvhsnwygyrnq5h97q.png"),
+                                    "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
                           ],
                           builder: (context, snapshot) {
                             return snapshot.connectionState ==
@@ -137,7 +136,7 @@ class _HomeState extends State<Home> {
                                     });
                           });
                     })),
-                SizedBox(height: 105.h),
+                SizedBox(height: 85.h),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Text(
@@ -145,10 +144,16 @@ class _HomeState extends State<Home> {
                     style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                         fontFamily: 'PaytoneOne',
                         fontSize: 75.sp,
-                        color: Colors.grey[800]),
+                        fontWeight: FontWeight.bold),
                   ),
                 ),
-                SizedBox(height: 50.h),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                  child: Divider(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    thickness: 2,
+                  ),
+                ),
                 GetBuilder<HomeController>(builder: (homeController) {
                   return SizedBox(
                     height: 850.h,
@@ -177,7 +182,9 @@ class _HomeState extends State<Home> {
                                         borderRadius: BorderRadius.circular(18),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: Colors.grey.withOpacity(0.5),
+                                            color: const Color.fromARGB(
+                                                    255, 113, 113, 113)
+                                                .withOpacity(0.5),
                                             spreadRadius: 1,
                                             blurRadius: 7,
                                             offset: const Offset(0, 3),
@@ -186,25 +193,13 @@ class _HomeState extends State<Home> {
                                         gradient: LinearGradient(
                                             begin: const Alignment(-1, 1),
                                             end: const Alignment(1, -1),
-                                            colors: index.isEven
-                                                ? [
-                                                    Color.fromARGB(
-                                                        255, 142, 117, 88),
-                                                    Color.fromARGB(
-                                                        255, 128, 115, 91),
-                                                    Color.fromARGB(
-                                                        255, 111, 102, 79),
-                                                    Color.fromARGB(
-                                                        255, 89, 85, 67),
-                                                  ]
-                                                : [
-                                                    Color.fromARGB(
-                                                        255, 104, 127, 167),
-                                                    Color.fromARGB(
-                                                        255, 112, 121, 154),
-                                                    Color.fromARGB(
-                                                        255, 88, 101, 133),
-                                                  ]),
+                                            colors: [
+                                              Color.fromARGB(
+                                                  255, 104, 127, 167),
+                                              Color.fromARGB(
+                                                  255, 112, 121, 154),
+                                              Color.fromARGB(255, 88, 101, 133),
+                                            ]),
                                       ),
                                       child: Row(
                                           crossAxisAlignment:
@@ -219,7 +214,9 @@ class _HomeState extends State<Home> {
                                               width: 120.w,
                                               child: Icon(
                                                 Icons.movie_creation_rounded,
-                                                color: Colors.white,
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .onPrimary,
                                               ),
                                             ),
                                             SizedBox(width: 5.w),
@@ -238,7 +235,10 @@ class _HomeState extends State<Home> {
                                                           fontFamily:
                                                               'PaytoneOne',
                                                           fontSize: 50.sp,
-                                                          color: Colors.white),
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onPrimary),
                                                 ),
                                                 Text(
                                                   "10 Events",
@@ -250,7 +250,9 @@ class _HomeState extends State<Home> {
                                                               'PaytoneOne',
                                                           fontSize: 30.sp,
                                                           color:
-                                                              Colors.white70),
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .onPrimary),
                                                 ),
                                               ],
                                             ),

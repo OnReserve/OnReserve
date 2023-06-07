@@ -240,6 +240,8 @@ class NetworkHandler {
     try {
       String? token = await SecuredStorage.read(key: SharedKeys.token);
 
+      logger(NetworkHandler).i("TOKEN: $token");
+
       Auth header = Auth(token: token ?? "");
 
       var response = await provider(await authToJson(header)).get(
@@ -254,27 +256,8 @@ class NetworkHandler {
     }
   }
 
-  static Future<List> gett({String auth = '', required String endpoint}) async {
-    try {
-      String? token = await SecuredStorage.read(key: SharedKeys.token);
-
-      Auth header = Auth(token: token ?? "");
-      final dio = Dio();
-      var response = await dio.get(
-        "https://67f6019f-3cc9-4272-82a4-1a67baf93aa8.mock.pstmn.io/$endpoint",
-        options: Options(
-            headers: await authToJson(header),
-            contentType: Headers.jsonContentType),
-      );
-      return [response.data, response.statusCode];
-    } on Error catch (e) {
-      logger(DioError).e("$e");
-      return [[], 0];
-    } on SocketException {
-      return [0, 0];
-    }
-  }
-
   static String buildStringUrl(String endpoint) =>
-      'http://192.168.2.108:5000/api/$endpoint';
+      // 'http://192.168.2.108:5000/api/$endpoint';
+      // 'http://localhost:5000/api/$endpoint';
+      'http://192.168.34.240:5000/api/$endpoint';
 }

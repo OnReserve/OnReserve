@@ -37,19 +37,19 @@ class HomeController extends GetxController {
             title: "Rophnan Concert",
             date: "2021-10-10",
             imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1685919252/onReserve/Profile/q8ehvhsnwygyrnq5h97q.png"),
+                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
         EventOverview(
             id: 2,
             title: "Rophnan Concert",
             date: "2021-10-10",
             imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1685919252/onReserve/Profile/q8ehvhsnwygyrnq5h97q.png"),
+                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
         EventOverview(
             id: 3,
             title: "Rophnan Concert",
             date: "2021-10-10",
             imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1685919252/onReserve/Profile/q8ehvhsnwygyrnq5h97q.png"),
+                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
       ];
       return popularEvents;
     });

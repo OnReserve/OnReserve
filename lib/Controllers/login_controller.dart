@@ -38,12 +38,14 @@ class LoginController extends GetxController {
           Map data = (response[0]);
 
           // Store The Token
-          SecuredStorage.store(key: SharedKeys.token, value: data['token']);
+          await SecuredStorage.store(
+              key: SharedKeys.token, value: data['token']);
+
           data.remove('token');
           final user = User.fromJson(data);
 
           // Store The User
-          SecuredStorage.store(
+          await SecuredStorage.store(
               key: SharedKeys.user, value: jsonEncode(user.toJson()));
 
           btnController.success();
@@ -77,38 +79,5 @@ class LoginController extends GetxController {
       });
     });
     return false;
-  }
-}
-
-class MyCustomWidget extends StatefulWidget {
-  @override
-  _MyCustomWidgetState createState() => _MyCustomWidgetState();
-}
-
-class _MyCustomWidgetState extends State<MyCustomWidget> {
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
-
-  void _doSomething() async {
-    Timer(
-      Duration(seconds: 3),
-      () {
-        // _btnController.success();
-        _btnController.error();
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: RoundedLoadingButton(
-          child: Text('Sign Up', style: TextStyle(color: Colors.white)),
-          controller: _btnController,
-          onPressed: _doSomething,
-        ),
-      ),
-    );
   }
 }

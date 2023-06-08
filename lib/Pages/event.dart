@@ -62,7 +62,7 @@ class _EventState extends State<Event> {
                   decoration: BoxDecoration(
                     color: Theme.of(context)
                         .colorScheme
-                        .onBackground
+                        .background
                         .withOpacity(0.65),
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -74,7 +74,7 @@ class _EventState extends State<Event> {
                       },
                       icon: Icon(
                         Icons.arrow_back_ios,
-                        color: Theme.of(context).colorScheme.background,
+                        color: Theme.of(context).colorScheme.onBackground,
                         weight: 2,
                         size: 60.r,
                       ),

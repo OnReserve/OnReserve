@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:on_reserve/Models/user.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 import 'package:on_reserve/helpers/routes.dart';
+import 'package:on_reserve/helpers/storage/secure_store.dart';
 import 'package:rounded_loading_button/rounded_loading_button.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
@@ -42,12 +45,18 @@ class SignUpController extends GetxController {
         try {
           Map data = (response[0]);
           print(data);
-          // Get.toNamed(Routes.otp,
-          //     arguments: {"username": username, "phoneNumber": phone});
-          // Get.toNamed(Routes.otp, arguments: {
-          //   "username": username,
-          //   "phoneNumber": phone,
-          // });
+
+          // Store The Token
+          await SecuredStorage.store(
+              key: SharedKeys.token, value: data['token']);
+
+          data.remove('token');
+          final user = User.fromJson(data);
+
+          // Store The User
+          await SecuredStorage.store(
+              key: SharedKeys.user, value: jsonEncode(user.toJson()));
+
           btnController.success();
           Timer(const Duration(seconds: 2), () {
             btnController.reset();
@@ -81,38 +90,5 @@ class SignUpController extends GetxController {
       });
     });
     return false;
-  }
-}
-
-class MyCustomWidget extends StatefulWidget {
-  @override
-  _MyCustomWidgetState createState() => _MyCustomWidgetState();
-}
-
-class _MyCustomWidgetState extends State<MyCustomWidget> {
-  final RoundedLoadingButtonController _btnController =
-      new RoundedLoadingButtonController();
-
-  void _doSomething() async {
-    Timer(
-      Duration(seconds: 3),
-      () {
-        // _btnController.success();
-        _btnController.error();
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: RoundedLoadingButton(
-          child: Text('Sign Up', style: TextStyle(color: Colors.white)),
-          controller: _btnController,
-          onPressed: _doSomething,
-        ),
-      ),
-    );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:on_reserve/Pages/event.dart';
+import 'package:on_reserve/Pages/booking_history.dart';
 import 'package:on_reserve/Pages/home.dart';
-import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
+import 'package:on_reserve/Pages/settings.dart';
 
 class MainMenu extends StatefulWidget {
   @override
@@ -14,8 +14,8 @@ class MainMenuState extends State<MainMenu> {
 
   List<Widget> listOfPages = [
     Home(),
-    Event(),
-    Payment(),
+    BookingHistory(),
+    AppSettingsPage(),
     ProfilePage(),
   ];
 

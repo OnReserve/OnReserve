@@ -46,6 +46,7 @@ Future<void> main() async {
 
   final firstTime = await SecuredStorage.check(key: SharedKeys.firstTime);
   final isLoggedIn = await SecuredStorage.check(key: SharedKeys.token);
+
   String initialRoute = isLoggedIn
       ? Routes.home
       : firstTime

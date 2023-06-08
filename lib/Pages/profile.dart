@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
+import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/add_company.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class ProfilePage extends StatelessWidget {
   final ProfileController profileController = Get.find();
@@ -58,15 +60,30 @@ class ProfilePage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      "${profileController.user!.firstName} ${profileController.user!.lastName}",
-                      style: TextStyle(
-                        fontSize: 78.sp,
-                        fontWeight: FontWeight.bold,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 10),
+                          child: Text(
+                            "${profileController.user!.firstName} ${profileController.user!.lastName}",
+                            style: TextStyle(
+                              fontSize: 78.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+                      IconButton(
+                          tooltip: 'Edit Profile',
+                          onPressed: () {
+                            // Get.toNamed(AppRoutes.EDIT_PROFILE);
+                          },
+                          icon: Icon(
+                            Icons.edit,
+                            size: 80.sp,
+                          ))
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
@@ -96,16 +113,30 @@ class ProfilePage extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          'My Companies',
-                          style: TextStyle(
-                            fontSize: 60.sp,
-                            fontWeight: FontWeight.bold,
+                        child: GestureDetector(
+                          onTap: () {
+                            Get.toNamed(Routes.myCompanies);
+                          },
+                          child: Text(
+                            'My Companies',
+                            style: TextStyle(
+                              fontSize: 60.sp,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Get.bottomSheet(
+                              const AddCompanyBottomSheet(),
+                              shape: Get.theme.bottomSheetTheme.shape,
+                              isScrollControlled: true,
+                              clipBehavior: Clip.hardEdge,
+                              useRootNavigator: true,
+                              enableDrag: true,
+                            );
+                          },
                           child: Text(
                             'Add new',
                             style: TextStyle(

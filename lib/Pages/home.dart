@@ -6,6 +6,7 @@ import 'package:on_reserve/Components/shimmer.dart';
 import 'package:on_reserve/Controllers/home_controller.dart';
 import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:on_reserve/Models/event_overview.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -171,92 +172,112 @@ class _HomeState extends State<Home> {
                               crossAxisSpacing: 0,
                               mainAxisSpacing: 0,
                             ),
-                            itemCount: 6,
+                            itemCount: snapshot.data == null
+                                ? 0
+                                : snapshot.data!.length,
                             itemBuilder: (context, index) {
                               return snapshot.connectionState ==
                                       ConnectionState.done
-                                  ? Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 12),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(18),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color.fromARGB(
-                                                    255, 113, 113, 113)
-                                                .withOpacity(0.5),
-                                            spreadRadius: 1,
-                                            blurRadius: 7,
-                                            offset: const Offset(0, 3),
-                                          ),
-                                        ],
-                                        gradient: LinearGradient(
-                                            begin: const Alignment(-1, 1),
-                                            end: const Alignment(1, -1),
-                                            colors: [
-                                              Color.fromARGB(
-                                                  255, 104, 127, 167),
-                                              Color.fromARGB(
-                                                  255, 112, 121, 154),
-                                              Color.fromARGB(255, 88, 101, 133),
-                                            ]),
-                                      ),
-                                      child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.start,
-                                          children: [
-                                            Container(
-                                              margin: EdgeInsets.symmetric(
-                                                  horizontal: 35.w),
-                                              height: 120.h,
-                                              width: 120.w,
-                                              child: Icon(
-                                                Icons.movie_creation_rounded,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onPrimary,
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        print(snapshot.data);
+                                        Get.toNamed(Routes.category,
+                                            arguments: {
+                                              'category': snapshot.data![index]
+                                                  ['name'],
+                                              'events': snapshot.data![index]
+                                                  ['events'] as List
+                                            });
+                                      },
+                                      child: Container(
+                                          margin: const EdgeInsets.symmetric(
+                                              horizontal: 8, vertical: 12),
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(18),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color.fromARGB(
+                                                        255, 113, 113, 113)
+                                                    .withOpacity(0.5),
+                                                spreadRadius: 1,
+                                                blurRadius: 7,
+                                                offset: const Offset(0, 3),
                                               ),
-                                            ),
-                                            SizedBox(width: 5.w),
-                                            Column(
+                                            ],
+                                            gradient: LinearGradient(
+                                                begin: const Alignment(-1, 1),
+                                                end: const Alignment(1, -1),
+                                                colors: [
+                                                  Color.fromARGB(
+                                                      255, 104, 127, 167),
+                                                  Color.fromARGB(
+                                                      255, 112, 121, 154),
+                                                  Color.fromARGB(
+                                                      255, 88, 101, 133),
+                                                ]),
+                                          ),
+                                          child: Row(
                                               crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                                                  CrossAxisAlignment.center,
                                               mainAxisAlignment:
-                                                  MainAxisAlignment.center,
+                                                  MainAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                  "checkering",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge!
-                                                      .copyWith(
-                                                          fontFamily:
-                                                              'PaytoneOne',
-                                                          fontSize: 50.sp,
-                                                          color:
-                                                              Theme.of(context)
+                                                Container(
+                                                  padding: EdgeInsets.only(
+                                                      left: 20.w),
+                                                  margin: EdgeInsets.symmetric(
+                                                      horizontal: 35.w),
+                                                  height: 120.h,
+                                                  width: 120.w,
+                                                  child: Icon(
+                                                    Icons
+                                                        .movie_creation_rounded,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                  ),
+                                                ),
+                                                SizedBox(width: 5.w),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Text(
+                                                      snapshot.data![index]
+                                                          ['name'],
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyLarge!
+                                                          .copyWith(
+                                                              fontFamily:
+                                                                  'PaytoneOne',
+                                                              fontSize: 50.sp,
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .colorScheme
                                                                   .onPrimary),
-                                                ),
-                                                Text(
-                                                  "10 Events",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyLarge!
-                                                      .copyWith(
-                                                          fontFamily:
-                                                              'PaytoneOne',
-                                                          fontSize: 30.sp,
-                                                          color:
-                                                              Theme.of(context)
+                                                    ),
+                                                    Text(
+                                                      "${snapshot.data![index]['events'].length} Events",
+                                                      style: Theme.of(context)
+                                                          .textTheme
+                                                          .bodyLarge!
+                                                          .copyWith(
+                                                              fontFamily:
+                                                                  'PaytoneOne',
+                                                              fontSize: 30.sp,
+                                                              color: Theme.of(
+                                                                      context)
                                                                   .colorScheme
                                                                   .onPrimary),
+                                                    ),
+                                                  ],
                                                 ),
-                                              ],
-                                            ),
-                                          ]))
+                                              ])),
+                                    )
                                   : Container(
                                       margin: const EdgeInsets.symmetric(
                                           horizontal: 8, vertical: 4),

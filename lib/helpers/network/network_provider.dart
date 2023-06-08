@@ -30,8 +30,8 @@ class NetworkHandler {
       final raf = file.openSync(mode: FileMode.write);
       raf.writeFromSync(response.data);
       await raf.close();
-    } on DioError catch (e) {
-      logger(DioError).e("ERROR WHILE DOWNLOADING IMAGE: $e");
+    } on DioException catch (e) {
+      logger(DioException).e("ERROR WHILE DOWNLOADING IMAGE: $e");
     } catch (e) {
       logger(Exception).e("ERROR WHILE DOWNLOADING IMAGE: $e");
     }
@@ -58,8 +58,8 @@ class NetworkHandler {
         buildStringUrl(endpoint),
         data: formData,
       );
-    } on DioError catch (e) {
-      logger(DioError).e("ERROR WHILE UPLOADING IMAGE: $e");
+    } on DioException catch (e) {
+      logger(DioException).e("ERROR WHILE UPLOADING IMAGE: $e");
     }
 
     return response;
@@ -98,8 +98,8 @@ class NetworkHandler {
       await file.writeAsBytes(response.data!);
       // Return the file and status code.
       return [response.statusCode, file];
-    } on DioError catch (e) {
-      logger(DioError).e("ERROR WHILE DOWNLOADING IMAGE: $e");
+    } on DioException catch (e) {
+      logger(DioException).e("ERROR WHILE DOWNLOADING IMAGE: $e");
       return [0, []];
     }
   }
@@ -127,17 +127,17 @@ class NetworkHandler {
       );
 
       return [response.data, response.statusCode];
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.receiveTimeout ||
-          e.type == DioErrorType.sendTimeout) {
-        logger(DioError).e("ERROR WHILE POSTING: $e");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        logger(DioException).e("ERROR WHILE POSTING: $e");
         // showSimpleNotification(
         //     const Text(
         //         "It takes too long to respond, Check your Internet Connection ..."),
         //     background: Colors.yellow);
         return [[], 0];
       } else if (e.response == null) {
-        logger(DioError).e("ERROR WHILE POSTING: $e");
+        logger(DioException).e("ERROR WHILE POSTING: $e");
         // showSimpleNotification(
         //   const Text(
         //       "It takes too long to respond, Check your Internet Connection ..."),
@@ -183,13 +183,13 @@ class NetworkHandler {
       );
 
       return [response.data, response.statusCode];
-    } on DioError catch (e) {
-      if (e.type == DioErrorType.receiveTimeout ||
-          e.type == DioErrorType.sendTimeout) {
-        logger(DioError).e("TIMEOUT ERROR: $e");
+    } on DioException catch (e) {
+      if (e.type == DioExceptionType.receiveTimeout ||
+          e.type == DioExceptionType.sendTimeout) {
+        logger(DioException).e("TIMEOUT ERROR: $e");
         return [[], 0];
       } else {
-        logger(DioError).e("$e");
+        logger(DioException).e("$e");
         return [[], 0];
       }
     } on SocketException {
@@ -208,8 +208,8 @@ class NetworkHandler {
           .delete(buildStringUrl(endpoint));
 
       return [response.data, response.statusCode];
-    } on DioError catch (e) {
-      logger(DioError).e("$e");
+    } on DioException catch (e) {
+      logger(DioException).e("$e");
       return [[], 0];
     } on SocketException {
       return [0, 0];
@@ -228,8 +228,8 @@ class NetworkHandler {
         data: body,
       );
       return [response.data, response.statusCode];
-    } on DioError catch (e) {
-      logger(DioError).e("$e");
+    } on DioException catch (e) {
+      logger(DioException).e("$e");
       return [[], 0];
     } on SocketException {
       return [0, 0];
@@ -248,8 +248,8 @@ class NetworkHandler {
         buildStringUrl(endpoint),
       );
       return [response.data, response.statusCode];
-    } on DioError catch (e) {
-      logger(DioError).e("$e");
+    } on DioException catch (e) {
+      logger(DioException).e("$e");
       return [[], 0];
     } on SocketException {
       return [0, 0];
@@ -258,6 +258,5 @@ class NetworkHandler {
 
   static String buildStringUrl(String endpoint) =>
       // 'http://192.168.2.108:5000/api/$endpoint';
-      // 'http://localhost:5000/api/$endpoint';
-      'http://192.168.34.240:5000/api/$endpoint';
+      'http://localhost:5000/api/$endpoint';
 }

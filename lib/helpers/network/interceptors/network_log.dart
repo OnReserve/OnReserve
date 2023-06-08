@@ -16,7 +16,7 @@ Interceptor loggerInterceptor = InterceptorsWrapper(
 
     return handler.next(response);
   },
-  onError: (DioError e, ErrorInterceptorHandler handler) {
+  onError: (DioException e, ErrorInterceptorHandler handler) {
     logger(Dio)
         .e('ERROR[${e.response?.statusCode}] => PAYLOAD: ${e.response?.data}');
 

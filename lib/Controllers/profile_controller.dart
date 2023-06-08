@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:on_reserve/Models/user.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
@@ -9,6 +10,8 @@ import 'package:on_reserve/helpers/storage/secure_store.dart';
 class ProfileController extends GetxController {
   var isLoading = false;
   User? user;
+  File? profilePic;
+  File? coverPic;
 
   Future<void> logout() async {
     await SecuredStorage.clear();
@@ -25,4 +28,6 @@ class ProfileController extends GetxController {
     }
     super.onInit();
   }
+
+  getImage() async {}
 }

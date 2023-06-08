@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedKeys {
   static const String token = "token";
@@ -21,28 +24,61 @@ class SharedKeys {
 }
 
 class SecuredStorage {
-  static const storage = FlutterSecureStorage();
+  static var storage;
 
   static Future<bool> check({required String key}) async {
+    storage = Platform.isWindows
+        ? await SharedPreferences.getInstance()
+        : FlutterSecureStorage();
     logger(SecuredStorage).i('SECURE STORAGE : CHECKING THE KEY CALLED $key');
-    return await storage.containsKey(key: key);
+    return Platform.isWindows
+        ? await (storage as SharedPreferences).get(key) != null
+        : await storage.containsKey(key: key);
   }
 
   static Future<String?> read({required String key}) async {
+    storage = Platform.isWindows
+        ? await SharedPreferences.getInstance()
+        : FlutterSecureStorage();
     logger(SecuredStorage).i('SECURE STORAGE : READING THE KEY CALLED $key');
-    return await storage.read(key: key);
+    try {
+      return Platform.isWindows
+          ? await (storage as SharedPreferences).getString(key)
+          : await storage.read(key: key);
+    } catch (e) {
+      logger(SecuredStorage).e('ERROR WHILE READING PREFRENCE KEYS !! $e');
+    }
+    return null;
   }
 
   static Future<void> store(
       {required String key, required String value}) async {
+    storage = Platform.isWindows
+        ? await SharedPreferences.getInstance()
+        : FlutterSecureStorage();
     logger(SecuredStorage).i('SECURE STORAGE : STORING TO KEY CALLED $key');
-    await storage.write(key: key, value: value);
+    try {
+      if (Platform.isWindows) {
+        await (storage as SharedPreferences).setString(key, value);
+        return;
+      }
+      await storage.write(key: key, value: value);
+    } catch (e) {
+      logger(SecuredStorage).e('ERROR WHILE STORING PREFRENCE KEYS !! $e');
+    }
   }
 
   static Future<void> clear() async {
+    storage = Platform.isWindows
+        ? await SharedPreferences.getInstance()
+        : FlutterSecureStorage();
     logger(SecuredStorage).i('CLEARING PREFRENCE KEYS !!');
     for (var key in SharedKeys.list) {
       try {
+        if (Platform.isWindows) {
+          await (storage as SharedPreferences).remove(key);
+          continue;
+        }
         await storage.delete(key: key);
       } catch (e) {
         logger(SecuredStorage).e('ERROR WHILE CLEARING PREFRENCE KEYS !! $e');
@@ -51,7 +87,14 @@ class SecuredStorage {
   }
 
   static Future<void> delete(key) async {
+    storage = Platform.isWindows
+        ? await SharedPreferences.getInstance()
+        : FlutterSecureStorage();
     logger(SecuredStorage).i('CLEARING REFRESH TOKEN !!');
+    if (Platform.isWindows) {
+      await (storage as SharedPreferences).remove(key);
+      return;
+    }
     await storage.delete(key: key);
   }
 }

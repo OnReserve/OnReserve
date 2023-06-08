@@ -1,8 +1,8 @@
 // ignore_for_file: unused_local_variable
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:get/get.dart';
-// import 'package:on_reserve/helpers/routes.dart';
+import 'package:get/get.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class ContinueCard extends StatelessWidget {
   final int index;
@@ -25,7 +25,7 @@ class ContinueCard extends StatelessWidget {
         displayWidth > 650 ? Orientation.landscape : Orientation.portrait;
     return GestureDetector(
         onTap: () {
-          // Get.toNamed(Routes.contactUs);
+          Get.toNamed(Routes.eventDetail);
         },
         child: Container(
           width: isLandscape == Orientation.portrait ? 820.w : 820.w * 0.65,
@@ -60,7 +60,7 @@ class ContinueCard extends StatelessWidget {
                   offset: Offset(5.w, 2.h),
                 )
               ],
-              borderRadius: BorderRadius.all(Radius.circular(30.r))),
+              borderRadius: BorderRadius.all(Radius.circular(60.r))),
           child: Padding(
             padding: EdgeInsets.all(50.r),
             child: Column(

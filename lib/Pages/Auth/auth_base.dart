@@ -46,54 +46,50 @@ class _AuthBaseState extends State<AuthBase> {
                     ),
                   )
                 : null,
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  isKeyboardVisible
-                      ? SizedBox()
-                      : Container(
-                          padding: EdgeInsets.only(bottom: 60.h),
-                          child: Image(
-                            image: const AssetImage(
-                              'assets/Images/logo.png',
-                            ),
-                            width: 219.w,
-                            height: 219.h,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                isKeyboardVisible
+                    ? SizedBox()
+                    : Container(
+                        padding: EdgeInsets.only(bottom: 60.h),
+                        child: Image(
+                          image: const AssetImage(
+                            'assets/Images/logo.png',
                           ),
+                          width: 219.w,
+                          height: 219.h,
                         ),
-                  isKeyboardVisible
-                      ? SizedBox()
-                      : Text(
-                          'OnReserve',
+                      ),
+                isKeyboardVisible
+                    ? SizedBox()
+                    : Text(
+                        'OnReserve',
+                        style: TextStyle(
+                          fontSize: 100.sp,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Inter",
+                          color:
+                              !widget.getStarted ? Colors.white : Colors.black,
+                        ),
+                      ),
+                isKeyboardVisible
+                    ? SizedBox()
+                    : Padding(
+                        padding: EdgeInsets.symmetric(vertical: 100.h),
+                        child: Text(
+                          widget.subTitle,
                           style: TextStyle(
-                            fontSize: 100.sp,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 50.sp,
                             fontFamily: "Inter",
                             color: !widget.getStarted
                                 ? Colors.white
                                 : Colors.black,
                           ),
                         ),
-                  isKeyboardVisible
-                      ? SizedBox()
-                      : Padding(
-                          padding: EdgeInsets.symmetric(vertical: 100.h),
-                          child: Text(
-                            widget.subTitle,
-                            style: TextStyle(
-                              fontSize: 50.sp,
-                              fontFamily: "Inter",
-                              color: !widget.getStarted
-                                  ? Colors.white
-                                  : Colors.black,
-                            ),
-                          ),
-                        ),
-                  ...widget.children,
-                ],
-              ),
+                      ),
+                ...widget.children,
+              ],
             ))
       ],
     );

@@ -67,6 +67,13 @@ class LoginPage extends StatelessWidget {
                             ),
                             fillColor: const Color.fromARGB(200, 255, 255, 255),
                             filled: true,
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  width: 2),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
                             enabledBorder: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                               borderRadius:
@@ -101,12 +108,19 @@ class LoginPage extends StatelessWidget {
                             ),
                             fillColor: const Color.fromARGB(200, 255, 255, 255),
                             filled: true,
-                            border: const OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.black),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  width: 2),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(14)),
                             ),
                             enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(14)),
+                            ),
+                            border: const OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.black),
                               borderRadius:
                                   BorderRadius.all(Radius.circular(14)),

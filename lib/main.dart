@@ -44,14 +44,22 @@ Future<void> main() async {
     });
   }
 
+  // TODO: Remove this when done testing
+  const bool test = false;
+
   final firstTime = await SecuredStorage.check(key: SharedKeys.firstTime);
   final isLoggedIn = await SecuredStorage.check(key: SharedKeys.token);
 
-  String initialRoute = isLoggedIn
-      ? Routes.home
-      : firstTime
-          ? Routes.onBoarding
-          : Routes.login;
+  String initialRoute = test
+      // ignore: dead_code
+      ? Routes.test
+      // ignore: dead_code
+      : isLoggedIn
+          ? Routes.home
+          : firstTime
+              ? Routes.onBoarding
+              : Routes.login;
+
   await dotenv.load();
 
   runApp(OnReserve(initialRoute: initialRoute));

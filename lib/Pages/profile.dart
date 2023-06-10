@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
 import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/add_company.dart';
+import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/edit_profile.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -26,10 +28,17 @@ class ProfilePage extends StatelessWidget {
               height: MediaQuery.of(context).size.height * 0.35,
               width: double.infinity,
               decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
                   image: DecorationImage(
-                      image: AssetImage('assets/Images/Map.png'),
+                      image: CachedNetworkImageProvider(
+                        "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686293226/onReserve/Profile/wlru9yrmbxu9lfkfj9fu.jpg",
+                        //  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                        //          CircularProgressIndicator(value: downloadProgress.progress),
+                        //  errorWidget: (context, url, error) => Icon(Icons.error),
+                      ),
                       fit: BoxFit.fitWidth,
-                      alignment: Alignment.topCenter)),
+                      alignment: Alignment.topCenter,
+                      scale: 0.5)),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +55,9 @@ class ProfilePage extends StatelessWidget {
                               .startsWith("https://api.dicebear")
                           ? CircleAvatar(
                               radius: 40,
-                              backgroundImage: NetworkImage(profileController
-                                      .user!.profilePic ??
-                                  'https://img.freepik.com/free-icon/user_318-159711.jpg'))
+                              backgroundImage: CachedNetworkImageProvider(
+                                  profileController.user!.profilePic ??
+                                      'https://img.freepik.com/free-icon/user_318-159711.jpg'))
                           : SvgPicture.network(
                               profileController.user!.profilePic!,
                               semanticsLabel: 'username',
@@ -77,7 +86,14 @@ class ProfilePage extends StatelessWidget {
                       IconButton(
                           tooltip: 'Edit Profile',
                           onPressed: () {
-                            // Get.toNamed(AppRoutes.EDIT_PROFILE);
+                            Get.bottomSheet(
+                              const EditProfileBottomSheet(),
+                              shape: Get.theme.bottomSheetTheme.shape,
+                              isScrollControlled: true,
+                              clipBehavior: Clip.hardEdge,
+                              useRootNavigator: true,
+                              enableDrag: true,
+                            );
                           },
                           icon: Icon(
                             Icons.edit,
@@ -100,8 +116,7 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              padding: EdgeInsets.all(15),
+              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
               width: double.infinity,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
@@ -110,168 +125,26 @@ class ProfilePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Get.toNamed(Routes.myCompanies);
-                          },
-                          child: Text(
-                            'My Companies',
-                            style: TextStyle(
-                              fontSize: 60.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const AddCompanyBottomSheet(),
-                              shape: Get.theme.bottomSheetTheme.shape,
-                              isScrollControlled: true,
-                              clipBehavior: Clip.hardEdge,
-                              useRootNavigator: true,
-                              enableDrag: true,
-                            );
-                          },
-                          child: Text(
-                            'Add new',
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.background),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ))
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1,
-                    ),
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 480.h),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return SingleChildScrollView(
-                          physics: PageScrollPhysics(),
-                          child: ListTile(
-                              dense: true,
-                              horizontalTitleGap: 0,
-                              title: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Addis Concert ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 55.sp,
-                                    ),
-                                  ),
-                                  // Image.asset('assets/images/Blue_tick.png',
-                                  //     height: 70.r, width: 80.r)
-                                ],
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Edit',
-                                  style: TextStyle(fontSize: 45.sp),
-                                ),
-                              )),
-                        );
-                      },
-                    ),
+                  Details(
+                    title: "My Companies",
+                    addable: true,
+                    editable: true,
                   ),
                   SizedBox(height: 50),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'My Events',
-                          style: TextStyle(
-                            fontSize: 60.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            'Add new',
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.background),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.teal,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                          ))
-                    ],
+                  Details(
+                    title: 'My Events',
+                    addable: true,
+                    editable: false,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Divider(
-                      color: Colors.grey,
-                      thickness: 1,
-                    ),
-                  ),
-                  ConstrainedBox(
-                    constraints: BoxConstraints(maxHeight: 480.h),
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return SingleChildScrollView(
-                          physics: PageScrollPhysics(),
-                          child: ListTile(
-                              dense: true,
-                              horizontalTitleGap: 0,
-                              title: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Addis Concert ",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.normal,
-                                      fontSize: 55.sp,
-                                    ),
-                                  ),
-                                  // Image.asset('assets/images/Blue_tick.png',
-                                  //     height: 70.r, width: 80.r)
-                                ],
-                              ),
-                              trailing: ElevatedButton(
-                                onPressed: () {},
-                                child: Text(
-                                  'Edit',
-                                  style: TextStyle(fontSize: 45.sp),
-                                ),
-                              )),
-                        );
-                      },
-                    ),
-                  ),
+                  SizedBox(height: 50),
+                  Details(title: 'My Tickets', addable: false, editable: false),
                 ],
               ),
             ),
             // Logout Button
             Container(
               width: double.infinity,
-              height: 150.h,
+              height: 160.h,
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
               child: ElevatedButton(
                 onPressed: profileController.logout,
@@ -279,10 +152,11 @@ class ProfilePage extends StatelessWidget {
                   'Logout',
                   style: TextStyle(
                       fontSize: 60.sp,
+                      fontWeight: FontWeight.bold,
                       color: Theme.of(context).colorScheme.background),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.indigo[500],
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
                   ),
@@ -296,6 +170,102 @@ class ProfilePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Details extends StatelessWidget {
+  final String title;
+  final bool editable;
+  final bool addable;
+  const Details(
+      {super.key,
+      required this.title,
+      this.editable = true,
+      this.addable = true});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.15),
+      ),
+      padding: EdgeInsets.fromLTRB(20, 12, 20, 20),
+      child: Column(children: [
+        Row(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  Get.toNamed(Routes.myCompanies);
+                },
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 60.sp,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+            addable
+                ? IconButton(
+                    onPressed: () {
+                      Get.bottomSheet(
+                        const AddCompanyBottomSheet(),
+                        shape: Get.theme.bottomSheetTheme.shape,
+                        isScrollControlled: true,
+                        clipBehavior: Clip.hardEdge,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                      );
+                    },
+                    icon: Icon(
+                      Icons.add_circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  )
+                : SizedBox()
+          ],
+        ),
+        Divider(
+          color: Colors.grey,
+          thickness: 1,
+        ),
+        ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 580.h),
+            child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: 3,
+                itemBuilder: (context, index) {
+                  return SingleChildScrollView(
+                    physics: PageScrollPhysics(),
+                    child: Container(
+                      width: double.infinity,
+                      height: 200.h,
+                      margin: EdgeInsets.symmetric(vertical: 5),
+                      child: ElevatedButton(
+                        onPressed: null,
+                        child: Text(
+                          'Logout',
+                          style: TextStyle(
+                              fontSize: 60.sp,
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.background),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }))
+      ]),
     );
   }
 }

@@ -7,6 +7,7 @@ import 'package:on_reserve/Pages/category.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
+import 'package:on_reserve/Pages/new_home.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
@@ -39,12 +40,17 @@ class Routes {
   static const String category = "/category";
   static const String bookingHistory = "/bookingHistory";
   static const String welcome = "/welcome";
+  static const String test = "/test";
   static const String myCompanies = "/mycompanies";
   static const String root = "/";
 }
 
 class AppRoutes {
   static final pages = [
+    GetPage(
+      name: Routes.test,
+      page: () => Home2(),
+    ),
     GetPage(
       name: Routes.login,
       page: () => const LoginPage(),

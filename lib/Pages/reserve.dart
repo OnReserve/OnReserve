@@ -63,7 +63,7 @@ class Reserve extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Divider(
-              color: Colors.blueGrey,
+              color: Theme.of(context).colorScheme.primary,
               thickness: 1,
             ),
           ),
@@ -75,9 +75,8 @@ class Reserve extends StatelessWidget {
                 Text(
                   "Event :",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
                     fontSize: 68.sp,
                   ),
                 ),
@@ -94,9 +93,8 @@ class Reserve extends StatelessWidget {
                 Text(
                   "Even Starting Time :",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
                     fontSize: 68.sp,
                   ),
                 ),
@@ -114,46 +112,49 @@ class Reserve extends StatelessWidget {
                 Text(
                   "Choose Packages :",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
                     fontSize: 68.sp,
                   ),
                 ),
                 SizedBox(
                   height: 40.h,
                 ),
-                CustomRadioButton(
-                  elevation: 0,
-                  enableShape: true,
-                  unSelectedColor: Theme.of(context).canvasColor,
-                  autoWidth: true,
-                  buttonLables: [
-                    'VIP',
-                    'VVIP',
-                    'Regular',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    CustomRadioButton(
+                      elevation: 0,
+                      enableShape: true,
+                      unSelectedColor: Theme.of(context).canvasColor,
+                      autoWidth: true,
+                      buttonLables: [
+                        'VIP',
+                        'VVIP',
+                        'Regular',
+                      ],
+                      buttonValues: [
+                        'VIP',
+                        'VVIP',
+                        'Regular',
+                      ],
+                      buttonTextStyle: ButtonTextStyle(
+                          selectedColor: Colors.white,
+                          unSelectedColor: Colors.black,
+                          textStyle: TextStyle(fontSize: 50.sp)),
+                      radioButtonValue: (value) {
+                        print(value);
+                      },
+                      selectedColor: Theme.of(context).primaryColor,
+                    ),
                   ],
-                  buttonValues: [
-                    'VIP',
-                    'VVIP',
-                    'Regular',
-                  ],
-                  buttonTextStyle: ButtonTextStyle(
-                      selectedColor: Colors.white,
-                      unSelectedColor: Colors.black,
-                      textStyle: TextStyle(fontSize: 50.sp)),
-                  radioButtonValue: (value) {
-                    print(value);
-                  },
-                  selectedColor: Theme.of(context).primaryColor,
                 ),
                 SizedBox(height: 50.h),
                 Text(
                   "Choose Payment Method :",
                   style: TextStyle(
-                    color: Colors.blue,
+                    color: Theme.of(context).colorScheme.primary,
                     fontWeight: FontWeight.w500,
-                    decoration: TextDecoration.underline,
                     fontSize: 68.sp,
                   ),
                 ),
@@ -172,7 +173,7 @@ class Reserve extends StatelessWidget {
                       Get.toNamed(Routes.pay);
                     },
                     style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF23538f),
+                        backgroundColor: Theme.of(context).primaryColor,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
@@ -182,6 +183,7 @@ class Reserve extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 60.sp,
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onPrimary,
                           letterSpacing: 1.7,
                           fontFamily: "Inter"),
                     ),

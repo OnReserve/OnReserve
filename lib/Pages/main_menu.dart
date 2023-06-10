@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'package:on_reserve/Pages/booking_history.dart';
-import 'package:on_reserve/Pages/home.dart';
+// import 'package:on_reserve/Pages/home.dart';
+import 'package:on_reserve/Pages/new_home.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/settings.dart';
 
@@ -13,7 +15,7 @@ class MainMenuState extends State<MainMenu> {
   var currentIndex = 0;
 
   List<Widget> listOfPages = [
-    Home(),
+    Home2(),
     BookingHistory(),
     AppSettingsPage(),
     ProfilePage(),
@@ -55,7 +57,8 @@ class MainMenuState extends State<MainMenu> {
               children: [
                 SizedBox(height: size.width * .014),
                 Icon(listOfIcons[index],
-                    size: size.width * .076, color: const Color(0xFF23538f)),
+                    size: size.width * .076,
+                    color: Theme.of(context).colorScheme.primary),
                 AnimatedContainer(
                   duration: Duration(milliseconds: 1500),
                   curve: Curves.fastLinearToSlowEaseIn,

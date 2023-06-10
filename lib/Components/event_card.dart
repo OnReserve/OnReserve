@@ -28,11 +28,20 @@ class ContinueCard extends StatelessWidget {
           Get.toNamed(Routes.eventDetail);
         },
         child: Container(
-          width: isLandscape == Orientation.portrait ? 820.w : 820.w * 0.65,
-          margin: EdgeInsets.only(left: 75.w),
+          width: isLandscape == Orientation.portrait ? 920.w : 920.w * 0.65,
+          margin: EdgeInsets.only(right: 75.w),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: NetworkImage(bgImage),
+                  image: Image.network(
+                    bgImage,
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      // handle the exception here
+                      return Center(
+                        child: Text('Failed to load image'),
+                      );
+                    },
+                  ).image,
                   fit: BoxFit.cover,
                   opacity: 0.5),
               gradient: LinearGradient(
@@ -64,26 +73,25 @@ class ContinueCard extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.all(50.r),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  width: 250.w,
+                  width: 350.w,
                   height: 105.h,
                   decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.2),
                     borderRadius: BorderRadius.all(Radius.circular(15.r)),
                   ),
                   child: Center(
                     child: Text(
-                      '$date',
+                      'Event Name',
                       style: Theme.of(context)
                           .textTheme
                           .headlineMedium
-                          ?.copyWith(fontSize: 11, color: Colors.white),
+                          ?.copyWith(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold),
                     ),
                   ),
                 ),

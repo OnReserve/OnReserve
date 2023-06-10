@@ -51,7 +51,7 @@ class LoginController extends GetxController {
           btnController.success();
           Timer(const Duration(seconds: 2), () {
             btnController.reset();
-            Timer(const Duration(milliseconds: 80), () {
+            Timer(const Duration(milliseconds: 500), () {
               Get.toNamed(Routes.home);
             });
           });

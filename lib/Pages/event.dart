@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:on_reserve/Pages/Reser%20Bottom%20Sheets/reserve_bottom_sheets.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
@@ -24,6 +25,9 @@ class _EventState extends State<Event> {
   //   target: LatLng(37.42796133580664, -122.085749655962),
   //   zoom: 14.4746,
   // );
+
+  bool liked = false;
+  double rating = 3.0;
 
   // static const CameraPosition kLake = CameraPosition(
   //     bearing: 192.8334901395799,
@@ -84,17 +88,17 @@ class _EventState extends State<Event> {
                 ),
               ),
               Positioned(
-                top: 180.h,
-                left: 120.w,
+                top: 140.h,
+                left: 100.w,
                 child: Container(
-                  height: 150.r,
-                  width: 150.r,
+                  height: 140.r,
+                  width: 140.r,
                   decoration: BoxDecoration(
                     color: Theme.of(context)
                         .colorScheme
                         .background
                         .withOpacity(0.65),
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(50),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.only(left: 3.0),
@@ -108,6 +112,36 @@ class _EventState extends State<Event> {
                         weight: 2,
                         size: 60.r,
                       ),
+                    ),
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 140.h,
+                right: 100.w,
+                child: Container(
+                  height: 140.r,
+                  width: 140.r,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .background
+                        .withOpacity(0.65),
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: IconButton(
+                    onPressed: () {
+                      setState(() {
+                        liked = !liked;
+                      });
+                    },
+                    splashColor: Colors.pink,
+                    color: Colors.pink,
+                    icon: Icon(
+                      liked ? Icons.favorite : Icons.favorite_border,
+                      color: Colors.pink,
+                      weight: 2,
+                      size: 75.r,
                     ),
                   ),
                 ),
@@ -211,7 +245,7 @@ class _EventState extends State<Event> {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.75),
+                                    .withOpacity(0.55),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -232,7 +266,7 @@ class _EventState extends State<Event> {
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.75),
+                                    .withOpacity(0.55),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
@@ -292,29 +326,61 @@ class _EventState extends State<Event> {
                         //       )
                         //     : SizedBox(),
                         SizedBox()),
-                SizedBox(
-                  width: double.infinity,
-                  height: 180.h,
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Get.toNamed(Routes.reserve);
-                    },
-                    style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
+                Row(
+                  children: [
+                    false
+                        ? Container(
+                            margin: EdgeInsets.only(left: 10, right: 20),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.35),
+                                borderRadius: BorderRadius.circular(20)),
+                            child: IconButton(
+                              onPressed: () {},
+                              icon: Icon(
+                                Icons.reviews,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                size: 80.r,
+                              ),
+                            ),
+                          )
+                        : SizedBox(),
+                    Expanded(
+                      child: SizedBox(
+                        height: 180.h,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Get.bottomSheet(
+                              const ReserveBottomSheet(),
+                              shape: Get.theme.bottomSheetTheme.shape,
+                              isScrollControlled: true,
+                              clipBehavior: Clip.hardEdge,
+                              useRootNavigator: true,
+                              enableDrag: true,
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                              maximumSize: Size.fromHeight(180.h)),
+                          child: Text(
+                            "Reserve",
+                            style: TextStyle(
+                                fontSize: 60.sp,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1.7,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                fontFamily: "Inter"),
+                          ),
                         ),
-                        maximumSize: Size.fromHeight(180.h)),
-                    child: Text(
-                      "Reserve",
-                      style: TextStyle(
-                          fontSize: 60.sp,
-                          fontWeight: FontWeight.bold,
-                          letterSpacing: 1.7,
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontFamily: "Inter"),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),

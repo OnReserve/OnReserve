@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Auth/login.dart';
 import 'package:on_reserve/Pages/Auth/sign_up.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
+import 'package:on_reserve/Pages/add_event.dart';
 import 'package:on_reserve/Pages/booking_history.dart';
 import 'package:on_reserve/Pages/category.dart';
 import 'package:on_reserve/Pages/event.dart';
@@ -13,6 +14,7 @@ import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
 import 'package:on_reserve/Pages/reserve.dart';
 import 'package:on_reserve/Pages/settings.dart';
+import 'package:on_reserve/helpers/bindings/add_event_bindings.dart';
 import 'package:on_reserve/helpers/bindings/category_bindings.dart';
 import 'package:on_reserve/helpers/bindings/event_detail_bindings.dart';
 import 'package:on_reserve/helpers/bindings/home_bindings.dart';
@@ -31,6 +33,7 @@ class Routes {
   static const String onBoarding = "/onBoarding";
   static const String aboutUs = "/aboutUs";
   static const String eventDetail = "/eventDetail";
+  static const String addEvent = "/addEvent";
   static const String contactUs = "/contactUs";
   static const String settings = "/settings";
   static const String pay = "/pay";
@@ -55,6 +58,11 @@ class AppRoutes {
       name: Routes.login,
       page: () => const LoginPage(),
       binding: LoginBindings(),
+    ),
+    GetPage(
+      name: Routes.addEvent,
+      page: () => const AddEvent(),
+      binding: AddEventBindings(),
     ),
     GetPage(
       name: Routes.myCompanies,

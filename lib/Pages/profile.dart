@@ -129,15 +129,42 @@ class ProfilePage extends StatelessWidget {
                     title: "My Companies",
                     addable: true,
                     editable: true,
+                    onTap: () {
+                      Get.bottomSheet(
+                        const AddCompanyBottomSheet(),
+                        shape: Get.theme.bottomSheetTheme.shape,
+                        isScrollControlled: true,
+                        clipBehavior: Clip.hardEdge,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                      );
+                    },
                   ),
                   SizedBox(height: 50),
                   Details(
                     title: 'My Events',
                     addable: true,
                     editable: false,
+                    onTap: () {
+                      Get.toNamed(Routes.addEvent);
+                    },
                   ),
                   SizedBox(height: 50),
-                  Details(title: 'My Tickets', addable: false, editable: false),
+                  Details(
+                    title: 'My Tickets',
+                    addable: false,
+                    editable: false,
+                    onTap: () {
+                      Get.bottomSheet(
+                        const AddCompanyBottomSheet(),
+                        shape: Get.theme.bottomSheetTheme.shape,
+                        isScrollControlled: true,
+                        clipBehavior: Clip.hardEdge,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                      );
+                    },
+                  ),
                 ],
               ),
             ),
@@ -178,9 +205,11 @@ class Details extends StatelessWidget {
   final String title;
   final bool editable;
   final bool addable;
+  final void Function() onTap;
   const Details(
       {super.key,
       required this.title,
+      required this.onTap,
       this.editable = true,
       this.addable = true});
 
@@ -211,16 +240,7 @@ class Details extends StatelessWidget {
             ),
             addable
                 ? IconButton(
-                    onPressed: () {
-                      Get.bottomSheet(
-                        const AddCompanyBottomSheet(),
-                        shape: Get.theme.bottomSheetTheme.shape,
-                        isScrollControlled: true,
-                        clipBehavior: Clip.hardEdge,
-                        useRootNavigator: true,
-                        enableDrag: true,
-                      );
-                    },
+                    onPressed: onTap,
                     icon: Icon(
                       Icons.add_circle,
                       color: Theme.of(context).colorScheme.primary,

@@ -28,18 +28,18 @@ Future<void> main() async {
   if (Platform.isWindows) {
     await windowManager.ensureInitialized();
     WindowOptions windowOptions = const WindowOptions(
-      // size: Size(355, 760),
-      size: Size(300, 585),
+      size: Size(355, 760),
+      // size: Size(300, 585),
       center: false,
       alwaysOnTop: true,
       skipTaskbar: false,
       title: "OnReserve",
       backgroundColor: Colors.transparent,
       // titleBarStyle: TitleBarStyle.hidden,
-      // maximumSize: Size(355, 760),
-      maximumSize: Size(300, 585),
-      // minimumSize: Size(355, 760),
-      minimumSize: Size(300, 585),
+      maximumSize: Size(355, 760),
+      // maximumSize: Size(300, 585),
+      minimumSize: Size(355, 760),
+      // minimumSize: Size(300, 585),
     );
     windowManager.waitUntilReadyToShow(windowOptions, () async {
       await windowManager.show();
@@ -48,7 +48,7 @@ Future<void> main() async {
   }
 
   // TODO: Remove this when done testing
-  const bool test = true;
+  const bool test = false;
 
   final firstTime = await SecuredStorage.check(key: SharedKeys.firstTime);
   final isLoggedIn = await SecuredStorage.check(key: SharedKeys.token);

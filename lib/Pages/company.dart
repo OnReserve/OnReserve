@@ -1,9 +1,15 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:card_actions/card_action_button.dart';
+import 'package:card_actions/card_actions.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:on_reserve/Components/revenue_counter.dart';
 import 'package:on_reserve/Components/shimmer.dart';
+import 'package:on_reserve/Pages/my_companies.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -18,6 +24,7 @@ class CompanyProfile extends StatefulWidget {
 class CompanyProfileState extends State<CompanyProfile> {
   final double coverHeight = 200;
   final double profileHeight = 100;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,14 +41,141 @@ class CompanyProfileState extends State<CompanyProfile> {
                 top: coverHeight - (profileHeight / 2),
                 child: biuldProfileImage(),
               ),
+              Positioned(
+                top: 25,
+                right: 20,
+                child: buildEditProfileIcon(),
+              ),
+              Positioned(
+                top: 25,
+                left: 20,
+                child: buildBackButton(),
+              )
             ],
           ),
           SizedBox(height: 50),
-          buildAdminTab(),
+          buildCompanyDetail(),
+          SizedBox(height: 5),
+          buildAdminTab(context),
+          SizedBox(height: 20),
+          buildEventTab(),
           SizedBox(height: 100),
         ],
       ),
     ));
+  }
+
+  Widget buildBackButton() {
+    return Container(
+      height: 35,
+      width: 35,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withAlpha(120),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: IconButton(
+        onPressed: () {
+          Get.back();
+        },
+        icon: Icon(
+          Icons.arrow_back_ios,
+          size: 13,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget buildEditProfileIcon() {
+    return Container(
+      height: 35,
+      width: 35,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withAlpha(120),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: IconButton(
+        onPressed: () {},
+        icon: Icon(
+          Icons.edit,
+          size: 12,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget buildCompanyDetail() {
+    return Container(
+        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Header(
+              //   title: 'Company Name',
+              //   onTap: () {},
+              // ),
+              Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: DataTable(
+                  columns: [
+                    DataColumn(
+                      label: Text(
+                        "Company Name",
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    DataColumn(label: Text('')),
+                  ],
+                  rows: [
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Created',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                      DataCell(Text('June 12, 2023')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Admins',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                      DataCell(Text('5')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Total Events',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                      DataCell(Text('23')),
+                    ]),
+                    DataRow(cells: [
+                      DataCell(Text(
+                        'Total Revenue',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      )),
+                      DataCell(Text('500 ETB')),
+                    ]),
+                  ],
+                ),
+              )
+            ]));
   }
 
   Widget buildCoverImage() {
@@ -72,7 +206,7 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget buildAdminTab() {
+  Widget buildEventTab() {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
@@ -81,14 +215,118 @@ class CompanyProfileState extends State<CompanyProfile> {
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Header(),
-            SlidableList(),
+            Header(
+              title: 'Events',
+              onTap: () {},
+              addable: true,
+            ),
+            Container(
+              margin: const EdgeInsets.all(20),
+              child: CardActions(
+                buttonsCursor: SystemMouseCursors.click,
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                axisDirection: CardActionAxis.bottom,
+                borderRadius: 15,
+                width: 600,
+                height: 220,
+                actions: [
+                  CardActionButton(
+                    icon: const Icon(
+                      Icons.qr_code,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    label: 'Scan QR Code',
+                    onPress: () {},
+                  ),
+                  CardActionButton(
+                    icon: const Icon(
+                      Icons.edit,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    label: 'Edit',
+                    onPress: () {
+                      // setState(() {
+                      //   counter = 0;
+                      // });
+                    },
+                  ),
+                  CardActionButton(
+                    icon: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                    label: 'Delete',
+                    onPress: () {},
+                  ),
+                ],
+                child: EventCard(counter: 1),
+              ),
+            ),
             SizedBox(height: 15),
           ],
         ));
   }
+}
+
+Widget buildAdminTab(BuildContext context) {
+  TextEditingController _emailController = TextEditingController();
+  void showEmailDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Admin Email', style: TextStyle(fontSize: 16)),
+          content: TextField(
+            controller: _emailController,
+            decoration: InputDecoration(
+              hintText: 'Enter email address',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                String email = _emailController.text;
+                // Do something with email, such as send it to a server for verification
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  return Container(
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Header(
+            title: 'Admins',
+            addable: true,
+            onTap: () {
+              showEmailDialog(context);
+            },
+          ),
+          SlidableList(),
+          SizedBox(height: 15),
+        ],
+      ));
 }
 
 class SlidableList extends StatelessWidget {
@@ -154,7 +392,13 @@ class SlidableList extends StatelessWidget {
 class Header extends StatelessWidget {
   const Header({
     super.key,
+    required this.title,
+    required this.onTap,
+    this.addable = false,
   });
+  final String title;
+  final void Function() onTap;
+  final bool addable;
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +411,7 @@ class Header extends StatelessWidget {
                 child: Padding(
                   padding: EdgeInsets.only(left: 20, top: 10),
                   child: Text(
-                    'Admins',
+                    title,
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -175,10 +419,13 @@ class Header extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: EdgeInsets.only(right: 20, top: 10),
-                child: IconButton(onPressed: () {}, icon: Icon(Icons.add)),
-              )
+              addable
+                  ? Padding(
+                      padding: EdgeInsets.only(right: 20, top: 10),
+                      child:
+                          IconButton(onPressed: onTap, icon: Icon(Icons.add)),
+                    )
+                  : Container(),
             ],
           ),
           Padding(
@@ -266,6 +513,106 @@ class Slide extends StatelessWidget {
           title: Text(name),
           subtitle: Text(email),
         ),
+      ),
+    );
+  }
+}
+
+class EventCard extends StatelessWidget {
+  const EventCard({
+    super.key,
+    required this.counter,
+  });
+  final int counter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 600,
+      height: 220,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.lighten(20),
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            offset: Offset(10, 10),
+            blurRadius: 20,
+            // spreadRadius: 20,
+          )
+        ],
+      ),
+      child: Row(
+        children: [
+          // Hero Image
+          Container(
+            width: 100,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(15),
+              image: const DecorationImage(
+                image:
+                    NetworkImage('https://picsum.photos/seed/picsum/200/300'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  const Text(
+                    'Event Date',
+                    style: TextStyle(
+                      color: Colors.white,
+                      // fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                    ),
+                  ),
+                  Text(
+                    "Event Name",
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  RatingBar.builder(
+                    initialRating: 3,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemSize: 20,
+                    itemCount: 5,
+                    itemPadding:
+                        EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                    itemBuilder: (context, _) => Icon(
+                      Icons.star,
+                      color: Colors.amber,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
+                  const SizedBox(height: 15),
+                  Stat(
+                    w: 200,
+                    h: 70,
+                    icon: Icon(Icons.attach_money),
+                    bgColor: Colors.white.withOpacity(0.5),
+                    title: 'Total Revenue',
+                    value: RevenueCountUpAnimation(
+                      endValue: 124.56,
+                      duration: const Duration(seconds: 3),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

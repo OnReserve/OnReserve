@@ -42,6 +42,7 @@ class Routes {
   static const String qr = "/qrPage";
   static const String reserve = "/reserve";
   static const String category = "/category";
+  static const String companyProfile = "/companyProfile";
   static const String bookingHistory = "/bookingHistory";
   static const String welcome = "/welcome";
   static const String test = "/test";
@@ -53,6 +54,10 @@ class AppRoutes {
   static final pages = [
     GetPage(
       name: Routes.test,
+      page: () => CompanyProfile(),
+    ),
+    GetPage(
+      name: Routes.companyProfile,
       page: () => CompanyProfile(),
     ),
     GetPage(

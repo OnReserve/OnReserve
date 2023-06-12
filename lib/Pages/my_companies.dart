@@ -1,6 +1,9 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:get/get.dart';
 import 'package:on_reserve/Components/revenue_counter.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 class MyCompanies extends StatelessWidget {
   @override
@@ -30,155 +33,165 @@ class MyCompanies extends StatelessWidget {
                   duration: Duration(milliseconds: 900),
                   curve: Curves.fastLinearToSlowEaseIn,
                   child: FadeInAnimation(
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          bottom: _w / 30, left: _w / 80, right: _w / 80),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.1),
-                            blurRadius: 40,
-                            spreadRadius: 10,
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: _w,
-                            height: _w / 2.4,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withOpacity(0.1),
-                                  blurRadius: 40,
-                                  spreadRadius: 10,
-                                ),
-                              ],
-                              image: DecorationImage(
-                                image: NetworkImage(
-                                    "https://picsum.photos/seed/picsum/200/300"),
-                                fit: BoxFit.cover,
-                              ),
+                    child: GestureDetector(
+                      onTap: () {
+                        Get.toNamed(Routes.companyProfile);
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(
+                            bottom: _w / 30, left: _w / 80, right: _w / 80),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).colorScheme.primary.lighten(45),
+                          borderRadius: BorderRadius.all(Radius.circular(20)),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 40,
+                              spreadRadius: 10,
                             ),
-                          ),
-                          Expanded(
-                            child: Container(
-                              padding: EdgeInsets.all(_w / 40),
+                          ],
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: _w,
+                              height: _w / 2.4,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.only(
-                                  bottomLeft: Radius.circular(20),
-                                  bottomRight: Radius.circular(20),
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20),
                                 ),
-                                border: Border.all(
-                                  color: Colors.grey.withOpacity(0.2),
-                                ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Container(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              "Company Name",
-                                              style: TextStyle(
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(height: 2),
-                                            Text(
-                                              "Company Address",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                color: Colors.grey,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Stat(
-                                        w: _w / 2.5,
-                                        h: _w / 6,
-                                        icon: Icon(Icons.attach_money),
-                                        title: 'Total Revenue',
-                                        value: RevenueCountUpAnimation(
-                                          endValue: 124.56,
-                                          duration: const Duration(seconds: 3),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Stat(
-                                          w: _w / 3.5,
-                                          h: _w / 6,
-                                          title: 'Admins',
-                                          value: Text(
-                                            "2",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onBackground),
-                                          ),
-                                          icon: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              Icons.admin_panel_settings,
-                                            ),
-                                          )),
-                                      Stat(
-                                          w: _w / 3.5,
-                                          h: _w / 6,
-                                          title: 'Events',
-                                          value: Text(
-                                            "0",
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .onBackground),
-                                          ),
-                                          icon: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 6.0),
-                                            child: Icon(
-                                              Icons.event,
-                                            ),
-                                          )),
-                                    ],
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 40,
+                                    spreadRadius: 10,
                                   ),
                                 ],
+                                image: DecorationImage(
+                                  image: NetworkImage(
+                                      "https://picsum.photos/seed/picsum/200/300"),
+                                  fit: BoxFit.cover,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            Expanded(
+                              child: Container(
+                                padding: EdgeInsets.all(_w / 40),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    bottomLeft: Radius.circular(20),
+                                    bottomRight: Radius.circular(20),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Container(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                "Company Name",
+                                                style: TextStyle(
+                                                  fontSize: 20,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                              SizedBox(height: 2),
+                                              Text(
+                                                "Company Address",
+                                                style: TextStyle(
+                                                  fontSize: 14,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground
+                                                      .withOpacity(0.8),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        Stat(
+                                          w: _w / 2.5,
+                                          h: _w / 6,
+                                          icon: Icon(Icons.attach_money),
+                                          title: 'Total Revenue',
+                                          value: RevenueCountUpAnimation(
+                                            endValue: 124.56,
+                                            duration:
+                                                const Duration(seconds: 3),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Stat(
+                                            w: _w / 3.5,
+                                            h: _w / 6,
+                                            title: 'Admins',
+                                            value: Text(
+                                              "2",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground),
+                                            ),
+                                            icon: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 6.0),
+                                              child: Icon(
+                                                Icons.admin_panel_settings,
+                                              ),
+                                            )),
+                                        Stat(
+                                            w: _w / 3.5,
+                                            h: _w / 6,
+                                            title: 'Events',
+                                            value: Text(
+                                              "0",
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onBackground),
+                                            ),
+                                            icon: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 6.0),
+                                              child: Icon(
+                                                Icons.event,
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),

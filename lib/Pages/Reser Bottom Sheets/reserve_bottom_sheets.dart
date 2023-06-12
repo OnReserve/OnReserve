@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
 
@@ -8,8 +7,6 @@ class ReserveBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
     final profileController = Get.find<ProfileController>();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),

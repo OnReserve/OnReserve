@@ -7,8 +7,9 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Pages/Reser%20Bottom%20Sheets/reserve_bottom_sheets.dart';
+import 'package:on_reserve/Pages/review_bottom_sheet.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:on_reserve/helpers/routes.dart';
+// import 'package:on_reserve/helpers/routes.dart';
 
 class Event extends StatefulWidget {
   const Event({super.key});
@@ -214,7 +215,7 @@ class _EventState extends State<Event> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: 30.h),
+                SizedBox(height: 4.h),
                 Row(
                   children: [
                     Expanded(
@@ -328,17 +329,26 @@ class _EventState extends State<Event> {
                         SizedBox()),
                 Row(
                   children: [
-                    false
+                    true
                         ? Container(
                             margin: EdgeInsets.only(left: 10, right: 20),
                             decoration: BoxDecoration(
                                 color: Theme.of(context)
                                     .colorScheme
                                     .primary
-                                    .withOpacity(0.35),
+                                    .withOpacity(0.55),
                                 borderRadius: BorderRadius.circular(20)),
                             child: IconButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Get.bottomSheet(
+                                  ReviewsBottomSheet(),
+                                  shape: Get.theme.bottomSheetTheme.shape,
+                                  isScrollControlled: true,
+                                  clipBehavior: Clip.hardEdge,
+                                  useRootNavigator: true,
+                                  enableDrag: true,
+                                );
+                              },
                               icon: Icon(
                                 Icons.reviews,
                                 color: Theme.of(context).colorScheme.onPrimary,
@@ -346,6 +356,7 @@ class _EventState extends State<Event> {
                               ),
                             ),
                           )
+                        // ignore: dead_code
                         : SizedBox(),
                     Expanded(
                       child: SizedBox(

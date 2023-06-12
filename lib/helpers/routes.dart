@@ -5,6 +5,7 @@ import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/Pages/add_event.dart';
 import 'package:on_reserve/Pages/booking_history.dart';
 import 'package:on_reserve/Pages/category.dart';
+import 'package:on_reserve/Pages/company.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
@@ -52,7 +53,7 @@ class AppRoutes {
   static final pages = [
     GetPage(
       name: Routes.test,
-      page: () => Home2(),
+      page: () => CompanyProfile(),
     ),
     GetPage(
       name: Routes.login,

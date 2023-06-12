@@ -55,7 +55,7 @@ class HomeController extends GetxController {
   }
 
   void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    timer = Timer.periodic(Duration(seconds: 5), (timer) {
       if (currentPageIndex == events.length - 1) {
         currentPageIndex = 0;
       } else {

@@ -73,6 +73,10 @@ dependencies:
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
   flutter_rating_bar: ^4.0.1
+  flutter_chat_bubble: ^2.0.2
+  card_actions: ^0.0.1
+  flutter_slidable: ^3.0.0
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:
@@ -118,6 +122,7 @@ flutter:
   assets:
     - assets/Images/
     - .env
+    - assets/messages.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

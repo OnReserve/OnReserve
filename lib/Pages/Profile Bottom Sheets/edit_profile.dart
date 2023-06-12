@@ -9,8 +9,6 @@ class EditProfileBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double width = MediaQuery.of(context).size.width;
-
     final profileController = Get.find<ProfileController>();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),

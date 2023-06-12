@@ -1,4 +1,5 @@
 // ignore_for_file: unused_local_variable
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -32,16 +33,16 @@ class ContinueCard extends StatelessWidget {
           margin: EdgeInsets.only(right: 75.w),
           decoration: BoxDecoration(
               image: DecorationImage(
-                  image: Image.network(
+                  image: CachedNetworkImageProvider(
                     bgImage,
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      // handle the exception here
-                      return Center(
-                        child: Text('Failed to load image'),
-                      );
-                    },
-                  ).image,
+                    // errorBuilder: (BuildContext context, Object exception,
+                    //     StackTrace? stackTrace) {
+                    //   // handle the exception here
+                    //   return Center(
+                    //     child: Text('Failed to load image'),
+                    //   );
+                    // },
+                  ),
                   fit: BoxFit.cover,
                   opacity: 0.5),
               gradient: LinearGradient(

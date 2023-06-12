@@ -129,7 +129,7 @@ class ProfilePage extends StatelessWidget {
                     title: "My Companies",
                     addable: true,
                     editable: true,
-                    onTap: () {
+                    onAdd: () {
                       Get.bottomSheet(
                         const AddCompanyBottomSheet(),
                         shape: Get.theme.bottomSheetTheme.shape,
@@ -138,6 +138,9 @@ class ProfilePage extends StatelessWidget {
                         useRootNavigator: true,
                         enableDrag: true,
                       );
+                    },
+                    onTap: () {
+                      Get.toNamed(Routes.myCompanies);
                     },
                   ),
                   SizedBox(height: 50),
@@ -145,16 +148,17 @@ class ProfilePage extends StatelessWidget {
                     title: 'My Events',
                     addable: true,
                     editable: false,
-                    onTap: () {
+                    onAdd: () {
                       Get.toNamed(Routes.addEvent);
                     },
+                    onTap: () {},
                   ),
                   SizedBox(height: 50),
                   Details(
                     title: 'My Tickets',
                     addable: false,
                     editable: false,
-                    onTap: () {
+                    onAdd: () {
                       Get.bottomSheet(
                         const AddCompanyBottomSheet(),
                         shape: Get.theme.bottomSheetTheme.shape,
@@ -164,6 +168,7 @@ class ProfilePage extends StatelessWidget {
                         enableDrag: true,
                       );
                     },
+                    onTap: () {},
                   ),
                 ],
               ),
@@ -205,10 +210,12 @@ class Details extends StatelessWidget {
   final String title;
   final bool editable;
   final bool addable;
+  final void Function() onAdd;
   final void Function() onTap;
   const Details(
       {super.key,
       required this.title,
+      required this.onAdd,
       required this.onTap,
       this.editable = true,
       this.addable = true});
@@ -226,21 +233,22 @@ class Details extends StatelessWidget {
           children: [
             Expanded(
               child: GestureDetector(
-                onTap: () {
-                  Get.toNamed(Routes.myCompanies);
-                },
-                child: Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: 60.sp,
-                    fontWeight: FontWeight.bold,
+                onTap: onTap,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: TextStyle(
+                      fontSize: 60.sp,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ),
             ),
             addable
                 ? IconButton(
-                    onPressed: onTap,
+                    onPressed: onAdd,
                     icon: Icon(
                       Icons.add_circle,
                       color: Theme.of(context).colorScheme.primary,

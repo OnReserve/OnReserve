@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
@@ -60,6 +62,7 @@ class EditProfileBottomSheet extends StatelessWidget {
                                 maxHeight: 45,
                               ),
                               child: TextField(
+                                controller: profileController.fname,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'First Name',
@@ -76,6 +79,7 @@ class EditProfileBottomSheet extends StatelessWidget {
                                 maxHeight: 45,
                               ),
                               child: TextField(
+                                controller: profileController.lname,
                                 decoration: InputDecoration(
                                   border: OutlineInputBorder(),
                                   labelText: 'Last Name',
@@ -93,6 +97,7 @@ class EditProfileBottomSheet extends StatelessWidget {
                           maxHeight: 45,
                         ),
                         child: TextField(
+                          controller: profileController.phoneNumber,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Phone Number',
@@ -107,6 +112,7 @@ class EditProfileBottomSheet extends StatelessWidget {
                           maxHeight: 45,
                         ),
                         child: TextField(
+                          controller: profileController.bio,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             labelText: 'Bio',
@@ -118,100 +124,107 @@ class EditProfileBottomSheet extends StatelessWidget {
                       ),
 
                       // Logo Upload
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                profileController.getImage();
-                              },
-                              child: Container(
-                                height: 90,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                      GetBuilder<ProfileController>(
+                          builder: (profileController) {
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  profileController.getImage(profile: true);
+                                },
+                                child: Container(
+                                  height: 90,
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: profileController.profilePic == null
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.add_a_photo,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "Profile Image",
-                                            style: TextStyle(
+                                  child: profileController.profilePic == null
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add_a_photo,
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary),
-                                          )
-                                        ],
-                                      )
-                                    : Image.file(
-                                        profileController.profilePic!,
-                                        fit: BoxFit.cover,
-                                      ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              "Profile Image",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                            )
+                                          ],
+                                        )
+                                      : Image.file(
+                                          File(profileController
+                                              .profilePic!.path),
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
                               ),
                             ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                profileController.getImage();
-                              },
-                              child: Container(
-                                height: 90,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  profileController.getImage(profile: false);
+                                },
+                                child: Container(
+                                  height: 90,
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: profileController.coverPic == null
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.add_a_photo,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "Cover Image",
-                                            style: TextStyle(
+                                  child: profileController.coverPic == null
+                                      ? Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.add_a_photo,
                                                 color: Theme.of(context)
                                                     .colorScheme
                                                     .primary),
-                                          )
-                                        ],
-                                      )
-                                    : Image.file(
-                                        profileController.coverPic!,
-                                        fit: BoxFit.cover,
-                                      ),
+                                            SizedBox(height: 8),
+                                            Text(
+                                              "Cover Image",
+                                              style: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary),
+                                            )
+                                          ],
+                                        )
+                                      : Image.file(
+                                          File(
+                                              profileController.coverPic!.path),
+                                          fit: BoxFit.cover,
+                                        ),
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        );
+                      }),
                       Padding(
                         padding: const EdgeInsets.all(15),
                         child: ElevatedButton(
@@ -224,7 +237,15 @@ class EditProfileBottomSheet extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            if (await profileController.editProfile()) {
+                              Get.snackbar(
+                                  "Success", 'Successfuly Updated Profile');
+                              Get.back();
+                            } else {
+                              Get.snackbar("Error", 'Error Occured...');
+                            }
+                          },
                           child: Text('Edit Profile'),
                         ),
                       ),

@@ -7,6 +7,7 @@ class User {
   DateTime updatedAt;
   String? phoneNumber;
   String? profilePic;
+  String? coverPic;
   String? bio;
 
   User({
@@ -18,6 +19,7 @@ class User {
     required this.updatedAt,
     this.phoneNumber,
     this.profilePic,
+    this.coverPic,
     this.bio,
   });
 
@@ -31,6 +33,7 @@ class User {
       updatedAt: DateTime.parse(json['updatedAt']),
       phoneNumber: json['phoneNumber'],
       profilePic: json['profilePic'],
+      coverPic: json['coverPic'],
       bio: json['bio'],
     );
   }
@@ -45,6 +48,7 @@ class User {
       'updatedAt': updatedAt.toIso8601String(),
       'phoneNumber': phoneNumber,
       'profilePic': profilePic,
+      'coverPic': coverPic,
       'bio': bio,
     };
   }

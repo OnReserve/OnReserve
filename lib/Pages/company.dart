@@ -22,11 +22,13 @@ class CompanyProfile extends StatefulWidget {
 }
 
 class CompanyProfileState extends State<CompanyProfile> {
-  final double coverHeight = 200;
+  final double coverHeight = 240;
   final double profileHeight = 100;
 
   @override
   Widget build(BuildContext context) {
+    // width
+    double w = MediaQuery.of(context).size.width;
     return Scaffold(
         body: SingleChildScrollView(
       physics: BouncingScrollPhysics(),
@@ -42,19 +44,19 @@ class CompanyProfileState extends State<CompanyProfile> {
                 child: biuldProfileImage(),
               ),
               Positioned(
-                top: 25,
-                right: 20,
+                top: 45,
+                right: 30,
                 child: buildEditProfileIcon(),
               ),
               Positioned(
-                top: 25,
-                left: 20,
+                top: 45,
+                left: 30,
                 child: buildBackButton(),
               )
             ],
           ),
           SizedBox(height: 50),
-          buildCompanyDetail(),
+          buildCompanyDetail(w),
           SizedBox(height: 5),
           buildAdminTab(context),
           SizedBox(height: 20),
@@ -67,8 +69,8 @@ class CompanyProfileState extends State<CompanyProfile> {
 
   Widget buildBackButton() {
     return Container(
-      height: 35,
-      width: 35,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary.withAlpha(120),
         borderRadius: BorderRadius.circular(50),
@@ -79,7 +81,7 @@ class CompanyProfileState extends State<CompanyProfile> {
         },
         icon: Icon(
           Icons.arrow_back_ios,
-          size: 13,
+          size: 15,
           color: Colors.white,
         ),
       ),
@@ -88,8 +90,8 @@ class CompanyProfileState extends State<CompanyProfile> {
 
   Widget buildEditProfileIcon() {
     return Container(
-      height: 35,
-      width: 35,
+      height: 40,
+      width: 40,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primary.withAlpha(120),
         borderRadius: BorderRadius.circular(50),
@@ -98,84 +100,74 @@ class CompanyProfileState extends State<CompanyProfile> {
         onPressed: () {},
         icon: Icon(
           Icons.edit,
-          size: 12,
+          size: 15,
           color: Colors.white,
         ),
       ),
     );
   }
 
-  Widget buildCompanyDetail() {
+  Widget buildCompanyDetail(double w) {
     return Container(
+        width: w,
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary.withOpacity(0.08),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Header(
-              //   title: 'Company Name',
-              //   onTap: () {},
-              // ),
-              Container(
-                margin: const EdgeInsets.only(bottom: 10),
-                child: DataTable(
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        "Company Name",
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    DataColumn(label: Text('')),
-                  ],
-                  rows: [
-                    DataRow(cells: [
-                      DataCell(Text(
-                        'Created',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      DataCell(Text('June 12, 2023')),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text(
-                        'Admins',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      DataCell(Text('5')),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text(
-                        'Total Events',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      DataCell(Text('23')),
-                    ]),
-                    DataRow(cells: [
-                      DataCell(Text(
-                        'Total Revenue',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      )),
-                      DataCell(Text('500 ETB')),
-                    ]),
-                  ],
+        child: DataTable(
+          columns: [
+            DataColumn(
+              label: Text(
+                "Company Name",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
                 ),
-              )
-            ]));
+              ),
+            ),
+            DataColumn(label: Text('')),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(Text(
+                'Created',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+              DataCell(Text('June 12, 2023')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text(
+                'Admins',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+              DataCell(Text('5')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text(
+                'Total Events',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+              DataCell(Text('23')),
+            ]),
+            DataRow(cells: [
+              DataCell(Text(
+                'Total Revenue',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+              DataCell(Text('500 ETB')),
+            ]),
+          ],
+        ));
   }
 
   Widget buildCoverImage() {

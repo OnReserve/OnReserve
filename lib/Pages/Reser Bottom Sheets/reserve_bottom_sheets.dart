@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:on_reserve/Controllers/profile_controller.dart';
 
 class ReserveBottomSheet extends StatelessWidget {
   const ReserveBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final profileController = Get.find<ProfileController>();
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -133,7 +130,7 @@ class ReserveBottomSheet extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                profileController.getImage();
+                                // profileController.getImage();
                               },
                               child: Container(
                                 height: 90,
@@ -147,77 +144,64 @@ class ReserveBottomSheet extends StatelessWidget {
                                   ),
                                   borderRadius: BorderRadius.circular(10),
                                 ),
-                                child: profileController.profilePic == null
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.add_a_photo,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "Profile Image",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary),
-                                          )
-                                        ],
-                                      )
-                                    : Image.file(
-                                        profileController.profilePic!,
-                                        fit: BoxFit.cover,
-                                      ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Icon(Icons.add_a_photo,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "Profile Image",
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ),
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                profileController.getImage();
+                                // profileController.getImage();
                               },
                               child: Container(
-                                height: 90,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onBackground,
+                                  height: 90,
+                                  margin: EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.surface,
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                    ),
+                                    borderRadius: BorderRadius.circular(10),
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: profileController.coverPic == null
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Icon(Icons.add_a_photo,
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary),
-                                          SizedBox(height: 8),
-                                          Text(
-                                            "Cover Image",
-                                            style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .primary),
-                                          )
-                                        ],
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      Icon(Icons.add_a_photo,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary),
+                                      SizedBox(height: 8),
+                                      Text(
+                                        "Cover Image",
+                                        style: TextStyle(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primary),
                                       )
-                                    : Image.file(
-                                        profileController.coverPic!,
-                                        fit: BoxFit.cover,
-                                      ),
-                              ),
+                                    ],
+                                  )),
                             ),
                           ),
                         ],

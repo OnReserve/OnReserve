@@ -10,6 +10,8 @@ import 'package:on_reserve/helpers/routes.dart';
 
 class ProfilePage extends StatelessWidget {
   final ProfileController profileController = Get.find();
+  final double coverHeight = 220;
+  final double profileHeight = 80;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,99 +22,42 @@ class ProfilePage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 20),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 15),
-              height: MediaQuery.of(context).size.height * 0.35,
-              width: double.infinity,
+              margin: EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  image: DecorationImage(
-                      image: CachedNetworkImageProvider(
-                        "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686293226/onReserve/Profile/wlru9yrmbxu9lfkfj9fu.jpg",
-                        //  progressIndicatorBuilder: (context, url, downloadProgress) =>
-                        //          CircularProgressIndicator(value: downloadProgress.progress),
-                        //  errorWidget: (context, url, error) => Icon(Icons.error),
-                      ),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.topCenter,
-                      scale: 0.5)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Stack(
+                clipBehavior: Clip.none,
+                alignment: Alignment.center,
                 children: [
-                  SizedBox(height: 40),
-                  GestureDetector(
-                    onTap: () {
-                      print(profileController.user!.profilePic ??
-                          'https://img.freepik.com/free-icon/user_318-159711.jpg');
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15),
-                      child: !profileController.user!.profilePic!
-                              .startsWith("https://api.dicebear")
-                          ? CircleAvatar(
-                              radius: 40,
-                              backgroundImage: CachedNetworkImageProvider(
-                                  profileController.user!.profilePic ??
-                                      'https://img.freepik.com/free-icon/user_318-159711.jpg'))
-                          : SvgPicture.network(
-                              profileController.user!.profilePic!,
-                              semanticsLabel: 'username',
-                              placeholderBuilder: (BuildContext context) =>
-                                  Container(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: const CircularProgressIndicator()),
-                            ),
-                    ),
+                  buildCoverImage(),
+                  Positioned(
+                    top: coverHeight - (profileHeight / 1.5),
+                    left: 30,
+                    child: biuldProfileImage(),
                   ),
-                  SizedBox(height: 20),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 10),
-                          child: Text(
-                            "${profileController.user!.firstName} ${profileController.user!.lastName}",
-                            style: TextStyle(
-                              fontSize: 78.sp,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                          tooltip: 'Edit Profile',
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const EditProfileBottomSheet(),
-                              shape: Get.theme.bottomSheetTheme.shape,
-                              isScrollControlled: true,
-                              clipBehavior: Clip.hardEdge,
-                              useRootNavigator: true,
-                              enableDrag: true,
-                            );
-                          },
-                          icon: Icon(
-                            Icons.edit,
-                            size: 80.sp,
-                          ))
-                    ],
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: Text(
-                      profileController.user!.bio!.isEmpty
-                          ? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt et velit id interdum...'
-                          : profileController.user!.bio!,
-                      style: TextStyle(
-                        fontSize: 50.sp,
-                      ),
-                    ),
+                  Positioned(
+                    bottom: 15,
+                    right: 20,
+                    child: buildEditProfileIcon(),
                   ),
                 ],
+              ),
+            ),
+            Container(
+              margin: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                profileController.user!.bio!.isEmpty
+                    ? 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt et velit id interdum...'
+                    : profileController.user!.bio!,
+                style: TextStyle(
+                  fontSize: 55.sp,
+                ),
               ),
             ),
             Container(
@@ -203,6 +148,71 @@ class ProfilePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Widget buildEditProfileIcon() {
+    return Container(
+      height: 40,
+      width: 40,
+      decoration: BoxDecoration(
+        // color: Theme.of(context).colorScheme.primary.withAlpha(120),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: IconButton(
+        onPressed: () {
+          profileController.coverPic = null;
+          profileController.profilePic = null;
+          profileController.bio.text = '';
+          profileController.lname.text = '';
+          profileController.fname.text = '';
+          profileController.phoneNumber.text = '';
+          Get.bottomSheet(
+            const EditProfileBottomSheet(),
+            shape: Get.theme.bottomSheetTheme.shape,
+            isScrollControlled: true,
+            clipBehavior: Clip.hardEdge,
+            useRootNavigator: true,
+            enableDrag: true,
+          );
+        },
+        icon: Icon(
+          Icons.edit,
+          size: 15,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+
+  Widget buildCoverImage() {
+    return Container(
+      height: coverHeight,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          image: DecorationImage(
+            alignment: Alignment.topCenter,
+            image: CachedNetworkImageProvider(
+              'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686293226/onReserve/Profile/wlru9yrmbxu9lfkfj9fu.jpg',
+            ),
+          )),
+    );
+  }
+
+  Widget biuldProfileImage() {
+    return !profileController.user!.profilePic!
+            .startsWith("https://api.dicebear")
+        ? CircleAvatar(
+            radius: 40,
+            backgroundImage: CachedNetworkImageProvider(
+                profileController.user!.profilePic ??
+                    'https://img.freepik.com/free-icon/user_318-159711.jpg'))
+        : SvgPicture.network(
+            profileController.user!.profilePic!,
+            semanticsLabel: 'username',
+            placeholderBuilder: (BuildContext context) => Container(
+                padding: const EdgeInsets.all(30.0),
+                child: const CircularProgressIndicator()),
+          );
   }
 }
 

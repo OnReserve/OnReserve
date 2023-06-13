@@ -521,7 +521,7 @@ packages:
     source: hosted
     version: "3.0.3"
   image_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker
       sha256: "6432178560d95303cc70d038363f892f5a05750dd27bc55220c7301af54d05e9"

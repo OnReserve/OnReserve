@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
@@ -100,7 +102,7 @@ class AddCompanyBottomSheet extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                profileController.getImage();
+                                profileController.getImage(profile: true);
                               },
                               child: Container(
                                 height: 90,
@@ -136,7 +138,8 @@ class AddCompanyBottomSheet extends StatelessWidget {
                                         ],
                                       )
                                     : Image.file(
-                                        profileController.profilePic!,
+                                        File(
+                                            profileController.profilePic!.path),
                                         fit: BoxFit.cover,
                                       ),
                               ),
@@ -145,7 +148,7 @@ class AddCompanyBottomSheet extends StatelessWidget {
                           Expanded(
                             child: GestureDetector(
                               onTap: () {
-                                profileController.getImage();
+                                profileController.getImage(profile: false);
                               },
                               child: Container(
                                 height: 90,
@@ -181,7 +184,7 @@ class AddCompanyBottomSheet extends StatelessWidget {
                                         ],
                                       )
                                     : Image.file(
-                                        profileController.coverPic!,
+                                        File(profileController.coverPic!.path),
                                         fit: BoxFit.cover,
                                       ),
                               ),

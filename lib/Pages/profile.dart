@@ -110,7 +110,7 @@ class ProfilePage extends StatelessWidget {
                                             vertical: 5, horizontal: 5),
                                         child: ShimmerWidgets.rectangular(
                                             height: 260.h,
-                                            width: 310.w,
+                                            width: 280.w,
                                             baseColor: const Color.fromARGB(
                                                 255, 189, 185, 189),
                                             highlightColor:
@@ -157,7 +157,11 @@ class ProfilePage extends StatelessWidget {
                                 itemCount: snapshot.data!.length,
                                 itemBuilder: (BuildContext context, int index) {
                                   return GestureDetector(
-                                    onTap: null,
+                                    onTap: () {
+                                      Get.toNamed(Routes.companyProfile,
+                                          arguments: snapshot.data![index]
+                                              ['company']);
+                                    },
                                     child: Container(
                                       padding: EdgeInsets.only(right: 10),
                                       margin: EdgeInsets.symmetric(
@@ -177,6 +181,8 @@ class ProfilePage extends StatelessWidget {
                                               height: 220.h,
                                               width: 220.w,
                                               decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(5),
                                                 image: DecorationImage(
                                                   image:
                                                       CachedNetworkImageProvider(
@@ -223,6 +229,17 @@ class ProfilePage extends StatelessWidget {
                               );
                             })),
                     onAdd: () {
+                      profileController.coverPic = null;
+                      profileController.profilePic = null;
+                      profileController.bio.text =
+                          profileController.user!.bio ?? '';
+                      profileController.lname.text =
+                          profileController.user!.lastName;
+                      profileController.fname.text =
+                          profileController.user!.firstName;
+                      profileController.phoneNumber.text =
+                          profileController.user!.phoneNumber ?? '';
+                      profileController.name.text = '';
                       Get.bottomSheet(
                         const AddCompanyBottomSheet(),
                         shape: Get.theme.bottomSheetTheme.shape,
@@ -461,10 +478,12 @@ class ProfilePage extends StatelessWidget {
         onPressed: () {
           profileController.coverPic = null;
           profileController.profilePic = null;
-          profileController.bio.text = '';
-          profileController.lname.text = '';
-          profileController.fname.text = '';
-          profileController.phoneNumber.text = '';
+          profileController.bio.text = profileController.user!.bio ?? '';
+          profileController.lname.text = profileController.user!.lastName;
+          profileController.fname.text = profileController.user!.firstName;
+          profileController.phoneNumber.text =
+              profileController.user!.phoneNumber ?? '';
+          profileController.name.text = '';
           Get.bottomSheet(
             const EditProfileBottomSheet(),
             shape: Get.theme.bottomSheetTheme.shape,

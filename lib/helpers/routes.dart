@@ -16,6 +16,7 @@ import 'package:on_reserve/Pages/qr_code.dart';
 import 'package:on_reserve/Pages/reserve.dart';
 import 'package:on_reserve/Pages/settings.dart';
 import 'package:on_reserve/helpers/bindings/add_event_bindings.dart';
+import 'package:on_reserve/helpers/bindings/booking_bindings.dart';
 import 'package:on_reserve/helpers/bindings/bookings_bindings.dart';
 import 'package:on_reserve/helpers/bindings/category_bindings.dart';
 import 'package:on_reserve/helpers/bindings/event_detail_bindings.dart';
@@ -101,7 +102,7 @@ class AppRoutes {
     GetPage(
       name: Routes.bookingHistory,
       page: () => BookingHistory(),
-      binding: ProfileBindings(),
+      binding: BookingBindings(),
     ),
     GetPage(
       name: Routes.home,

@@ -39,6 +39,7 @@ class MyCompanies extends StatelessWidget {
                       onTap: () {
                         Get.toNamed(Routes.companyProfile, arguments: {
                           'company': controller.args['companies'][index]
+                              ['company']
                         });
                       },
                       child: Container(

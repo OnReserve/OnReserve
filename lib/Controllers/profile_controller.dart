@@ -15,8 +15,10 @@ class ProfileController extends GetxController {
   User? user;
   XFile? profilePic;
   XFile? coverPic;
+  var formKey = GlobalKey<FormState>();
   TextEditingController fname = TextEditingController();
   TextEditingController lname = TextEditingController();
+  TextEditingController name = TextEditingController();
   TextEditingController bio = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
 
@@ -63,11 +65,9 @@ class ProfileController extends GetxController {
 
         user = User.fromJson(data);
 
-        // Store The User
         await SecuredStorage.store(
             key: SharedKeys.user, value: jsonEncode(user!.toJson()));
 
-        update();
         return true;
       } catch (e) {
         logger(ProfileController).e(e);
@@ -126,5 +126,32 @@ class ProfileController extends GetxController {
         return [];
       },
     );
+  }
+
+  Future<bool> addCompany() async {
+    late FormData formData;
+    formData = FormData.fromMap(
+      {
+        'profilePic': profilePic == null
+            ? null
+            : await MultipartFile.fromFile(profilePic!.path,
+                filename: 'Profile.jpg'),
+        'coverPic': coverPic == null
+            ? null
+            : await MultipartFile.fromFile(coverPic!.path,
+                filename: 'cover.jpg'),
+        'name': name.text,
+        'bio': bio.text
+      },
+    );
+
+    var response =
+        await NetworkHandler.post(body: formData, endpoint: 'company/add/');
+    if (response[1] == 200) {
+      getCompanies();
+      update();
+      return true;
+    }
+    return false;
   }
 }

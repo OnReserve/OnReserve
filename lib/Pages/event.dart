@@ -1,11 +1,13 @@
 // import 'dart:async';
 // import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:on_reserve/Controllers/event_controller.dart';
 import 'package:on_reserve/Pages/Reser%20Bottom%20Sheets/reserve_bottom_sheets.dart';
 import 'package:on_reserve/Pages/review_bottom_sheet.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -40,6 +42,15 @@ class _EventState extends State<Event> {
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
+    var controller = Get.put(EventController());
+
+    DateTime dateTime = DateTime.parse(controller.args['eventStartTime']);
+
+    String date =
+        "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+    String time =
+        "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
+
     return Scaffold(
       body: Column(
         children: [
@@ -77,15 +88,16 @@ class _EventState extends State<Event> {
                     // onPageChanged: callbackFunction,
                     scrollDirection: Axis.horizontal,
                   ),
-                  items: [1, 2, 3, 4, 5].map((i) {
+                  items:
+                      List<Widget>.from(controller.args['galleries'].map((i) {
                     return Container(
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.background),
-                        child: Image.asset(
-                          "assets/Images/Rophnan.png",
+                        child: CachedNetworkImage(
+                          imageUrl: i['eventPhoto'],
                           fit: BoxFit.cover,
                         ));
-                  }).toList(),
+                  })),
                 ),
               ),
               Positioned(
@@ -167,7 +179,7 @@ class _EventState extends State<Event> {
                                   maxWidth: 900.w,
                                 ),
                                 child: Text(
-                                  "Rophnan’s My Second Generation",
+                                  controller.args['title'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
@@ -177,7 +189,9 @@ class _EventState extends State<Event> {
                                 ),
                               ),
                               Text(
-                                "Rophnan Concert",
+                                controller.args['locations'] != null
+                                    ? controller.args['locations'][0]['city']
+                                    : '',
                                 style: TextStyle(
                                   fontSize: 58.sp,
                                 ),
@@ -189,13 +203,13 @@ class _EventState extends State<Event> {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              "03:00 PM",
+                              time,
                               style: TextStyle(
                                 fontSize: 55.sp,
                               ),
                             ),
                             Text(
-                              "Jan 14, 2022",
+                              date,
                               style: TextStyle(
                                 fontSize: 55.sp,
                               ),
@@ -252,7 +266,7 @@ class _EventState extends State<Event> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 8, vertical: 4),
                               child: Text(
-                                "VVIP",
+                                "ECO",
                                 style: TextStyle(
                                   fontSize: 30.sp,
                                   fontWeight: FontWeight.bold,
@@ -293,7 +307,7 @@ class _EventState extends State<Event> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                   child: SizedBox(
                     child: Text(
-                      "Lorem ipsum dolor sit amet consectetur. Interdum et duis integer quam. tempor adipiscing. Est arcu aliquet convallis sed gravida...see more",
+                      controller.args['desc'],
                       style: TextStyle(
                         fontSize: 50.sp,
                       ),
@@ -306,7 +320,7 @@ class _EventState extends State<Event> {
                       Icons.location_on,
                       size: 60.r,
                     ),
-                    Text(" Gihon Hotel",
+                    Text(controller.args['locations'][0]['venue'],
                         style: TextStyle(
                           fontSize: 60.sp,
                           fontWeight: FontWeight.bold,

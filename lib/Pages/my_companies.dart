@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Components/revenue_counter.dart';
+import 'package:on_reserve/Controllers/my_companies_controller.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
 class MyCompanies extends StatelessWidget {
@@ -10,6 +11,7 @@ class MyCompanies extends StatelessWidget {
   Widget build(BuildContext context) {
     double _w = MediaQuery.of(context).size.width;
     int columnCount = 1;
+    var controller = Get.put(MyCompaniesController());
 
     return Scaffold(
       appBar: AppBar(
@@ -23,7 +25,7 @@ class MyCompanies extends StatelessWidget {
           padding: EdgeInsets.all(_w / 60),
           crossAxisCount: columnCount,
           children: List.generate(
-            50,
+            controller.args['companies'].length,
             (int index) {
               return AnimationConfiguration.staggeredGrid(
                 position: index,
@@ -35,7 +37,9 @@ class MyCompanies extends StatelessWidget {
                   child: FadeInAnimation(
                     child: GestureDetector(
                       onTap: () {
-                        Get.toNamed(Routes.companyProfile);
+                        Get.toNamed(Routes.companyProfile, arguments: {
+                          'company': controller.args['companies'][index]
+                        });
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -72,7 +76,8 @@ class MyCompanies extends StatelessWidget {
                                 ],
                                 image: DecorationImage(
                                   image: NetworkImage(
-                                      "https://picsum.photos/seed/picsum/200/300"),
+                                      controller.args['companies'][index]
+                                          ['company']['coverPic']),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -102,7 +107,8 @@ class MyCompanies extends StatelessWidget {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                "Company Name",
+                                                controller.args['companies']
+                                                    [index]['company']['name'],
                                                 style: TextStyle(
                                                   fontSize: 20,
                                                   color: Theme.of(context)
@@ -113,7 +119,10 @@ class MyCompanies extends StatelessWidget {
                                               ),
                                               SizedBox(height: 2),
                                               Text(
-                                                "Company Address",
+                                                controller.args['companies']
+                                                    [index]['company']['bio'],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
                                                   fontSize: 14,
                                                   color: Theme.of(context)
@@ -128,10 +137,11 @@ class MyCompanies extends StatelessWidget {
                                         Stat(
                                           w: _w / 2.5,
                                           h: _w / 6,
-                                          icon: Icon(Icons.attach_money),
-                                          title: 'Total Revenue',
+                                          icon: Icon(Icons.verified_user),
+                                          title: 'No. of Users',
                                           value: RevenueCountUpAnimation(
-                                            endValue: 124.56,
+                                            endValue: double.parse(
+                                                "${controller.args['companies'][index]['company']['_count']['users']}"),
                                             duration:
                                                 const Duration(seconds: 3),
                                           ),
@@ -169,7 +179,7 @@ class MyCompanies extends StatelessWidget {
                                             h: _w / 6,
                                             title: 'Events',
                                             value: Text(
-                                              "0",
+                                              "${controller.args['companies'][index]['company']['_count']['events']}",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,

@@ -23,6 +23,7 @@ class SignUpPage extends StatelessWidget {
     return ScaffoldMessenger(
         child: Scaffold(
             resizeToAvoidBottomInset: false,
+            backgroundColor: Color(0xFFdbdde1),
             body: DecoratedBox(
               decoration: BoxDecoration(
                 image: DecorationImage(

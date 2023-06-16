@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Components/event_card.dart';
+import 'package:on_reserve/Components/shimmer.dart';
 import 'package:on_reserve/Controllers/home_controller.dart';
+import 'package:on_reserve/helpers/routes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Home2 extends StatelessWidget {
@@ -16,7 +18,7 @@ class Home2 extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    Get.find<HomeController>();
+    final homeController = Get.find<HomeController>();
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -231,22 +233,65 @@ class Home2 extends StatelessWidget {
             ),
             SizedBox(
               height: 750.h,
-              child: ListView.builder(
-                  physics: const BouncingScrollPhysics(
-                      parent: AlwaysScrollableScrollPhysics()),
-                  scrollDirection: Axis.horizontal,
-                  padding: const EdgeInsets.all(12),
-                  itemCount: 3,
-                  itemBuilder: (context, index) {
-                    return ContinueCard(
-                      index: index,
+              child: FutureBuilder(
+                  future: homeController.getPopularEvents(),
+                  initialData: [
+                    ContinueCard(
+                      index: 1,
                       date: '12/12/2021',
                       title: 'Event Name',
                       bgImage:
                           'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png',
-                    );
+                    ),
+                  ],
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      // Show a loading indicator while the future is waiting
+                      return ListView.builder(
+                          physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.all(10),
+                          itemCount: 3,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20),
+                              child: ShimmerWidgets.rectangular(
+                                  height: 650.h,
+                                  width: 850.w,
+                                  baseColor: Colors.grey[400]!,
+                                  highlightColor: Colors.grey[100]!),
+                            );
+                          });
+                    } else {
+                      // When the future is done, check if it has an error or not
+                      if (snapshot.hasError) {
+                        // Show an error message if the future has an error
+                        return Text('Error: ${snapshot.error}');
+                      }
+                    }
+                    return ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        scrollDirection: Axis.horizontal,
+                        padding: const EdgeInsets.all(12),
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return GestureDetector(
+                              onTap: () {
+                                Get.toNamed(Routes.eventDetail,
+                                    arguments: snapshot.data![index]);
+                              },
+                              child: ContinueCard(
+                                index: index,
+                                date: snapshot.data![index]['eventStartTime'],
+                                title: snapshot.data![index]['title'],
+                                bgImage: snapshot.data![index]['galleries'][0]
+                                    ['eventPhoto'],
+                              ));
+                        });
                   }),
-            )
+            ),
           ],
         ),
       ),

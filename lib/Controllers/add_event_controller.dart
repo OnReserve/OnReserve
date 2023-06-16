@@ -2,10 +2,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:flutter/material.dart';
-import 'package:on_reserve/Models/user.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
-import 'package:on_reserve/helpers/storage/secure_store.dart';
 
 class AddEventController extends GetxController {
   var events = [];

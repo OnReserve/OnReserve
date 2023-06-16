@@ -54,19 +54,19 @@ class _RevenueCountUpAnimationState extends State<RevenueCountUpAnimation>
           TextSpan(
             children: [
               TextSpan(
-                text: '${_animation.value.toStringAsFixed(2)} ',
+                text: '${_animation.value.toStringAsFixed(2).split('.')[0]} ',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(
-                text: 'ETB',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+              // TextSpan(
+              //   text: 'ETB',
+              //   style: TextStyle(
+              //     fontSize: 12.0,
+              //     fontWeight: FontWeight.normal,
+              //   ),
+              // ),
             ],
           ),
         );

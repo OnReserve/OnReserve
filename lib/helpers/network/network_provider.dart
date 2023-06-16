@@ -257,6 +257,6 @@ class NetworkHandler {
   }
 
   static String buildStringUrl(String endpoint) =>
-      'http://192.168.2.107:5000/api/$endpoint';
-  // 'http://localhost:5000/api/$endpoint';
+      // 'http://192.168.2.107:5000/api/$endpoint';
+      'http://localhost:5000/api/$endpoint';
 }

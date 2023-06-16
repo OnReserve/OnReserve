@@ -217,7 +217,8 @@ class CompanyProfileState extends State<CompanyProfile> {
             Container(
               margin: const EdgeInsets.all(20),
               child: CardActions(
-                buttonsCursor: SystemMouseCursors.click,
+                // buttonsCursor: SystemMouseCursors.click,
+                // showToolTip: true,
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 axisDirection: CardActionAxis.bottom,
                 borderRadius: 15,
@@ -466,25 +467,6 @@ class Slide extends StatelessWidget {
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
-          ),
-        ],
-      ),
-      endActionPane: const ActionPane(
-        motion: ScrollMotion(),
-        children: [
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFF21B7CA),
-            foregroundColor: Colors.white,
-            icon: Icons.share,
-            label: 'Edit',
-          ),
-          SlidableAction(
-            onPressed: null,
-            backgroundColor: Color(0xFF0392CF),
-            foregroundColor: Colors.white,
-            icon: Icons.save,
-            label: 'Save',
           ),
         ],
       ),

@@ -89,4 +89,42 @@ class ProfileController extends GetxController {
     }
     update();
   }
+
+  Future<List> getCompanies() async {
+    return await Future.delayed(
+      const Duration(seconds: 1),
+      () async {
+        var response = await NetworkHandler.get(endpoint: 'companies/');
+        if (response[1] == 200 || response[1] == 304) {
+          try {
+            List data = (response[0]);
+            return data;
+          } catch (e) {
+            logger(ProfileController).e(e);
+            return [];
+          }
+        }
+        return [];
+      },
+    );
+  }
+
+  Future<List> getUserEvents() async {
+    return await Future.delayed(
+      const Duration(seconds: 1),
+      () async {
+        var response = await NetworkHandler.get(endpoint: 'events/user/');
+        if (response[1] == 200 || response[1] == 304) {
+          try {
+            List data = (response[0]);
+            return data;
+          } catch (e) {
+            logger(ProfileController).e(e);
+            return [];
+          }
+        }
+        return [];
+      },
+    );
+  }
 }

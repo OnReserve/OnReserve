@@ -16,14 +16,18 @@ class BookingController extends GetxController {
   }
 
   Future<List> getHistory() async {
-    var response = await NetworkHandler.get(endpoint: 'events/');
-    if (response[1] == 200) {
-      try {
-        events = response[0];
-      } catch (e) {
-        logger(BookingController).e("Error: $e");
+    return Future.delayed(Duration(seconds: 1), () async {
+      var response = await NetworkHandler.get(endpoint: 'bookings/');
+      if (response[1] == 200) {
+        try {
+          events = response[0];
+        } catch (e) {
+          logger(BookingController).e("Error: $e");
+        }
+      } else {
+        print(response[0]);
       }
-    } else {}
-    return events;
+      return events;
+    });
   }
 }

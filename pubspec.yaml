@@ -78,6 +78,9 @@ dependencies:
   flutter_slidable: ^3.0.0
   uuid: ^3.0.6
   image_picker: ^0.8.8
+  timeago: ^3.3.0
+  dotted_line: ^3.2.2
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

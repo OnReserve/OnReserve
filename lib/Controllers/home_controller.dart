@@ -1,13 +1,12 @@
 import 'dart:async';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
-import 'package:on_reserve/Models/event_overview.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 
 class HomeController extends GetxController {
   var categories = [];
-  List<EventOverview> popularEvents = [];
+  List popularEvents = [];
   int currentPageIndex = 0;
   PageController pageController = PageController(initialPage: 0);
   List<Event> events = [
@@ -83,40 +82,27 @@ class HomeController extends GetxController {
   }
 
   Future<List> getPopularEvents() async {
-    await Future.delayed(const Duration(seconds: 2), () {
-      popularEvents = [
-        EventOverview(
-            id: 1,
-            title: "Rophnan Concert",
-            date: "2021-10-10",
-            imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
-        EventOverview(
-            id: 2,
-            title: "Rophnan Concert",
-            date: "2021-10-10",
-            imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
-        EventOverview(
-            id: 3,
-            title: "Rophnan Concert",
-            date: "2021-10-10",
-            imageURL:
-                "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
-      ];
-      return popularEvents;
-    });
+    // return await Future.delayed(const Duration(seconds: 2), () {
+    //   popularEvents = [
+    //     EventOverview(
+    //         id: 1,
+    //         title: "Rophnan Concert",
+    //         date: "2021-10-10",
+    //         imageURL:
+    //             "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
+    //   ];
+    //   return popularEvents;
+    // });
+    var response = await NetworkHandler.get(endpoint: 'events/search/Concert');
+    if (response[1] == 200) {
+      try {
+        print(response[0]);
+        popularEvents = response[0];
+      } catch (e) {
+        logger(HomeController).e("Error: $e");
+      }
+    } else {}
     return popularEvents;
-    // var response = await NetworkHandler.get(endpoint: 'events/popular/');
-    // if (response[1] == 200) {
-    //   try {
-    //     popularEvents =
-    //         response[0].map((e) => EventOverview.fromJson(e)).toList();
-    //   } catch (e) {
-    //     logger(HomeController).e("Error: $e");
-    //   }
-    // } else {}
-    // return categories;
   }
 }
 

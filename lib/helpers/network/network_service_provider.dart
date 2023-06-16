@@ -15,7 +15,7 @@ Dio provider(final header) {
 
   final dio = Dio(options)
     ..interceptors.addAll([
-      cacheInterceptor,
+      // cacheInterceptor,
       loggerInterceptor,
     ]);
 

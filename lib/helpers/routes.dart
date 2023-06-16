@@ -3,23 +3,25 @@ import 'package:on_reserve/Pages/Auth/login.dart';
 import 'package:on_reserve/Pages/Auth/sign_up.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/Pages/add_event.dart';
+import 'package:on_reserve/Pages/booking.dart';
 import 'package:on_reserve/Pages/booking_history.dart';
 import 'package:on_reserve/Pages/category.dart';
 import 'package:on_reserve/Pages/company.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
-import 'package:on_reserve/Pages/new_home.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
 import 'package:on_reserve/Pages/reserve.dart';
 import 'package:on_reserve/Pages/settings.dart';
 import 'package:on_reserve/helpers/bindings/add_event_bindings.dart';
+import 'package:on_reserve/helpers/bindings/bookings_bindings.dart';
 import 'package:on_reserve/helpers/bindings/category_bindings.dart';
 import 'package:on_reserve/helpers/bindings/event_detail_bindings.dart';
 import 'package:on_reserve/helpers/bindings/home_bindings.dart';
 import 'package:on_reserve/helpers/bindings/login_bindings.dart';
+import 'package:on_reserve/helpers/bindings/my_companies_binidings.dart';
 import 'package:on_reserve/helpers/bindings/payment_bindings.dart';
 import 'package:on_reserve/helpers/bindings/profile_bindings.dart';
 import 'package:on_reserve/helpers/bindings/qr_bindings.dart';
@@ -44,6 +46,7 @@ class Routes {
   static const String category = "/category";
   static const String companyProfile = "/companyProfile";
   static const String bookingHistory = "/bookingHistory";
+  static const String booking = "/booking";
   static const String welcome = "/welcome";
   static const String test = "/test";
   static const String myCompanies = "/mycompanies";
@@ -54,7 +57,12 @@ class AppRoutes {
   static final pages = [
     GetPage(
       name: Routes.test,
-      page: () => CompanyProfile(),
+      page: () => BookingDetailsPage(),
+    ),
+    GetPage(
+      name: Routes.booking,
+      page: () => BookingDetailsPage(),
+      binding: BookingsBindings(),
     ),
     GetPage(
       name: Routes.companyProfile,
@@ -73,7 +81,7 @@ class AppRoutes {
     GetPage(
       name: Routes.myCompanies,
       page: () => MyCompanies(),
-      // binding: LoginBindings(),
+      binding: MyCompaniesBindings(),
     ),
     GetPage(
       name: Routes.signUp,

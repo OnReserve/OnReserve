@@ -18,6 +18,7 @@ class MyCompanies extends StatelessWidget {
         title: Text("My Companies"),
         centerTitle: true,
       ),
+      backgroundColor: Theme.of(context).colorScheme.primary.lighten(45),
       body: AnimationLimiter(
         child: GridView.count(
           physics:
@@ -44,14 +45,13 @@ class MyCompanies extends StatelessWidget {
                       },
                       child: Container(
                         margin: EdgeInsets.only(
-                            bottom: _w / 30, left: _w / 80, right: _w / 80),
+                            bottom: _w / 20, left: _w / 80, right: _w / 80),
                         decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.primary.lighten(45),
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.all(Radius.circular(20)),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withOpacity(0.12),
                               blurRadius: 40,
                               spreadRadius: 10,
                             ),
@@ -121,7 +121,24 @@ class MyCompanies extends StatelessWidget {
                                               SizedBox(height: 2),
                                               Text(
                                                 controller.args['companies']
-                                                    [index]['company']['bio'],
+                                                            [index]['company']
+                                                            ['bio']
+                                                        .toString()
+                                                        .substring(
+                                                            0,
+                                                            controller.args['companies']
+                                                                            [
+                                                                            index]
+                                                                            [
+                                                                            'company']
+                                                                            [
+                                                                            'bio']
+                                                                        .toString()
+                                                                        .length >
+                                                                    18
+                                                                ? 18
+                                                                : null) +
+                                                    "...",
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(

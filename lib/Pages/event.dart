@@ -354,6 +354,7 @@ class _EventState extends State<Event> {
                                 borderRadius: BorderRadius.circular(20)),
                             child: IconButton(
                               onPressed: () {
+                                controller.resetBottomSheet();
                                 Get.bottomSheet(
                                   ReviewsBottomSheet(),
                                   shape: Get.theme.bottomSheetTheme.shape,

@@ -15,6 +15,8 @@ class ProfileController extends GetxController {
   User? user;
   XFile? profilePic;
   XFile? coverPic;
+  List? companies;
+  List? categories;
   var formKey = GlobalKey<FormState>();
   TextEditingController fname = TextEditingController();
   TextEditingController lname = TextEditingController();
@@ -32,6 +34,7 @@ class ProfileController extends GetxController {
     try {
       var userjson = await SecuredStorage.read(key: SharedKeys.user);
       if (userjson != null) user = User.fromJson(jsonDecode(userjson));
+      getCategories();
     } catch (e) {
       logger(ProfileController).e(e);
     }
@@ -98,6 +101,7 @@ class ProfileController extends GetxController {
         if (response[1] == 200 || response[1] == 304) {
           try {
             List data = (response[0]);
+            companies = data;
             return data;
           } catch (e) {
             logger(ProfileController).e(e);
@@ -126,6 +130,18 @@ class ProfileController extends GetxController {
         return [];
       },
     );
+  }
+
+  Future<void> getCategories() async {
+    var response = await NetworkHandler.get(endpoint: 'categories/');
+    if (response[1] == 200 || response[1] == 304) {
+      try {
+        List data = (response[0]);
+        categories = data;
+      } catch (e) {
+        logger(ProfileController).e(e);
+      }
+    }
   }
 
   Future<bool> addCompany() async {

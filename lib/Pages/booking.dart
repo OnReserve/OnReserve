@@ -41,7 +41,7 @@ class BookingDetailsPage extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(22.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Row(
@@ -80,6 +80,10 @@ class BookingDetailsPage extends StatelessWidget {
                       minWidth: double.infinity,
                     ),
                     child: DataTable(
+                      dataRowColor: MaterialStateProperty.all(Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.1)),
                       dataRowHeight: 30,
                       headingRowHeight: 30,
                       columns: [
@@ -115,6 +119,10 @@ class BookingDetailsPage extends StatelessWidget {
                       minWidth: double.infinity,
                     ),
                     child: DataTable(
+                      dataRowColor: MaterialStateProperty.all(Theme.of(context)
+                          .colorScheme
+                          .onBackground
+                          .withOpacity(0.1)),
                       dataRowHeight: 30,
                       headingRowHeight: 30,
                       columns: [

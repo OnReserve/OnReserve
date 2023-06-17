@@ -123,7 +123,7 @@ class CompanyProfileState extends State<CompanyProfile> {
           columns: [
             DataColumn(
               label: Text(
-                "Company Name",
+                controller.args['company']['name'],
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
@@ -140,7 +140,7 @@ class CompanyProfileState extends State<CompanyProfile> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-              DataCell(Text('June 12, 2023')),
+              DataCell(Text(controller.args['company']['createdAt'])),
             ]),
             DataRow(cells: [
               DataCell(Text(
@@ -149,7 +149,8 @@ class CompanyProfileState extends State<CompanyProfile> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-              DataCell(Text('5')),
+              DataCell(Text(
+                  controller.args['company']['_count']['users'].toString())),
             ]),
             DataRow(cells: [
               DataCell(Text(
@@ -158,7 +159,8 @@ class CompanyProfileState extends State<CompanyProfile> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-              DataCell(Text('23')),
+              DataCell(Text(
+                  controller.args['company']['_count']['events'].toString())),
             ]),
             DataRow(cells: [
               DataCell(Text(
@@ -175,10 +177,10 @@ class CompanyProfileState extends State<CompanyProfile> {
 
   Widget buildCoverImage(CompanyProfileController controller) {
     return Container(
+      width: double.infinity,
       color: Colors.grey[300],
       child: CachedNetworkImage(
-        imageUrl:
-            'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686293226/onReserve/Profile/wlru9yrmbxu9lfkfj9fu.jpg',
+        imageUrl: controller.args['company']['coverPic'],
         fit: BoxFit.cover,
         height: coverHeight,
         errorWidget: (context, url, error) => Icon(Icons.error),
@@ -194,7 +196,9 @@ class CompanyProfileState extends State<CompanyProfile> {
         border: Border.all(color: Colors.white, width: 3),
         borderRadius: BorderRadius.circular(50),
         image: DecorationImage(
-          image: AssetImage('assets/Images/Rophnan.png'),
+          image: CachedNetworkImageProvider(
+            controller.args['company']['profPic'],
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -218,51 +222,82 @@ class CompanyProfileState extends State<CompanyProfile> {
               addable: true,
             ),
             Container(
-              margin: const EdgeInsets.all(20),
-              child: CardActions(
-                // buttonsCursor: SystemMouseCursors.click,
-                // showToolTip: true,
-                backgroundColor: Theme.of(context).colorScheme.primary,
-                axisDirection: CardActionAxis.bottom,
-                borderRadius: 15,
-                width: 600,
-                height: 220,
-                actions: [
-                  CardActionButton(
-                    icon: const Icon(
-                      Icons.qr_code,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: 'Scan QR Code',
-                    onPress: () {
-                      Get.toNamed(Routes.qr);
-                    },
-                  ),
-                  CardActionButton(
-                    icon: const Icon(
-                      Icons.edit,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: 'Edit',
-                    onPress: () {
-                      // setState(() {
-                      //   counter = 0;
-                      // });
-                    },
-                  ),
-                  CardActionButton(
-                    icon: const Icon(
-                      Icons.delete,
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    label: 'Delete',
-                    onPress: () {},
-                  ),
-                ],
-                child: EventCard(counter: 1),
+              height: 1500.h,
+              child: FutureBuilder(
+                future: controller.getCompanyProfile(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: BouncingScrollPhysics(),
+                      itemCount: snapshot.data != null
+                          ? snapshot.data!['events'].length
+                          : 0,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          margin: const EdgeInsets.all(20),
+                          child: CardActions(
+                            // buttonsCursor: SystemMouseCursors.click,
+                            showToolTip: true,
+                            backgroundColor:
+                                Theme.of(context).colorScheme.primary,
+                            axisDirection: CardActionAxis.bottom,
+                            borderRadius: 15,
+                            width: 600,
+                            height: 220,
+                            actions: [
+                              CardActionButton(
+                                icon: const Icon(
+                                  Icons.qr_code,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                label: 'Scan QR Code',
+                                onPress: () {
+                                  Get.toNamed(Routes.qr);
+                                },
+                              ),
+                              CardActionButton(
+                                icon: const Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                label: 'Edit',
+                                onPress: () {
+                                  // setState(() {
+                                  //   counter = 0;
+                                  // });
+                                },
+                              ),
+                              CardActionButton(
+                                icon: const Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                label: 'Delete',
+                                onPress: () {},
+                              ),
+                            ],
+                            child: EventCard(
+                              eventDate: snapshot.data!['events'][index]
+                                  ['eventStartTime'],
+                              eventName: snapshot.data!['events'][index]
+                                  ['title'],
+                              eventPic: snapshot.data!['events'][index]
+                                  ['galleries'][0]['eventPhoto'],
+                              eventRating: '3',
+                              totalRevenue: 100.0,
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
             ),
             SizedBox(height: 15),
@@ -336,7 +371,7 @@ class SlidableList extends StatelessWidget {
 
   final CompanyProfileController controller;
   Future getAdmins() {
-    return Future.delayed(Duration(seconds: 5));
+    return controller.getCompanyProfile();
   }
 
   @override
@@ -347,26 +382,22 @@ class SlidableList extends StatelessWidget {
         height: 1000.h,
         child: FutureBuilder(
             future: getAdmins(),
-            initialData: [
-              Slide(
-                name: "Admin",
-                email: "admin@gmail.com",
-                profilePic:
-                    "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686293226/onReserve/Profile/wlru9yrmbxu9lfkfj9fu.jpg",
-              ),
-            ],
             builder: (context, snapshot) {
               return snapshot.connectionState == ConnectionState.done
                   ? ListView.builder(
                       physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics()),
-                      itemCount: 3,
+                      itemCount: snapshot.data != null
+                          ? snapshot.data!['admin'].length
+                          : 0,
                       itemBuilder: (context, index) {
                         return Slide(
-                          name: "$index",
-                          email: "snapshot.data![index].date",
-                          profilePic:
-                              "https://picsum.photos/seed/picsum/200/300",
+                          name:
+                              "${snapshot.data!['admin'][index]['user']['fname']} ${snapshot.data!['admin'][index]['user']['lname']}",
+                          email: snapshot.data!['admin'][index]['user']
+                              ['email'],
+                          profilePic: snapshot.data!['admin'][index]['user']
+                              ['profile']['profilePic'],
                         );
                       })
                   : ListView.builder(
@@ -503,9 +534,17 @@ class Slide extends StatelessWidget {
 class EventCard extends StatelessWidget {
   const EventCard({
     super.key,
-    required this.counter,
+    required this.eventName,
+    required this.eventDate,
+    required this.eventPic,
+    required this.eventRating,
+    required this.totalRevenue,
   });
-  final int counter;
+  final String eventName;
+  final String eventDate;
+  final String eventPic;
+  final String eventRating;
+  final double totalRevenue;
 
   @override
   Widget build(BuildContext context) {
@@ -531,9 +570,8 @@ class EventCard extends StatelessWidget {
             width: 100,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(15),
-              image: const DecorationImage(
-                image:
-                    NetworkImage('https://picsum.photos/seed/picsum/200/300'),
+              image: DecorationImage(
+                image: CachedNetworkImageProvider(eventPic),
                 fit: BoxFit.cover,
               ),
             ),
@@ -545,8 +583,8 @@ class EventCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const Text(
-                    'Event Date',
+                  Text(
+                    eventDate,
                     style: TextStyle(
                       color: Colors.white,
                       // fontWeight: FontWeight.bold,
@@ -554,7 +592,7 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "Event Name",
+                    eventName,
                     style: const TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -562,7 +600,7 @@ class EventCard extends StatelessWidget {
                     ),
                   ),
                   RatingBar.builder(
-                    initialRating: 3,
+                    initialRating: double.parse(eventRating),
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
@@ -586,7 +624,7 @@ class EventCard extends StatelessWidget {
                     bgColor: Colors.white.withOpacity(0.5),
                     title: 'Total Revenue',
                     value: RevenueCountUpAnimation(
-                      endValue: 124.56,
+                      endValue: totalRevenue,
                       duration: const Duration(seconds: 3),
                     ),
                   ),

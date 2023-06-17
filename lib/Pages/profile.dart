@@ -426,7 +426,13 @@ class ProfilePage extends StatelessWidget {
                     addable: true,
                     editable: false,
                     onAdd: () {
-                      Get.toNamed(Routes.addEvent);
+                      Get.toNamed(
+                        Routes.addEvent,
+                        arguments: {
+                          'companies': profileController.companies,
+                          'categories': profileController.categories,
+                        },
+                      );
                     },
                     onTap: () {},
                   ),

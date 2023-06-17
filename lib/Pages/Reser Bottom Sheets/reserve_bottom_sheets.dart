@@ -1,10 +1,16 @@
+import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:on_reserve/Components/revenue_counter.dart';
+import 'package:flutter_spinbox/flutter_spinbox.dart';
+import 'package:on_reserve/Controllers/event_controller.dart';
 
 class ReserveBottomSheet extends StatelessWidget {
   const ReserveBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.put(EventController());
     return SingleChildScrollView(
       physics: const BouncingScrollPhysics(),
       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -59,152 +65,126 @@ class ReserveBottomSheet extends StatelessWidget {
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: [
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                maxHeight: 45,
-                              ),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'First Name',
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(
-                                maxHeight: 45,
-                              ),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  border: OutlineInputBorder(),
-                                  labelText: 'Last Name',
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
                       ConstrainedBox(
                         constraints: const BoxConstraints(
                           maxHeight: 45,
                         ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Phone Number',
-                          ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Economy Seats:',
+                                style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withAlpha(150),
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: SpinBox(
+                                  keyboardType: TextInputType.number,
+                                  digits: 1,
+                                  min: 1,
+                                  max: 10,
+                                  value: 1,
+                                  onChanged: (value) =>
+                                      controller.setEconomySeats(value)),
+                            ),
+                          ],
                         ),
                       ),
                       const SizedBox(
                         height: 20,
                       ),
                       ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxHeight: 45,
-                        ),
-                        child: TextField(
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'Bio',
+                          constraints: const BoxConstraints(
+                            maxHeight: 45,
                           ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-
-                      // Logo Upload
-                      Row(
-                        children: [
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                // profileController.getImage();
-                              },
-                              child: Container(
-                                height: 90,
-                                margin: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context).colorScheme.surface,
-                                  border: Border.all(
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  'VIP Seats:',
+                                  style: TextStyle(
                                     color: Theme.of(context)
                                         .colorScheme
-                                        .onBackground,
+                                        .onBackground
+                                        .withAlpha(150),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(Icons.add_a_photo,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
-                                    SizedBox(height: 8),
-                                    Text(
-                                      "Profile Image",
-                                      style: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                    )
-                                  ],
                                 ),
                               ),
+                              Expanded(
+                                child: SpinBox(
+                                    min: 0,
+                                    max: 10,
+                                    value: 0,
+                                    onChanged: (value) =>
+                                        controller.setVipSeats(value)),
+                              ),
+                            ],
+                          )),
+                      SizedBox(height: 35.0),
+                      DottedLine(
+                        dashColor: Theme.of(context).colorScheme.primary,
+                        lineThickness: 1.0,
+                        dashGapLength: 8.0,
+                        dashRadius: 8.0,
+                        dashLength: 8.0,
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      // Total Price
+                      SizedBox(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(child: SizedBox()),
+                            Text(
+                              'Total Price : ',
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onBackground
+                                    .withAlpha(150),
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          Expanded(
-                            child: GestureDetector(
-                              onTap: () {
-                                // profileController.getImage();
-                              },
-                              child: Container(
-                                  height: 90,
-                                  margin: EdgeInsets.all(10),
-                                  decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.surface,
-                                    border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onBackground,
-                                    ),
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.add_a_photo,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        "Cover Image",
-                                        style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primary),
-                                      )
-                                    ],
-                                  )),
-                            ),
-                          ),
-                        ],
+                            GetBuilder<EventController>(builder: (controller) {
+                              return Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 6, horizontal: 10),
+                                margin: EdgeInsets.symmetric(
+                                    vertical: 0, horizontal: 8),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.15),
+                                ),
+                                child: RevenueCountUpAnimation(
+                                  startValue: controller.oldPrice + 0.0,
+                                  endValue: controller.totalPrice == 0.0
+                                      ? controller.args['economyPrice'] + 0.0
+                                      : controller.totalPrice,
+                                  duration: const Duration(milliseconds: 800),
+                                ),
+                              );
+                            }),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(15),
@@ -218,8 +198,10 @@ class ReserveBottomSheet extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {},
-                          child: Text('Edit Profile'),
+                          onPressed: () {
+                            controller.reserveTicket();
+                          },
+                          child: Text('Pay Now'),
                         ),
                       ),
                     ],

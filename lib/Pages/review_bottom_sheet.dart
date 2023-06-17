@@ -50,9 +50,6 @@ class ReviewsBottomSheet extends StatelessWidget {
                         vertical: 10.0, horizontal: 20),
                     child: ListView(
                       children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
                         getReceiverView(
                             ChatBubbleClipper4(type: BubbleType.receiverBubble),
                             context,
@@ -80,7 +77,7 @@ class ReviewsBottomSheet extends StatelessWidget {
                         child: TextField(
                           controller: _textEditingController,
                           maxLines: 5,
-                          minLines: 2,
+                          minLines: 1,
                           decoration: InputDecoration(
                             hintText: 'Write a review',
                             border: OutlineInputBorder(),

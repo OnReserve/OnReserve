@@ -7,6 +7,7 @@ import 'package:on_reserve/helpers/network/network_provider.dart';
 
 class AddEventController extends GetxController {
   var events = [];
+  var args = Get.arguments;
 
   final TextEditingController searchController = TextEditingController();
 

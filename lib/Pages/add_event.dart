@@ -35,42 +35,50 @@ class MultiSectionForm extends StatelessWidget {
           Expanded(
             child: SingleChildScrollView(
               child: form = GSForm.multiSection(context, sections: [
-                GSSection(sectionTitle: 'Event information', fields: [
-                  GSField.spinner(
-                    tag: 'Company Name',
-                    title: "Select Company",
-                    weight: 12,
-                    items: [
-                      SpinnerDataModel(name: 'Company 1', id: 1),
-                      SpinnerDataModel(name: 'Company 2', id: 2),
-                      SpinnerDataModel(name: 'Company 3', id: 3),
-                    ],
-                  ),
-                  GSField.text(tag: 'Event Title', title: "Event Title"),
-                  GSField.textPlain(
-                    tag: 'Event Description',
-                    title: "Event Description",
-                    minLine: 5,
-                    maxLength: 10,
-                  ),
-                  GSField.checkList(
-                      tag: 'Event Category',
-                      title: "Event Category",
-                      searchable: false,
-                      selectedIcon: const Icon(
-                        Icons.check_box,
-                        color: Colors.green,
-                        size: 20.0,
-                      ),
+                GSSection(
+                  sectionTitle: 'Event information',
+                  key: const Key('Event information'),
+                  fields: [
+                    GSField.spinner(
+                      tag: 'Company Name',
+                      title: "Select Company",
+                      weight: 12,
                       items: [
-                        CheckDataModel(title: 'Category 1', isSelected: false),
-                        CheckDataModel(title: 'Category 2', isSelected: false),
-                        CheckDataModel(title: 'Category 3', isSelected: false),
+                        SpinnerDataModel(name: 'Company 1', id: 1),
+                        SpinnerDataModel(name: 'Company 2', id: 2),
+                        SpinnerDataModel(name: 'Company 3', id: 3),
                       ],
-                      callBack: (value) {}),
-                ]),
+                    ),
+                    GSField.text(tag: 'Event Title', title: "Event Title"),
+                    GSField.textPlain(
+                      tag: 'Event Description',
+                      title: "Event Description",
+                      minLine: 5,
+                      maxLength: 10,
+                    ),
+                    GSField.checkList(
+                        tag: 'Event Category',
+                        title: "Event Category",
+                        searchable: false,
+                        selectedIcon: const Icon(
+                          Icons.check_box,
+                          color: Colors.green,
+                          size: 20.0,
+                        ),
+                        items: [
+                          CheckDataModel(
+                              title: 'Category 1', isSelected: false),
+                          CheckDataModel(
+                              title: 'Category 2', isSelected: false),
+                          CheckDataModel(
+                              title: 'Category 3', isSelected: false),
+                        ],
+                        callBack: (value) {}),
+                  ],
+                ),
                 GSSection(
                   sectionTitle: 'Date & Time',
+                  key: const Key('Date & Time'),
                   fields: [
                     GSField.datePicker(
                       tag: 'EventStartDate',
@@ -85,21 +93,21 @@ class MultiSectionForm extends StatelessWidget {
                       calendarType: GSCalendarType.gregorian,
                     ),
                     GSField.time(
-                      tag: 'time',
+                      tag: 'Starttime',
                       title: 'Start Time',
                       weight: 6,
                       hint: '10:00',
                       required: true,
                     ),
                     GSField.time(
-                      tag: 'time',
+                      tag: 'Endtime',
                       title: 'End Time',
                       weight: 6,
                       hint: '12:00',
                       required: true,
                     ),
                     GSField.datePicker(
-                      tag: 'EventStartDate',
+                      tag: 'Deadline Date',
                       title: 'Deadline Date & Time',
                       weight: 8,
                       required: true,
@@ -111,7 +119,7 @@ class MultiSectionForm extends StatelessWidget {
                       calendarType: GSCalendarType.gregorian,
                     ),
                     GSField.time(
-                      tag: 'time',
+                      tag: 'Deadlinetime',
                       // title: 'Time',
                       weight: 4,
                       hint: '10:00',
@@ -154,43 +162,46 @@ class MultiSectionForm extends StatelessWidget {
                     ),
                   ],
                 ),
-                GSSection(sectionTitle: 'Seat Information', fields: [
-                  GSForm.multiSection(
-                    context,
-                    sections: [
-                      GSSection(sectionTitle: 'VIP', fields: [
-                        GSField.number(
-                          tag: 'Seat Information',
-                          title: "No. of Seats",
-                          weight: 6,
-                          required: true,
-                        ),
-                        GSField.price(
-                          tag: "Seat Information",
-                          title: "Price",
-                          currencyName: 'ETB',
-                          weight: 6,
-                          required: true,
-                        ),
-                      ]),
-                      GSSection(sectionTitle: 'Economy', fields: [
-                        GSField.number(
-                          tag: 'Seat Information',
-                          title: "No. of Seats",
-                          weight: 6,
-                          required: true,
-                        ),
-                        GSField.price(
-                          tag: "Seat Information",
-                          title: "Price",
-                          currencyName: 'ETB',
-                          weight: 6,
-                          required: true,
-                        ),
-                      ]),
-                    ],
-                  ),
-                ]),
+                GSSection(
+                  sectionTitle: 'Seat Information',
+                  fields: [
+                    GSForm.multiSection(
+                      context,
+                      sections: [
+                        GSSection(sectionTitle: 'VIP', fields: [
+                          GSField.number(
+                            tag: 'Seat Information',
+                            title: "No. of Seats",
+                            weight: 6,
+                            required: true,
+                          ),
+                          GSField.price(
+                            tag: "Seat Information",
+                            title: "Price",
+                            currencyName: 'ETB',
+                            weight: 6,
+                            required: true,
+                          ),
+                        ]),
+                        GSSection(sectionTitle: 'Economy', fields: [
+                          GSField.number(
+                            tag: 'Seat Information',
+                            title: "No. of Seats",
+                            weight: 6,
+                            required: true,
+                          ),
+                          GSField.price(
+                            tag: "Seat Information",
+                            title: "Price",
+                            currencyName: 'ETB',
+                            weight: 6,
+                            required: true,
+                          ),
+                        ]),
+                      ],
+                    ),
+                  ],
+                ),
                 GSSection(
                   sectionTitle: 'Event Pictures',
                   fields: [

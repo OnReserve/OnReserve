@@ -75,72 +75,126 @@ class BookingDetailsPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 20.0),
-                  DataTable(
-                    dataRowHeight: 30,
-                    headingRowHeight: 30,
-                    columns: [
-                      DataColumn(
-                          label: Text('Customers',
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: double.infinity,
+                    ),
+                    child: DataTable(
+                      dataRowHeight: 30,
+                      headingRowHeight: 30,
+                      columns: [
+                        DataColumn(
+                            label: Text('Customers',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.grey))),
+                        DataColumn(
+                            label: Text('Date',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 13,
+                                    color: Colors.grey))),
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(Text(
+                              "${controller.args['economyCount'] + controller.args['vipCount']}",
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.grey))),
-                      DataColumn(
-                          label: Text('Date',
+                                  fontWeight: FontWeight.bold, fontSize: 16))),
+                          DataCell(Text(formattedDate2.split(',')[0],
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 13,
-                                  color: Colors.grey))),
-                    ],
-                    rows: [
-                      DataRow(cells: [
-                        DataCell(Text(
-                            "${controller.args['economyCount'] + controller.args['vipCount']}",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16))),
-                        DataCell(Text(formattedDate2.split(',')[0],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 16))),
-                      ]),
-                    ],
+                                  fontWeight: FontWeight.bold, fontSize: 16))),
+                        ]),
+                      ],
+                    ),
                   ),
                   SizedBox(height: 20.0),
-                  DataTable(
-                    dataRowHeight: 30,
-                    headingRowHeight: 30,
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'Ticket No.',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Colors.grey),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Class',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 13,
-                              color: Colors.grey),
-                        ),
-                      ),
-                    ],
-                    rows: [
-                      DataRow(cells: [
-                        DataCell(Text('1232a.',
+                  ConstrainedBox(
+                    constraints: BoxConstraints(
+                      minWidth: double.infinity,
+                    ),
+                    child: DataTable(
+                      dataRowHeight: 30,
+                      headingRowHeight: 30,
+                      columns: [
+                        DataColumn(
+                          label: Text(
+                            'Ticket No.',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15))),
-                        DataCell(Text(
-                            "${controller.args['economyCount']} ECO, ${controller.args['vipCount']} VIP",
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Colors.grey),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Class',
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15))),
-                      ]),
-                    ],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 13,
+                                color: Colors.grey),
+                          ),
+                        ),
+                      ],
+                      rows: [
+                        DataRow(cells: [
+                          DataCell(Text('1232a.',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15))),
+                          DataCell(Text(
+                              "${controller.args['economyCount']} ECO, ${controller.args['vipCount']} VIP",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15))),
+                        ]),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 30.0),
+                  SizedBox(height: 20.0),
+                  // Status
+                  SizedBox(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Status : ',
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onBackground
+                                .withAlpha(200),
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Container(
+                          padding:
+                              EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          margin:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: !controller.args['approved']
+                                ? Colors.red.withOpacity(0.15)
+                                : Colors.green.withOpacity(0.15),
+                          ),
+                          child: Text(
+                            controller.args['approved']
+                                ? 'Verified'
+                                : 'Pending',
+                            style: TextStyle(
+                              color: !controller.args['approved']
+                                  ? Colors.red
+                                  : Colors.green,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 15.0),
+
                   DottedLine(
                     dashColor: Colors.grey,
                     lineThickness: 1.0,
@@ -148,12 +202,11 @@ class BookingDetailsPage extends StatelessWidget {
                     dashRadius: 8.0,
                     dashLength: 8.0,
                   ),
-                  SizedBox(height: 25.0),
                   Center(
                     child: Image.network(
                       controller.args['qrcode'],
-                      width: 150.0,
-                      height: 150.0,
+                      width: 200.0,
+                      height: 200.0,
                     ),
                   ),
                   SizedBox(height: 5.0),

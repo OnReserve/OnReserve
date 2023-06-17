@@ -16,8 +16,7 @@ class LoginController extends GetxController {
   String errortext = '';
   bool complete = false;
   bool obscureText = true;
-  final FocusNode emailFocusNode = FocusNode();
-  final FocusNode passwordFocusNode = FocusNode();
+
   final RoundedLoadingButtonController btnController =
       RoundedLoadingButtonController();
 

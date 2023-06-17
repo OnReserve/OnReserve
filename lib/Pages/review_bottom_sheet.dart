@@ -12,7 +12,7 @@ class ReviewsBottomSheet extends StatelessWidget {
         child: ConstrainedBox(
           constraints: BoxConstraints(
               minHeight: MediaQuery.of(context).size.height * 0.5,
-              maxHeight: MediaQuery.of(context).size.height * 0.8),
+              maxHeight: MediaQuery.of(context).size.height * 0.68),
           child: Container(
             color: Theme.of(context).colorScheme.background,
             child: Column(

@@ -16,7 +16,7 @@ class AddEventController extends GetxController {
     // getEvents();
   }
 
-  Future<bool> editProfile() async {
+  Future<bool> addEvent() async {
     late FormData formData;
 
     formData = new FormData.fromMap({
@@ -45,8 +45,6 @@ class AddEventController extends GetxController {
 
     if (response[1] == 200) {
       try {
-        Map data = (response[0]);
-
         update();
         return true;
       } catch (e) {

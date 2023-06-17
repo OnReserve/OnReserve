@@ -19,6 +19,7 @@ import 'package:on_reserve/helpers/bindings/add_event_bindings.dart';
 import 'package:on_reserve/helpers/bindings/booking_bindings.dart';
 import 'package:on_reserve/helpers/bindings/bookings_bindings.dart';
 import 'package:on_reserve/helpers/bindings/category_bindings.dart';
+import 'package:on_reserve/helpers/bindings/company_profile.dart';
 import 'package:on_reserve/helpers/bindings/event_detail_bindings.dart';
 import 'package:on_reserve/helpers/bindings/home_bindings.dart';
 import 'package:on_reserve/helpers/bindings/login_bindings.dart';
@@ -66,9 +67,9 @@ class AppRoutes {
       binding: BookingsBindings(),
     ),
     GetPage(
-      name: Routes.companyProfile,
-      page: () => CompanyProfile(),
-    ),
+        name: Routes.companyProfile,
+        page: () => CompanyProfile(),
+        binding: CompanyProfileBindings()),
     GetPage(
       name: Routes.login,
       page: () => const LoginPage(),

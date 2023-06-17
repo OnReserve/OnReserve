@@ -9,7 +9,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Components/revenue_counter.dart';
 import 'package:on_reserve/Components/shimmer.dart';
+import 'package:on_reserve/Controllers/company_profile_controller.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
+import 'package:on_reserve/helpers/routes.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
@@ -29,6 +31,7 @@ class CompanyProfileState extends State<CompanyProfile> {
   Widget build(BuildContext context) {
     // width
     double w = MediaQuery.of(context).size.width;
+    var controller = Get.find<CompanyProfileController>();
     return Scaffold(
         body: SingleChildScrollView(
       physics: BouncingScrollPhysics(),
@@ -38,15 +41,15 @@ class CompanyProfileState extends State<CompanyProfile> {
             clipBehavior: Clip.none,
             alignment: Alignment.center,
             children: [
-              buildCoverImage(),
+              buildCoverImage(controller),
               Positioned(
                 top: coverHeight - (profileHeight / 2),
-                child: biuldProfileImage(),
+                child: biuldProfileImage(controller),
               ),
               Positioned(
                 top: 45,
                 right: 30,
-                child: buildEditProfileIcon(),
+                child: buildEditProfileIcon(controller),
               ),
               Positioned(
                 top: 45,
@@ -56,11 +59,11 @@ class CompanyProfileState extends State<CompanyProfile> {
             ],
           ),
           SizedBox(height: 50),
-          buildCompanyDetail(w),
+          buildCompanyDetail(w, controller),
           SizedBox(height: 5),
-          buildAdminTab(context),
+          buildAdminTab(context, controller),
           SizedBox(height: 20),
-          buildEventTab(),
+          buildEventTab(controller),
           SizedBox(height: 100),
         ],
       ),
@@ -88,7 +91,7 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget buildEditProfileIcon() {
+  Widget buildEditProfileIcon(CompanyProfileController controller) {
     return Container(
       height: 40,
       width: 40,
@@ -107,7 +110,7 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget buildCompanyDetail(double w) {
+  Widget buildCompanyDetail(double w, CompanyProfileController controller) {
     return Container(
         width: w,
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -170,7 +173,7 @@ class CompanyProfileState extends State<CompanyProfile> {
         ));
   }
 
-  Widget buildCoverImage() {
+  Widget buildCoverImage(CompanyProfileController controller) {
     return Container(
       color: Colors.grey[300],
       child: CachedNetworkImage(
@@ -183,7 +186,7 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget biuldProfileImage() {
+  Widget biuldProfileImage(CompanyProfileController controller) {
     return Container(
       height: profileHeight,
       width: profileHeight,
@@ -198,7 +201,7 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget buildEventTab() {
+  Widget buildEventTab(CompanyProfileController controller) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
@@ -232,7 +235,9 @@ class CompanyProfileState extends State<CompanyProfile> {
                       size: 20,
                     ),
                     label: 'Scan QR Code',
-                    onPress: () {},
+                    onPress: () {
+                      Get.toNamed(Routes.qr);
+                    },
                   ),
                   CardActionButton(
                     icon: const Icon(
@@ -266,7 +271,8 @@ class CompanyProfileState extends State<CompanyProfile> {
   }
 }
 
-Widget buildAdminTab(BuildContext context) {
+Widget buildAdminTab(
+    BuildContext context, CompanyProfileController controller) {
   TextEditingController _emailController = TextEditingController();
   void showEmailDialog(BuildContext context) {
     showDialog(
@@ -316,7 +322,7 @@ Widget buildAdminTab(BuildContext context) {
               showEmailDialog(context);
             },
           ),
-          SlidableList(),
+          SlidableList(controller: controller),
           SizedBox(height: 15),
         ],
       ));
@@ -325,8 +331,10 @@ Widget buildAdminTab(BuildContext context) {
 class SlidableList extends StatelessWidget {
   const SlidableList({
     super.key,
+    required this.controller,
   });
 
+  final CompanyProfileController controller;
   Future getAdmins() {
     return Future.delayed(Duration(seconds: 5));
   }

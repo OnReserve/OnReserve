@@ -12,7 +12,12 @@ class BookingHistory extends StatelessWidget {
     double _w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Booking History'),
+        title: Text('Booking History',
+            style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.primary)),
+        automaticallyImplyLeading: false,
         centerTitle: true,
       ),
       body: ListOfCategories(w: _w),

@@ -48,9 +48,9 @@ class LoginController extends GetxController {
               key: SharedKeys.user, value: jsonEncode(user.toJson()));
 
           btnController.success();
-          Timer(const Duration(seconds: 2), () {
+          Timer(const Duration(milliseconds: 1300), () {
             btnController.reset();
-            Timer(const Duration(milliseconds: 500), () {
+            Timer(const Duration(milliseconds: 300), () {
               Get.toNamed(Routes.home);
             });
           });

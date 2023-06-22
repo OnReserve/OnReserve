@@ -197,15 +197,18 @@ class NetworkHandler {
     }
   }
 
-  static Future<List> delete(
-      {String auth = '', required String endpoint}) async {
+  static Future<List> delete({
+    String auth = '',
+    required String endpoint,
+    Map<String, dynamic> data = const {},
+  }) async {
     try {
       String? token = await SecuredStorage.read(key: SharedKeys.token);
 
       Auth header = Auth(token: token ?? "");
 
       Response response = await provider(await authToJson(header))
-          .delete(buildStringUrl(endpoint));
+          .delete(buildStringUrl(endpoint), data: data);
 
       return [response.data, response.statusCode];
     } on DioException catch (e) {
@@ -257,6 +260,6 @@ class NetworkHandler {
   }
 
   static String buildStringUrl(String endpoint) =>
-      // 'http://10.240.68.188:5000/api/$endpoint';
+      // 'http://192.168.0.54:5000/api/$endpoint';
       'http://localhost:5000/api/$endpoint';
 }

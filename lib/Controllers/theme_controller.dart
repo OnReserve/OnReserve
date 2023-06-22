@@ -8,6 +8,22 @@ class ThemeController extends GetxController {
   bool firstTime = true;
   OnReserveTheme theme = OnReserveTheme.light;
 
+  @override
+  void onInit() async {
+    try {
+      var themeString = await SecuredStorage.read(key: SharedKeys.theme);
+      if (themeString != null) {
+        theme = OnReserveTheme.values
+            .firstWhere((element) => element.toString() == themeString);
+        dark = theme == OnReserveTheme.dark;
+        update();
+      }
+    } catch (e) {
+      print(e);
+    }
+    super.onInit();
+  }
+
   void reset() async {
     await SecuredStorage.clear();
   }
@@ -20,6 +36,11 @@ class ThemeController extends GetxController {
 
   void toggle() {
     dark = !dark;
+    if (dark) {
+      setTheme(newTheme: OnReserveTheme.dark);
+    } else {
+      setTheme(newTheme: OnReserveTheme.light);
+    }
     update();
   }
 }

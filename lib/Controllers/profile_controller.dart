@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:image_picker/image_picker.dart';
+import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:on_reserve/Models/user.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
@@ -21,11 +22,16 @@ class ProfileController extends GetxController {
   TextEditingController fname = TextEditingController();
   TextEditingController lname = TextEditingController();
   TextEditingController name = TextEditingController();
-  TextEditingController bio = TextEditingController();
+  TextEditingController compbio = TextEditingController();
+  TextEditingController profbio = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
 
   Future<void> logout() async {
     await SecuredStorage.clear();
+    var control = Get.find<ThemeController>();
+    if (control.dark) {
+      control.toggle();
+    }
     Get.offAllNamed(Routes.login);
   }
 
@@ -42,6 +48,8 @@ class ProfileController extends GetxController {
   }
 
   Future<bool> editProfile() async {
+    isLoading = true;
+    update();
     late FormData formData;
     formData = FormData.fromMap(
       {
@@ -56,7 +64,7 @@ class ProfileController extends GetxController {
         'lname': lname.text,
         'fname': fname.text,
         'phoneNumber': phoneNumber.text,
-        'bio': bio.text
+        'bio': profbio.text
       },
     );
 
@@ -70,17 +78,22 @@ class ProfileController extends GetxController {
 
         await SecuredStorage.store(
             key: SharedKeys.user, value: jsonEncode(user!.toJson()));
-
+        isLoading = false;
+        update();
         return true;
       } catch (e) {
         logger(ProfileController).e(e);
+        isLoading = false;
+        update();
         return false;
       }
     }
+    isLoading = false;
+    update();
     return false;
   }
 
-  getImage({required bool profile}) async {
+  Future<void> getImage({required bool profile}) async {
     final ImagePicker picker = ImagePicker();
     // Pick an image.
     if (profile) {
@@ -91,6 +104,21 @@ class ProfileController extends GetxController {
       coverPic = await picker.pickImage(source: ImageSource.gallery);
     }
     update();
+  }
+
+  Future<bool> deleteAccount() async {
+    var response = await NetworkHandler.delete(endpoint: 'profile/${user!.id}');
+    if (response[1] == 200) {
+      try {
+        await SecuredStorage.clear();
+        Get.offAllNamed(Routes.login);
+        return true;
+      } catch (e) {
+        logger(ProfileController).e(e);
+        return false;
+      }
+    }
+    return false;
   }
 
   Future<List> getCompanies() async {
@@ -145,6 +173,8 @@ class ProfileController extends GetxController {
   }
 
   Future<bool> addCompany() async {
+    isLoading = true;
+    update();
     late FormData formData;
     formData = FormData.fromMap(
       {
@@ -157,7 +187,7 @@ class ProfileController extends GetxController {
             : await MultipartFile.fromFile(coverPic!.path,
                 filename: 'cover.jpg'),
         'name': name.text,
-        'bio': bio.text
+        'bio': compbio.text
       },
     );
 
@@ -166,8 +196,12 @@ class ProfileController extends GetxController {
     if (response[1] == 200) {
       getCompanies();
       update();
+      isLoading = false;
+      update();
       return true;
     }
+    isLoading = false;
+    update();
     return false;
   }
 }

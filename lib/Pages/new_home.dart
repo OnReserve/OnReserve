@@ -4,10 +4,18 @@ import 'package:get/get.dart';
 import 'package:on_reserve/Components/event_card.dart';
 import 'package:on_reserve/Components/shimmer.dart';
 import 'package:on_reserve/Controllers/home_controller.dart';
+import 'package:on_reserve/Pages/search_delegate.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class Home2 extends StatelessWidget {
+  static const List<String> _data = [
+    'Event 1',
+    'Event 2',
+    'Event 3',
+    'Event 4',
+    'Event 5'
+  ];
   const Home2({super.key});
   @override
   Widget build(BuildContext context) {
@@ -69,16 +77,13 @@ class Home2 extends StatelessWidget {
                           end: Alignment.bottomCenter,
                           colors: [
                             Colors.transparent,
-                            Theme.of(context)
-                                .colorScheme
-                                .onBackground
-                                .withAlpha(120)
+                            Colors.black.withAlpha(160)
                           ],
                         ),
                       ),
                     ),
                     Positioned(
-                      top: 35,
+                      top: 50,
                       left: 0,
                       right: 0,
                       child: Container(
@@ -103,6 +108,12 @@ class Home2 extends StatelessWidget {
                                   .onBackground
                                   .withAlpha(200),
                             ),
+                            onTap: () {
+                              showSearch<String>(
+                                context: context,
+                                delegate: MySearchDelegate(_data),
+                              );
+                            },
                             decoration: InputDecoration(
                               hintText: "Search for events",
                               hintStyle: TextStyle(
@@ -207,8 +218,9 @@ class Home2 extends StatelessWidget {
                                     dotHeight: 10.0,
                                     activeDotColor:
                                         Theme.of(context).colorScheme.primary,
-                                    dotColor:
-                                        Color.fromARGB(255, 221, 221, 221),
+                                    dotColor: Theme.of(context)
+                                        .colorScheme
+                                        .background,
                                   ),
                                 ),
                               ],
@@ -236,13 +248,13 @@ class Home2 extends StatelessWidget {
               child: FutureBuilder(
                   future: homeController.getPopularEvents(),
                   initialData: [
-                    ContinueCard(
-                      index: 1,
-                      date: '12/12/2021',
-                      title: 'Event Name',
-                      bgImage:
-                          'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png',
-                    ),
+                    // ContinueCard(
+                    //   index: 1,
+                    //   datetime: '12/12/2021',
+                    //   title: 'Event Name',
+                    //   bgImage:
+                    //       'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png',
+                    // ),
                   ],
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -259,8 +271,14 @@ class Home2 extends StatelessWidget {
                               child: ShimmerWidgets.rectangular(
                                   height: 650.h,
                                   width: 850.w,
-                                  baseColor: Colors.grey[400]!,
-                                  highlightColor: Colors.grey[100]!),
+                                  baseColor: Theme.of(context)
+                                      .colorScheme
+                                      .onBackground
+                                      .withAlpha(80),
+                                  highlightColor: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withAlpha(200)),
                             );
                           });
                     } else {
@@ -282,12 +300,17 @@ class Home2 extends StatelessWidget {
                                 Get.toNamed(Routes.eventDetail,
                                     arguments: snapshot.data![index]);
                               },
-                              child: ContinueCard(
+                              child: EventCard(
                                 index: index,
-                                date: snapshot.data![index]['eventStartTime'],
+                                datetime: snapshot.data![index]
+                                    ['eventStartTime'],
                                 title: snapshot.data![index]['title'],
-                                bgImage: snapshot.data![index]['galleries'][0]
-                                    ['eventPhoto'],
+                                bgImage: snapshot
+                                            .data![index]['galleries'].length >
+                                        0
+                                    ? snapshot.data![index]['galleries'][0]
+                                        ['eventPhoto']
+                                    : 'https://wallpaperaccess.com/full/3787594.jpg',
                               ));
                         });
                   }),

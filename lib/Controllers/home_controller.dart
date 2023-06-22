@@ -82,18 +82,7 @@ class HomeController extends GetxController {
   }
 
   Future<List> getPopularEvents() async {
-    // return await Future.delayed(const Duration(seconds: 2), () {
-    //   popularEvents = [
-    //     EventOverview(
-    //         id: 1,
-    //         title: "Rophnan Concert",
-    //         date: "2021-10-10",
-    //         imageURL:
-    //             "http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png"),
-    //   ];
-    //   return popularEvents;
-    // });
-    var response = await NetworkHandler.get(endpoint: 'events/search/Concert');
+    var response = await NetworkHandler.get(endpoint: 'events/popular');
     if (response[1] == 200) {
       try {
         print(response[0]);

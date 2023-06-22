@@ -40,6 +40,7 @@ class AddCompanyBottomSheet extends StatelessWidget {
                               .textTheme
                               .bodyLarge!
                               .copyWith(
+                                fontWeight: FontWeight.bold,
                                 color:
                                     Theme.of(context).colorScheme.onBackground,
                               ),
@@ -101,7 +102,7 @@ class AddCompanyBottomSheet extends StatelessWidget {
                               minHeight: 65,
                             ),
                             child: TextFormField(
-                              controller: profileController.bio,
+                              controller: profileController.compbio,
                               validator:
                                   ValidationBuilder().minLength(10).build(),
                               decoration: InputDecoration(
@@ -220,35 +221,55 @@ class AddCompanyBottomSheet extends StatelessWidget {
                               ],
                             );
                           }),
-                          Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                foregroundColor:
-                                    Theme.of(context).colorScheme.onPrimary,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10),
+                          GetBuilder<ProfileController>(
+                              builder: (profileController) {
+                            return Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.primary,
+                                  foregroundColor:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
                                 ),
-                              ),
-                              onPressed: () async {
-                                if (profileController.formKey.currentState!
-                                    .validate()) {
-                                  if (await profileController.addCompany()) {
-                                    Get.back();
-                                    Get.snackbar('Success', 'Company Added',
-                                        snackPosition: SnackPosition.BOTTOM);
-                                  } else {
-                                    Get.snackbar(
-                                        'Error', 'Something went wrong',
-                                        snackPosition: SnackPosition.BOTTOM);
+                                onPressed: () async {
+                                  if (profileController.formKey.currentState!
+                                      .validate()) {
+                                    if (await profileController.addCompany()) {
+                                      Get.back();
+                                      Get.snackbar('Success', 'Company Added',
+                                          snackPosition: SnackPosition.BOTTOM);
+                                    } else {
+                                      Get.snackbar(
+                                          'Error', 'Something went wrong',
+                                          snackPosition: SnackPosition.BOTTOM);
+                                    }
                                   }
-                                }
-                              },
-                              child: Text('Add Company'),
-                            ),
-                          ),
+                                },
+                                child: profileController.isLoading
+                                    ? Container(
+                                        width: 15,
+                                        margin: EdgeInsets.symmetric(
+                                            horizontal: 25),
+                                        child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            maxHeight: 15,
+                                            maxWidth: 15,
+                                          ),
+                                          child: CircularProgressIndicator(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onPrimary,
+                                          ),
+                                        ),
+                                      )
+                                    : Text('Add Company'),
+                              ),
+                            );
+                          }),
                         ],
                       ),
                     ))

@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:on_reserve/Components/revenue_counter.dart';
 import 'package:flutter_spinbox/flutter_spinbox.dart';
 import 'package:on_reserve/Controllers/event_controller.dart';
+import 'package:on_reserve/helpers/log/logger.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ReserveBottomSheet extends StatelessWidget {
   const ReserveBottomSheet({super.key});
@@ -198,8 +200,29 @@ class ReserveBottomSheet extends StatelessWidget {
                               borderRadius: BorderRadius.circular(10),
                             ),
                           ),
-                          onPressed: () {
-                            controller.reserveTicket();
+                          onPressed: () async {
+                            if (await controller.reserveTicket()) {
+                              Get.snackbar(
+                                'Success',
+                                'Your ticket has been reserved successfully',
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.green,
+                                colorText: Colors.white,
+                                duration: Duration(seconds: 3),
+                              );
+                            } else {
+                              Get.snackbar(
+                                'Error',
+                                'Something went wrong',
+                                snackPosition: SnackPosition.BOTTOM,
+                                backgroundColor: Colors.red,
+                                colorText: Colors.white,
+                                duration: Duration(seconds: 3),
+                              );
+                            }
+                            Get.back();
+                            _launchUrl(Uri.parse(
+                                'https://yenepay.com/checkout/Home/Process/?ItemName=12&ItemId=adf&UnitPrice=${controller.totalPrice}&Quantity=${controller.vipSeats + controller.economySeats}&Process=Express&ExpiresAfter=&DeliveryFee=&HandlingFee=&Tax1=&Tax2=&Discount=&SuccessUrl=&IPNUrl=&MerchantId=26459'));
                           },
                           child: Text('Pay Now'),
                         ),
@@ -211,5 +234,11 @@ class ReserveBottomSheet extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _launchUrl(_url) async {
+    if (!await launchUrl(_url)) {
+      logger(ReserveBottomSheet).e('Could not launch $_url');
+    }
   }
 }

@@ -1,11 +1,16 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_bubble/chat_bubble.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:on_reserve/Controllers/event_controller.dart';
+import 'package:on_reserve/Controllers/profile_controller.dart';
 
 class ReviewsBottomSheet extends StatelessWidget {
-  final TextEditingController _textEditingController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<EventController>();
     return SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -16,6 +21,7 @@ class ReviewsBottomSheet extends StatelessWidget {
           child: Container(
             color: Theme.of(context).colorScheme.background,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding:
@@ -44,38 +50,101 @@ class ReviewsBottomSheet extends StatelessWidget {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Padding(
+                GetBuilder<EventController>(builder: (controller) {
+                  return Padding(
                     padding: const EdgeInsets.symmetric(
-                        vertical: 10.0, horizontal: 20),
-                    child: ListView(
-                      children: <Widget>[
-                        getReceiverView(
-                            ChatBubbleClipper4(type: BubbleType.receiverBubble),
-                            context,
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-                        getReceiverView(
-                            ChatBubbleClipper4(type: BubbleType.receiverBubble),
-                            context,
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-                        getReceiverView(
-                            ChatBubbleClipper4(type: BubbleType.receiverBubble),
-                            context,
-                            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."),
-                        SizedBox(
-                          height: 30,
+                        horizontal: 16.0, vertical: 2),
+                    child: Row(
+                      children: [
+                        RatingBar.builder(
+                          initialRating: 3,
+                          minRating: 1,
+                          tapOnlyMode: false,
+                          direction: Axis.horizontal,
+                          allowHalfRating: true,
+                          itemSize: 20,
+                          itemCount: 5,
+                          itemPadding:
+                              EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                          itemBuilder: (context, _) => Icon(
+                            Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            controller.userRating = rating;
+                            controller.update();
+                          },
                         ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                          child: Text(
+                            controller.userRating.toString(),
+                            style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onBackground,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
                       ],
                     ),
-                  ),
-                ),
+                  );
+                }),
+                GetBuilder<EventController>(builder: (controller) {
+                  return Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 20),
+                      child: FutureBuilder(
+                          future: controller.getReview(),
+                          builder: (context, snapshot) {
+                            return snapshot.connectionState ==
+                                    ConnectionState.done
+                                ? snapshot.data == null ||
+                                        snapshot.data!.isEmpty
+                                    ? Center(
+                                        child: Text('No Reviews Yet'),
+                                      )
+                                    : ListView(
+                                        children: List<Widget>.generate(
+                                            snapshot.data!.length, (index) {
+                                          Review review = snapshot.data![index];
+                                          var controller2 =
+                                              Get.find<ProfileController>();
+                                          if (review.userId ==
+                                              controller2.user!.id) {
+                                            return getSenderView(
+                                              ChatBubbleClipper4(
+                                                  type: BubbleType.sendBubble),
+                                              context,
+                                              review.review,
+                                              review.rating,
+                                            );
+                                          } else {
+                                            return getReceiverView(
+                                              ChatBubbleClipper4(
+                                                  type: BubbleType
+                                                      .receiverBubble),
+                                              context,
+                                              review.review,
+                                              review.rating,
+                                            );
+                                          }
+                                        }),
+                                      )
+                                : Center(
+                                    child: CircularProgressIndicator.adaptive(),
+                                  );
+                          }),
+                    ),
+                  );
+                }),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
                   child: Row(
                     children: [
                       Expanded(
                         child: TextField(
-                          controller: _textEditingController,
+                          controller: controller.textEditingController,
                           maxLines: 5,
                           minLines: 1,
                           decoration: InputDecoration(
@@ -84,23 +153,20 @@ class ReviewsBottomSheet extends StatelessWidget {
                           ),
                         ),
                       ),
-                      IconButton(
-                        onPressed: () {
-                          // // Save the review and close the bottom sheet
-                          // final reviewText = _textEditingController.text;
-                          // // Do something with the review
-                          // final newReview =
-                          //     Review(userName: 'John Doe', reviewText: reviewText);
-                          // setState(() {
-                          //   widget.reviews.add(newReview);
-                          // });
-                          // _textEditingController.clear();
-                        },
-                        icon: Icon(
-                          Icons.send,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                      ),
+                      GetBuilder<EventController>(builder: (controller) {
+                        return controller.isLoading
+                            ? CircularProgressIndicator.adaptive()
+                            : IconButton(
+                                onPressed: () {
+                                  controller.addReview();
+                                  controller.textEditingController.clear();
+                                },
+                                icon: Icon(
+                                  Icons.send,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                              );
+                      }),
                     ],
                   ),
                 ),
@@ -118,7 +184,8 @@ class ReviewsBottomSheet extends StatelessWidget {
         ),
       );
 
-  getSenderView(CustomClipper clipper, BuildContext context, String text) =>
+  getSenderView(CustomClipper clipper, BuildContext context, String text,
+          int rating) =>
       ChatBubble(
         clipper: clipper,
         alignment: Alignment.topRight,
@@ -128,25 +195,72 @@ class ReviewsBottomSheet extends StatelessWidget {
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.7,
           ),
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.white),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: 600.w,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                      children: List.generate(
+                    5,
+                    (index) => Icon(
+                      Icons.star,
+                      color: rating > index
+                          ? Colors.yellow[600]
+                          : Colors.grey[400],
+                      size: 75.r,
+                    ),
+                  )),
+                ),
+              ),
+              Text(
+                text,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
+              ),
+            ],
           ),
         ),
       );
 
-  getReceiverView(CustomClipper clipper, BuildContext context, String text) =>
+  getReceiverView(CustomClipper clipper, BuildContext context, String text,
+          int rating) =>
       ChatBubble(
         clipper: clipper,
-        backGroundColor: Color.fromARGB(255, 236, 231, 237),
+        backGroundColor: Theme.of(context).colorScheme.background.lighten(10),
         margin: EdgeInsets.only(top: 20),
         child: Container(
           constraints: BoxConstraints(
             maxWidth: MediaQuery.of(context).size.width * 0.7,
           ),
-          child: Text(
-            text,
-            style: TextStyle(color: Colors.black),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Container(
+                width: 600.w,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  child: Row(
+                      children: List.generate(
+                    5,
+                    (index) => Icon(
+                      Icons.star,
+                      color: rating > index
+                          ? Colors.yellow[600]
+                          : Colors.grey[400],
+                      size: 75.r,
+                    ),
+                  )),
+                ),
+              ),
+              Text(
+                text,
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground),
+              ),
+            ],
           ),
         ),
       );

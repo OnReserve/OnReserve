@@ -110,9 +110,9 @@ class _HomeState extends State<Home> {
                                     padding: const EdgeInsets.all(10),
                                     itemCount: snapshot.data!.length,
                                     itemBuilder: (context, index) {
-                                      return ContinueCard(
+                                      return EventCard(
                                         index: index,
-                                        date: snapshot.data![index].date,
+                                        datetime: snapshot.data![index].date,
                                         title: snapshot.data![index].title,
                                         bgImage: snapshot.data![index].imageURL,
                                       );

@@ -52,13 +52,13 @@ class _AuthBaseState extends State<AuthBase> {
                 isKeyboardVisible
                     ? SizedBox()
                     : Container(
-                        padding: EdgeInsets.only(bottom: 60.h),
+                        padding: EdgeInsets.only(bottom: 55.h),
                         child: Image(
                           image: const AssetImage(
-                            'assets/Images/logo.png',
+                            'assets/Images/logo_light.png',
                           ),
-                          width: 219.w,
-                          height: 219.h,
+                          width: 250.w,
+                          height: 250.h,
                         ),
                       ),
                 isKeyboardVisible

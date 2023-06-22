@@ -2,20 +2,32 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 
-class ContinueCard extends StatelessWidget {
+// ignore: must_be_immutable
+class EventCard extends StatelessWidget {
   final int index;
-  final String date;
+  final String datetime;
   final String title;
   final String bgImage;
+  late String date;
+  late String time;
+  late DateTime dateTime;
 
-  const ContinueCard({
+  EventCard({
     super.key,
-    required this.date,
+    required this.datetime,
     required this.title,
     required this.index,
     required this.bgImage,
-  });
+  }) {
+    dateTime = DateTime.parse(this.datetime);
+
+    date =
+        "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
+    time =
+        "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,86 +38,82 @@ class ContinueCard extends StatelessWidget {
       width: isLandscape == Orientation.portrait ? 920.w : 920.w * 0.65,
       margin: EdgeInsets.only(right: 75.w),
       decoration: BoxDecoration(
-          image: DecorationImage(
-              image: CachedNetworkImageProvider(
-                bgImage,
-              ),
-              fit: BoxFit.cover,
-              opacity: 0.5),
-          gradient: LinearGradient(
-            begin: const Alignment(-1, 1),
-            end: const Alignment(1, -1),
-            colors: index.isEven
-                ? [
-                    Color.fromARGB(255, 136, 102, 63),
-                    Color.fromARGB(255, 139, 111, 59),
-                    Color.fromARGB(255, 105, 87, 44),
-                    Color.fromARGB(255, 60, 54, 32),
-                  ]
-                : [
-                    Color.fromARGB(255, 163, 110, 56),
-                    Color.fromARGB(255, 178, 59, 87),
-                    Color.fromARGB(255, 138, 52, 185),
-                    Color.fromARGB(255, 47, 33, 156),
-                  ],
+        borderRadius: BorderRadius.circular(60.r),
+        image: DecorationImage(
+          image: CachedNetworkImageProvider(bgImage),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+            Colors.black.withOpacity(0.5),
+            BlendMode.srcATop,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).shadowColor.withAlpha(85),
-              // spreadRadius: 0.25,
-              blurRadius: 15.r,
-              offset: Offset(5.w, 2.h),
-            )
-          ],
-          borderRadius: BorderRadius.all(Radius.circular(60.r))),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).shadowColor.withAlpha(85),
+            blurRadius: 15.r,
+            offset: Offset(5.w, 2.h),
+          )
+        ],
+      ),
       child: Padding(
         padding: EdgeInsets.all(50.r),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
+            Text(
+              title,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 60.sp,
+                  ),
+            ),
+            SizedBox(height: 20.h),
             Container(
-              width: 350.w,
-              height: 105.h,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(15.r)),
+                color: Colors.white.withOpacity(0.2),
+                borderRadius: BorderRadius.circular(25.r),
               ),
-              child: Center(
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                      fontSize: 14,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: Icon(
+                        Icons.calendar_today_outlined,
+                        color: Colors.white,
+                        size: 40.sp,
+                      ),
+                    ),
+                    Text(
+                      DateFormat('EEEE, MMMM d, y').format(dateTime),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 40.sp,
+                      ),
+                    ),
+                    Spacer(),
+                    Padding(
+                      padding: EdgeInsets.only(right: 10.w),
+                      child: Icon(
+                        Icons.access_time,
+                        color: Colors.white,
+                        size: 30.sp,
+                      ),
+                    ),
+                    Text(
+                      time,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 36.sp,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-            Container(
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color:
-                      Theme.of(context).colorScheme.background.withOpacity(0.2),
-                  borderRadius: BorderRadius.all(Radius.circular(25.r)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w),
-                      child: Text(
-                        '$date',
-                        style: Theme.of(context)
-                            .textTheme
-                            .headlineMedium
-                            ?.copyWith(
-                                fontSize: 10,
-                                color: Theme.of(context).canvasColor),
-                      ),
-                    ),
-                  ),
-                ))
           ],
         ),
       ),

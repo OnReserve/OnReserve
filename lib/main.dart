@@ -11,19 +11,20 @@ import 'package:window_manager/window_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:on_reserve/Controllers/theme_controller.dart';
-// import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
-// import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
+// import 'package:google_fonts/google_fonts.dart';
+import 'package:google_maps_flutter_android/google_maps_flutter_android.dart';
+import 'package:google_maps_flutter_platform_interface/google_maps_flutter_platform_interface.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // if (Platform.isAndroid) {
-  //   final GoogleMapsFlutterPlatform mapsImplementation =
-  //       GoogleMapsFlutterPlatform.instance;
-  //   if (mapsImplementation is GoogleMapsFlutterAndroid) {
-  //     mapsImplementation.useAndroidViewSurface = false;
-  //   }
-  // }
+  if (Platform.isAndroid) {
+    final GoogleMapsFlutterPlatform mapsImplementation =
+        GoogleMapsFlutterPlatform.instance;
+    if (mapsImplementation is GoogleMapsFlutterAndroid) {
+      mapsImplementation.useAndroidViewSurface = false;
+    }
+  }
 
   if (Platform.isWindows) {
     await windowManager.ensureInitialized();
@@ -115,8 +116,6 @@ class OnReserve extends StatelessWidget {
                 visualDensity: FlexColorScheme.comfortablePlatformDensity,
                 useMaterial3: true,
                 swapLegacyOnMaterial3: true,
-                // To use the Playground font, add GoogleFonts package and uncomment
-                // fontFamily: GoogleFonts.notoSans().fontFamily,
               ),
               themeMode: theme.dark ? ThemeMode.dark : ThemeMode.light,
               debugShowCheckedModeBanner: false,

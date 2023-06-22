@@ -1,29 +1,28 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:card_actions/card_action_button.dart';
-import 'package:card_actions/card_actions.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:on_reserve/Components/card_action_button.dart';
+import 'package:on_reserve/Components/card_actions.dart';
 import 'package:on_reserve/Components/revenue_counter.dart';
 import 'package:on_reserve/Components/shimmer.dart';
 import 'package:on_reserve/Controllers/company_profile_controller.dart';
+import 'package:on_reserve/Controllers/profile_controller.dart';
+import 'package:on_reserve/Controllers/theme_controller.dart';
+import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/edit_company.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:uuid/uuid.dart';
 
 var uuid = Uuid();
 
-class CompanyProfile extends StatefulWidget {
+class CompanyProfile extends StatelessWidget {
   const CompanyProfile({super.key});
 
-  @override
-  State<CompanyProfile> createState() => CompanyProfileState();
-}
-
-class CompanyProfileState extends State<CompanyProfile> {
   final double coverHeight = 240;
   final double profileHeight = 100;
 
@@ -32,45 +31,51 @@ class CompanyProfileState extends State<CompanyProfile> {
     // width
     double w = MediaQuery.of(context).size.width;
     var controller = Get.find<CompanyProfileController>();
+    DateTime dateTime = DateTime.parse(controller.args['company']['createdAt']);
+
+    String date = DateFormat('MMMM d yyyy').format(dateTime);
+
     return Scaffold(
         body: SingleChildScrollView(
-      physics: BouncingScrollPhysics(),
-      child: Column(
-        children: [
-          Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.center,
-            children: [
-              buildCoverImage(controller),
-              Positioned(
-                top: coverHeight - (profileHeight / 2),
-                child: biuldProfileImage(controller),
-              ),
-              Positioned(
-                top: 45,
-                right: 30,
-                child: buildEditProfileIcon(controller),
-              ),
-              Positioned(
-                top: 45,
-                left: 30,
-                child: buildBackButton(),
-              )
-            ],
-          ),
-          SizedBox(height: 50),
-          buildCompanyDetail(w, controller),
-          SizedBox(height: 5),
-          buildAdminTab(context, controller),
-          SizedBox(height: 20),
-          buildEventTab(controller),
-          SizedBox(height: 100),
-        ],
-      ),
+      physics: ClampingScrollPhysics(),
+      child: GetBuilder<CompanyProfileController>(builder: (controller) {
+        return Column(
+          children: [
+            Stack(
+              clipBehavior: Clip.none,
+              alignment: Alignment.center,
+              children: [
+                buildCoverImage(controller),
+                Positioned(
+                  top: coverHeight - (profileHeight / 2),
+                  child: biuldProfileImage(controller),
+                ),
+                Positioned(
+                  top: 45,
+                  right: 30,
+                  child: EditProfileIcon(),
+                ),
+                Positioned(
+                  top: 45,
+                  left: 30,
+                  child: buildBackButton(context),
+                )
+              ],
+            ),
+            SizedBox(height: 50),
+            buildCompanyDetail(w, controller, date, context),
+            SizedBox(height: 5),
+            buildAdminTab(context, controller),
+            SizedBox(height: 20),
+            EventTab(controller: controller),
+            SizedBox(height: 100),
+          ],
+        );
+      }),
     ));
   }
 
-  Widget buildBackButton() {
+  Widget buildBackButton(BuildContext context) {
     return Container(
       height: 40,
       width: 40,
@@ -91,26 +96,12 @@ class CompanyProfileState extends State<CompanyProfile> {
     );
   }
 
-  Widget buildEditProfileIcon(CompanyProfileController controller) {
-    return Container(
-      height: 40,
-      width: 40,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.withAlpha(120),
-        borderRadius: BorderRadius.circular(50),
-      ),
-      child: IconButton(
-        onPressed: () {},
-        icon: Icon(
-          Icons.edit,
-          size: 15,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
-
-  Widget buildCompanyDetail(double w, CompanyProfileController controller) {
+  Widget buildCompanyDetail(
+    double w,
+    CompanyProfileController controller,
+    var date,
+    BuildContext context,
+  ) {
     return Container(
         width: w,
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -140,7 +131,7 @@ class CompanyProfileState extends State<CompanyProfile> {
                   fontWeight: FontWeight.bold,
                 ),
               )),
-              DataCell(Text(controller.args['company']['createdAt'])),
+              DataCell(Text("$date")),
             ]),
             DataRow(cells: [
               DataCell(Text(
@@ -204,8 +195,18 @@ class CompanyProfileState extends State<CompanyProfile> {
       ),
     );
   }
+}
 
-  Widget buildEventTab(CompanyProfileController controller) {
+class EventTab extends StatelessWidget {
+  const EventTab({
+    super.key,
+    required this.controller,
+  });
+
+  final CompanyProfileController controller;
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
         decoration: BoxDecoration(
@@ -218,91 +219,153 @@ class CompanyProfileState extends State<CompanyProfile> {
           children: [
             Header(
               title: 'Events',
-              onTap: () {},
+              onTap: () {
+                Get.toNamed(Routes.addEvent, arguments: {
+                  'companies': [controller.args],
+                  'categories': controller.categories
+                });
+              },
               addable: true,
             ),
-            Container(
-              height: 1500.h,
-              child: FutureBuilder(
-                future: controller.getCompanyProfile(),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: BouncingScrollPhysics(),
-                      itemCount: snapshot.data != null
-                          ? snapshot.data!['events'].length
-                          : 0,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin: const EdgeInsets.all(20),
-                          child: CardActions(
-                            // buttonsCursor: SystemMouseCursors.click,
-                            showToolTip: true,
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            axisDirection: CardActionAxis.bottom,
-                            borderRadius: 15,
-                            width: 600,
-                            height: 220,
-                            actions: [
-                              CardActionButton(
-                                icon: const Icon(
-                                  Icons.qr_code,
-                                  color: Colors.white,
-                                  size: 20,
+            GetBuilder<CompanyProfileController>(builder: (controller) {
+              return Container(
+                height: 2000.h,
+                child: FutureBuilder(
+                  future: controller.getCompanyProfile(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: BouncingScrollPhysics(),
+                        itemCount: snapshot.data != null
+                            ? snapshot.data!['events'].length
+                            : 0,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: const EdgeInsets.all(20),
+                            child: CardActions(
+                              // buttonsCursor: SystemMouseCursors.click,
+                              showToolTip: true,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              axisDirection: CardActionAxis.bottom,
+                              borderRadius: 15,
+                              width: 600,
+                              height: 220,
+                              actions: [
+                                CardActionButton(
+                                  icon: const Icon(
+                                    Icons.qr_code,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  label: 'Scan QR Code',
+                                  onPress: () {
+                                    Get.toNamed(Routes.qr);
+                                  },
                                 ),
-                                label: 'Scan QR Code',
-                                onPress: () {
-                                  Get.toNamed(Routes.qr);
-                                },
-                              ),
-                              CardActionButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  color: Colors.white,
-                                  size: 20,
+                                CardActionButton(
+                                  icon: const Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  label: 'Edit',
+                                  onPress: () {
+                                    Get.toNamed(Routes.addEvent, arguments: {
+                                      'companies': [controller.args],
+                                      'categories': controller.categories,
+                                      'event': snapshot.data!['events'][index]
+                                    });
+                                  },
                                 ),
-                                label: 'Edit',
-                                onPress: () {
-                                  // setState(() {
-                                  //   counter = 0;
-                                  // });
-                                },
-                              ),
-                              CardActionButton(
-                                icon: const Icon(
-                                  Icons.delete,
-                                  color: Colors.white,
-                                  size: 20,
+                                CardActionButton(
+                                  icon: const Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
+                                    size: 20,
+                                  ),
+                                  label: 'Delete',
+                                  onPress: () async {
+                                    if (await controller.removeEvent(snapshot
+                                        .data!['events'][index]['id'])) {
+                                      Get.snackbar('Success', 'Event Deleted');
+                                    } else {
+                                      Get.snackbar(
+                                          'Error', 'Event Not Deleted');
+                                    }
+                                  },
                                 ),
-                                label: 'Delete',
-                                onPress: () {},
+                              ],
+                              child: EventCard(
+                                eventDate: snapshot.data!['events'][index]
+                                    ['eventStartTime'],
+                                eventName: snapshot.data!['events'][index]
+                                    ['title'],
+                                eventPic: snapshot
+                                            .data!['events'][index]['galleries']
+                                            .length >
+                                        0
+                                    ? snapshot.data!['events'][index]
+                                        ['galleries'][0]['eventPhoto']
+                                    : 'https://wallpaperaccess.com/full/3787594.jpg',
+                                eventRating: '3',
+                                totalRevenue: 100.0,
                               ),
-                            ],
-                            child: EventCard(
-                              eventDate: snapshot.data!['events'][index]
-                                  ['eventStartTime'],
-                              eventName: snapshot.data!['events'][index]
-                                  ['title'],
-                              eventPic: snapshot.data!['events'][index]
-                                  ['galleries'][0]['eventPhoto'],
-                              eventRating: '3',
-                              totalRevenue: 100.0,
                             ),
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                },
-              ),
-            ),
+                          );
+                        },
+                      );
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
+                ),
+              );
+            }),
             SizedBox(height: 15),
           ],
         ));
+  }
+}
+
+class EditProfileIcon extends StatelessWidget {
+  const EditProfileIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final controller = Get.find<CompanyProfileController>();
+    return Container(
+      height: 40,
+      width: 40,
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primary.withAlpha(120),
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: IconButton(
+        onPressed: () {
+          controller.name.text = '${controller.args['company']['name']}';
+          controller.bio.text = '${controller.args['company']['bio']}';
+          controller.coverPic = null;
+          controller.profilePic = null;
+          Get.bottomSheet(
+            const EditCompanyBottomSheet(),
+            shape: Get.theme.bottomSheetTheme.shape,
+            isScrollControlled: true,
+            clipBehavior: Clip.hardEdge,
+            useRootNavigator: true,
+            enableDrag: true,
+          );
+        },
+        icon: Icon(
+          Icons.edit,
+          size: 15,
+          color: Colors.white,
+        ),
+      ),
+    );
   }
 }
 
@@ -310,6 +373,7 @@ Widget buildAdminTab(
     BuildContext context, CompanyProfileController controller) {
   TextEditingController _emailController = TextEditingController();
   void showEmailDialog(BuildContext context) {
+    var controller = Get.find<CompanyProfileController>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -328,10 +392,19 @@ Widget buildAdminTab(
             ),
             TextButton(
               child: Text('Submit'),
-              onPressed: () {
+              onPressed: () async {
                 String email = _emailController.text;
                 // Do something with email, such as send it to a server for verification
-                Navigator.of(context).pop();
+                if (await controller.addAdmin(email)) {
+                  Navigator.of(context).pop();
+                  controller.getCompanyProfile();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Admin Succesfully Added")));
+                } else {
+                  Navigator.of(context).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Check Admin Email")));
+                }
               },
             ),
           ],
@@ -357,7 +430,7 @@ Widget buildAdminTab(
               showEmailDialog(context);
             },
           ),
-          SlidableList(controller: controller),
+          SlidableList(),
           SizedBox(height: 15),
         ],
       ));
@@ -366,58 +439,62 @@ Widget buildAdminTab(
 class SlidableList extends StatelessWidget {
   const SlidableList({
     super.key,
-    required this.controller,
   });
-
-  final CompanyProfileController controller;
-  Future getAdmins() {
-    return controller.getCompanyProfile();
-  }
 
   @override
   Widget build(BuildContext context) {
     final double w = MediaQuery.of(context).size.width;
-    return Container(
-        width: w,
-        height: 1000.h,
-        child: FutureBuilder(
-            future: getAdmins(),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.done
-                  ? ListView.builder(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      itemCount: snapshot.data != null
-                          ? snapshot.data!['admin'].length
-                          : 0,
-                      itemBuilder: (context, index) {
-                        return Slide(
-                          name:
-                              "${snapshot.data!['admin'][index]['user']['fname']} ${snapshot.data!['admin'][index]['user']['lname']}",
-                          email: snapshot.data!['admin'][index]['user']
-                              ['email'],
-                          profilePic: snapshot.data!['admin'][index]['user']
-                              ['profile']['profilePic'],
-                        );
-                      })
-                  : ListView.builder(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      padding: const EdgeInsets.all(10),
-                      itemCount: 3,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: ShimmerWidgets.rectangular(
-                              height: 250.h,
-                              width: 850.w,
-                              baseColor:
-                                  const Color.fromARGB(255, 205, 205, 205),
-                              highlightColor: Colors.grey[100]!),
-                        );
-                      });
-            }));
+    return GetBuilder<CompanyProfileController>(builder: (controller) {
+      return Container(
+          width: w,
+          height: 1550.h,
+          child: FutureBuilder(
+              future: controller.getCompanyProfile(),
+              builder: (context, snapshot) {
+                return snapshot.connectionState == ConnectionState.done
+                    ? snapshot.data!.isEmpty
+                        ? Center(
+                            child: Text('No Admins'),
+                          )
+                        : ListView.builder(
+                            physics: const BouncingScrollPhysics(
+                                parent: AlwaysScrollableScrollPhysics()),
+                            itemCount: snapshot.data != null
+                                ? snapshot.data!['admin'].length
+                                : 0,
+                            itemBuilder: (context, index) {
+                              return Slide(
+                                name:
+                                    "${snapshot.data!['admin'][index]['user']['fname']} ${snapshot.data!['admin'][index]['user']['lname']}",
+                                email: snapshot.data!['admin'][index]['user']
+                                    ['email'],
+                                profilePic: !snapshot.data!['admin'][index]
+                                            ['user']['profile']['profilePic']
+                                        .startsWith('https://api.')
+                                    ? snapshot.data!['admin'][index]['user']
+                                        ['profile']['profilePic']
+                                    : 'https://img.freepik.com/free-icon/user_318-159711.jpg',
+                              );
+                            })
+                    : ListView.builder(
+                        physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics()),
+                        padding: const EdgeInsets.all(10),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 5),
+                            child: ShimmerWidgets.rectangular(
+                                height: 250.h,
+                                width: 850.w,
+                                baseColor:
+                                    const Color.fromARGB(255, 205, 205, 205),
+                                highlightColor: Colors.grey[100]!),
+                          );
+                        });
+              }));
+    });
   }
 }
 
@@ -487,18 +564,30 @@ class Slide extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<CompanyProfileController>();
     return Slidable(
       key: ValueKey(uuid.v4()),
+      enabled: email != Get.find<ProfileController>().user!.email,
       startActionPane: ActionPane(
         motion: const ScrollMotion(),
-        dismissible: DismissiblePane(onDismissed: () {
-          // snackbar
-          Get.snackbar(
-            'Admin Removed',
-            'Admin has been removed from the company',
-            snackPosition: SnackPosition.BOTTOM,
-          );
-        }),
+        dismissible: DismissiblePane(
+          onDismissed: () async {
+            if (await controller.removeAdmin(email)) {
+              // snackbar
+              Get.snackbar(
+                'Admin Removed',
+                'Admin has been removed from the company',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            } else {
+              Get.snackbar(
+                'Error',
+                'Something went wrong',
+                snackPosition: SnackPosition.BOTTOM,
+              );
+            }
+          },
+        ),
         children: const [
           SlidableAction(
             onPressed: null,
@@ -548,11 +637,17 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var controller = Get.find<ThemeController>();
+    DateTime dateTime = DateTime.parse(eventDate);
+
+    String date = DateFormat('MMMM d yyyy').format(dateTime);
     return Container(
       width: 600,
       height: 220,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primary.lighten(20),
+        color: controller.dark
+            ? Theme.of(context).colorScheme.primary.darken(10)
+            : Theme.of(context).colorScheme.primary.lighten(20),
         borderRadius: BorderRadius.circular(15),
         boxShadow: const [
           BoxShadow(
@@ -584,10 +679,9 @@ class EventCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Text(
-                    eventDate,
+                    date,
                     style: TextStyle(
                       color: Colors.white,
-                      // fontWeight: FontWeight.bold,
                       fontSize: 12,
                     ),
                   ),

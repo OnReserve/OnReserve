@@ -1,9 +1,18 @@
+// import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 
 class EventController extends GetxController {
   var args = Get.arguments;
+
+  final TextEditingController textEditingController = TextEditingController();
+
+  List<Review> reviews = [];
+  double rating = 3.0;
+  double userRating = 3.0;
+  bool isLoading = false;
 
   int economySeats = 1;
   int vipSeats = 0;
@@ -31,6 +40,52 @@ class EventController extends GetxController {
     } catch (e) {
       logger(EventController).e("Error: $e");
     }
+  }
+
+  Future<List<Review>> getReview() async {
+    var response = await NetworkHandler.get(
+      endpoint: 'event/${args['id']}/ratings',
+    );
+
+    if (response[1] == 200) {
+      try {
+        var res = List.generate(response[0]['reviews'].length, (index) {
+          return Review(
+              rating: response[0]['reviews'][index]['stars'],
+              review: response[0]['reviews'][index]['comment'],
+              userId: response[0]['reviews'][index]['userId']);
+        });
+        return res;
+      } catch (e) {
+        logger(EventController).e("Error: $e");
+      }
+    } else {
+      return [];
+    }
+    return [];
+  }
+
+  Future<bool> addReview() async {
+    isLoading = true;
+    update();
+    var body = {"comment": textEditingController.text, "stars": userRating};
+
+    var response = await NetworkHandler.post(
+      endpoint: 'event/${args['id']}/ratings',
+      body: body,
+    );
+
+    if (response[1] == 200) {
+      isLoading = false;
+      update();
+    } else {
+      isLoading = false;
+      update();
+      return false;
+    }
+    isLoading = false;
+    update();
+    return false;
   }
 
   void setVipSeats(double x) {
@@ -68,4 +123,12 @@ class EventController extends GetxController {
     }
     return false;
   }
+}
+
+class Review {
+  int rating = 3;
+  String review = '';
+  int userId = 0;
+
+  Review({required this.rating, required this.review, required this.userId});
 }

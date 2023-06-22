@@ -1,17 +1,17 @@
-// import 'dart:async';
-// import 'dart:io';
+import 'dart:async';
+import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/event_controller.dart';
 import 'package:on_reserve/Pages/Reser%20Bottom%20Sheets/reserve_bottom_sheets.dart';
 import 'package:on_reserve/Pages/review_bottom_sheet.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
-// import 'package:on_reserve/helpers/routes.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:on_reserve/helpers/log/logger.dart';
 
 class Event extends StatefulWidget {
   const Event({super.key});
@@ -21,22 +21,31 @@ class Event extends StatefulWidget {
 }
 
 class _EventState extends State<Event> {
-  // final Completer<GoogleMapController> controller =
-  //     Completer<GoogleMapController>();
+  final Completer<GoogleMapController> controller =
+      Completer<GoogleMapController>();
 
-  // static const CameraPosition kGooglePlex = CameraPosition(
-  //   target: LatLng(37.42796133580664, -122.085749655962),
-  //   zoom: 14.4746,
-  // );
+  static CameraPosition kGooglePlex = CameraPosition(
+    target: LatLng(37.42796133580664, -122.085749655962),
+    zoom: 14.4746,
+  );
 
   bool liked = false;
   double rating = 3.0;
 
-  // static const CameraPosition kLake = CameraPosition(
-  //     bearing: 192.8334901395799,
-  //     target: LatLng(37.43296265331129, -122.08832357078792),
-  //     tilt: 59.440717697143555,
-  //     zoom: 19.151926040649414);
+  @override
+  void initState() {
+    var controller = Get.put(EventController());
+    var lat = 37.42796133580664;
+    var long = -122.085749655962;
+    try {
+      lat = controller.args['locations'][0]['latitude'] + 0.0;
+      long = controller.args['locations'][0]['longitude'] + 0.0;
+    } catch (e) {
+      logger(Event).e(e.toString());
+    }
+    kGooglePlex = CameraPosition(target: LatLng(lat, long), zoom: 14.4746);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +58,7 @@ class _EventState extends State<Event> {
     String date =
         "${dateTime.year}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.day.toString().padLeft(2, '0')}";
     String time =
-        "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}:${dateTime.second.toString().padLeft(2, '0')}";
+        "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
 
     return Scaffold(
       body: Column(
@@ -232,23 +241,24 @@ class _EventState extends State<Event> {
                 SizedBox(height: 4.h),
                 Row(
                   children: [
+                    // Review Stars
                     Expanded(
-                      child: RatingBar.builder(
-                        initialRating: 3,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemSize: 20,
-                        itemCount: 5,
-                        itemPadding:
-                            EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                          color: Colors.amber,
+                      child: Container(
+                        width: 600.w,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4),
+                          child: Row(
+                              children: List.generate(
+                            5,
+                            (index) => Icon(
+                              Icons.star,
+                              color: controller.rating > index
+                                  ? Colors.yellow[600]
+                                  : Colors.grey[400],
+                              size: 75.r,
+                            ),
+                          )),
                         ),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
                       ),
                     ),
                     SizedBox(
@@ -330,17 +340,22 @@ class _EventState extends State<Event> {
                 SizedBox(
                   height: 50.h,
                 ),
-                SizedBox(
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 24.0),
+                  child: SizedBox(
                     width: double.infinity,
                     height: 750.h,
-                    child:
-                        // Platform.isAndroid
-                        //     ? GoogleMap(
-                        //         mapType: MapType.hybrid,
-                        //         initialCameraPosition: kGooglePlex,
-                        //       )
-                        //     : SizedBox(),
-                        SizedBox()),
+                    child: Platform.isAndroid
+                        ? GoogleMap(
+                            mapType: MapType.hybrid,
+                            initialCameraPosition: kGooglePlex,
+                          )
+                        : SizedBox(),
+                  ),
+                ),
+                SizedBox(
+                  height: 120.h,
+                ),
                 Row(
                   children: [
                     true

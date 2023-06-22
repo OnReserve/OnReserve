@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Components/shimmer.dart';
+import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:on_reserve/Controllers/profile_controller.dart';
 import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/add_company.dart';
@@ -33,49 +33,68 @@ class ProfilePage extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
               ),
-              child: Stack(
-                clipBehavior: Clip.none,
-                alignment: Alignment.center,
-                children: [
-                  buildCoverImage(),
-                  Positioned(
-                    top: coverHeight - (profileHeight * 1.2),
-                    left: 30,
-                    child: biuldProfileImage(),
+              child:
+                  GetBuilder<ProfileController>(builder: (profileController) {
+                return Stack(
+                  clipBehavior: Clip.none,
+                  alignment: Alignment.center,
+                  children: [
+                    buildCoverImage(),
+                    Positioned(
+                      top: coverHeight - (profileHeight * 1.2),
+                      left: 30,
+                      child: biuldProfileImage(),
+                    ),
+                    Positioned(
+                      bottom: 40,
+                      right: 20,
+                      child: buildEditProfileIcon(context),
+                    ),
+                  ],
+                );
+              }),
+            ),
+            GetBuilder<ProfileController>(builder: (profileController) {
+              return Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                child: Text(
+                  profileController.user!.firstName +
+                      ' ' +
+                      profileController.user!.lastName,
+                  style: TextStyle(
+                    fontSize: 65.sp,
+                    fontWeight: FontWeight.bold,
                   ),
-                  Positioned(
-                    bottom: 40,
-                    right: 20,
-                    child: buildEditProfileIcon(context),
+                ),
+              );
+            }),
+            GetBuilder<ProfileController>(builder: (profileController) {
+              return Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 3),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 3),
+                child: Text(
+                  profileController.user!.email,
+                  style: TextStyle(
+                    fontSize: 45.sp,
                   ),
-                ],
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 3),
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 2),
-              child: Text(
-                profileController.user!.firstName +
-                    ' ' +
-                    profileController.user!.lastName,
-                style: TextStyle(
-                  fontSize: 65.sp,
-                  fontWeight: FontWeight.bold,
                 ),
-              ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-              child: Text(
-                profileController.user!.bio!.isEmpty
-                    ? 'Empty Bio...'
-                    : profileController.user!.bio!,
-                style: TextStyle(
-                  fontSize: 55.sp,
+              );
+            }),
+            GetBuilder<ProfileController>(builder: (profileController) {
+              return Container(
+                margin: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                child: Text(
+                  profileController.user!.bio!.isEmpty
+                      ? 'Empty Bio...'
+                      : profileController.user!.bio!,
+                  style: TextStyle(
+                    fontSize: 55.sp,
+                  ),
                 ),
-              ),
-            ),
+              );
+            }),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 15, vertical: 30),
               width: double.infinity,
@@ -159,8 +178,7 @@ class ProfilePage extends StatelessWidget {
                                   return GestureDetector(
                                     onTap: () {
                                       Get.toNamed(Routes.companyProfile,
-                                          arguments: snapshot.data![index]
-                                              ['company']);
+                                          arguments: snapshot.data![index]);
                                     },
                                     child: Container(
                                       padding: EdgeInsets.only(right: 10),
@@ -231,8 +249,7 @@ class ProfilePage extends StatelessWidget {
                     onAdd: () {
                       profileController.coverPic = null;
                       profileController.profilePic = null;
-                      profileController.bio.text =
-                          profileController.user!.bio ?? '';
+                      profileController.compbio.text = '';
                       profileController.lname.text =
                           profileController.user!.lastName;
                       profileController.fname.text =
@@ -334,6 +351,10 @@ class ProfilePage extends StatelessWidget {
                               Duration difference =
                                   parsedTime.difference(currentTime);
 
+                              Color color = Get.find<ThemeController>().dark
+                                  ? Color(0xFF706788)
+                                  : Color(0xFFb3a8d1);
+
                               // Format the remaining time using the timeago package
                               String remainingTime = timeago
                                   .format(currentTime.subtract(difference));
@@ -388,9 +409,8 @@ class ProfilePage extends StatelessWidget {
                                           return LinearGradient(
                                             colors: [
                                               Colors.transparent,
-                                              Color(0xFFb3a8d1)
-                                                  .withOpacity(0.5),
-                                              Color(0xFFb3a8d1),
+                                              color.withOpacity(0.5),
+                                              color
                                             ],
                                             begin: Alignment.centerRight,
                                             end: Alignment.centerLeft,
@@ -404,13 +424,28 @@ class ProfilePage extends StatelessWidget {
                                               topRight: Radius.circular(5),
                                               bottomRight: Radius.circular(5),
                                             ),
-                                            image: DecorationImage(
-                                              image: NetworkImage(snapshot
-                                                      .data![index]['galleries']
-                                                  [0]['eventPhoto']),
-                                              fit: BoxFit.cover,
-                                              opacity: 0.6,
-                                            ),
+                                            image: snapshot
+                                                        .data![index]
+                                                            ['galleries']
+                                                        .length >
+                                                    0
+                                                ? DecorationImage(
+                                                    image: NetworkImage(
+                                                      snapshot.data![index]
+                                                              ['galleries'][0]
+                                                          ['eventPhoto'],
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    opacity: 0.6,
+                                                  )
+                                                : DecorationImage(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      'https://wallpaperaccess.com/full/3787594.jpg',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    opacity: 0.6,
+                                                  ),
                                           ),
                                         ),
                                       ),
@@ -441,27 +476,26 @@ class ProfilePage extends StatelessWidget {
               ),
             ),
             // Logout Button
-            Container(
-              width: double.infinity,
-              height: 160.h,
-              margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
-              child: ElevatedButton(
-                onPressed: profileController.logout,
-                child: Text(
-                  'Logout',
-                  style: TextStyle(
-                      fontSize: 60.sp,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.background),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                ),
-              ),
-            ),
+            // Container(
+            //   width: double.infinity,
+            //   height: 160.h,
+            //   margin: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+            //   child: ElevatedButton(
+            //     onPressed: profileController.logout,
+            //     child: Text(
+            //       'Logout',
+            //       style: TextStyle(
+            //           fontSize: 60.sp,
+            //           fontWeight: FontWeight.bold,
+            //           color: Theme.of(context).colorScheme.background),
+            //     ),
+            //     style: ElevatedButton.styleFrom(
+            //       backgroundColor: Theme.of(context).colorScheme.primary,
+            //       shape: RoundedRectangleBorder(
+            //         borderRadius: Border
+            //     ),
+            //   ),
+            // ),
 
             SizedBox(
               height: 200.h,
@@ -484,7 +518,7 @@ class ProfilePage extends StatelessWidget {
         onPressed: () {
           profileController.coverPic = null;
           profileController.profilePic = null;
-          profileController.bio.text = profileController.user!.bio ?? '';
+          profileController.profbio.text = profileController.user!.bio ?? '';
           profileController.lname.text = profileController.user!.lastName;
           profileController.fname.text = profileController.user!.firstName;
           profileController.phoneNumber.text =
@@ -517,7 +551,7 @@ class ProfilePage extends StatelessWidget {
             alignment: Alignment.topCenter,
             image: CachedNetworkImageProvider(
               profileController.user!.coverPic ??
-                  'https://img.freepik.com/free-icon/user_318-159711.jpg',
+                  'https://wallpaperaccess.com/full/3787594.jpg',
             ),
           )),
     );
@@ -525,19 +559,16 @@ class ProfilePage extends StatelessWidget {
 
   Widget biuldProfileImage() {
     return !profileController.user!.profilePic!
-            .startsWith("https://api.dicebear")
+            .startsWith("https://api.dicebear.com")
         ? CircleAvatar(
             radius: 40,
             backgroundImage: CachedNetworkImageProvider(
                 profileController.user!.profilePic ??
                     'https://img.freepik.com/free-icon/user_318-159711.jpg'))
-        : SvgPicture.network(
-            profileController.user!.profilePic!,
-            semanticsLabel: 'username',
-            placeholderBuilder: (BuildContext context) => Container(
-                padding: const EdgeInsets.all(30.0),
-                child: const CircularProgressIndicator()),
-          );
+        : CircleAvatar(
+            radius: 40,
+            backgroundImage: CachedNetworkImageProvider(
+                'https://img.freepik.com/free-icon/user_318-159711.jpg'));
   }
 }
 

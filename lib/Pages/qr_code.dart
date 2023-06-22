@@ -52,32 +52,9 @@ class _QRPageState extends State<QRPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: true,
-        actions: [
-          PopupMenuButton<String>(
-            onSelected: (value) {
-              // handle menu item selection
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
-                value: 'menu_item_1',
-                child: Text('Sort by Price'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'menu_item_2',
-                child: Text('Sort by Date'),
-              ),
-              const PopupMenuItem<String>(
-                value: 'menu_item_3',
-                child: Text('Filter by Category'),
-              ),
-            ],
-            icon: const Icon(Icons.more_vert),
-          ),
-          IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))
-        ],
         centerTitle: true,
         title: SafeArea(
-          child: Text("Payment Options",
+          child: Text("Scan QR Code",
               style: TextStyle(
                   fontWeight: FontWeight.normal,
                   fontSize: 65.sp,

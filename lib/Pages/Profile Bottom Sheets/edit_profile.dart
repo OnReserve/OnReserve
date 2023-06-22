@@ -5,8 +5,6 @@ import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
 
-enum OnReserveTheme { light, dark, system }
-
 class EditProfileBottomSheet extends StatelessWidget {
   const EditProfileBottomSheet({super.key});
 
@@ -126,7 +124,7 @@ class EditProfileBottomSheet extends StatelessWidget {
                             minHeight: 65,
                           ),
                           child: TextField(
-                            controller: profileController.bio,
+                            controller: profileController.profbio,
                             decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Bio',
@@ -239,33 +237,46 @@ class EditProfileBottomSheet extends StatelessWidget {
                             ],
                           );
                         }),
-                        Padding(
-                          padding: const EdgeInsets.all(15),
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor:
-                                  Theme.of(context).colorScheme.onPrimary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
+                        GetBuilder<ProfileController>(
+                            builder: (profileController) {
+                          return Padding(
+                            padding: const EdgeInsets.all(15),
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
                               ),
-                            ),
-                            onPressed: () async {
-                              if (profileController.formKey.currentState!
-                                  .validate()) {
-                                if (await profileController.editProfile()) {
-                                  Get.back();
-                                  Get.snackbar(
-                                      "Success", 'Successfuly Updated Profile');
-                                } else {
-                                  Get.snackbar("Error", 'Error Occured...');
+                              onPressed: () async {
+                                if (profileController.formKey.currentState!
+                                    .validate()) {
+                                  if (await profileController.editProfile()) {
+                                    Get.back();
+                                    Get.snackbar("Success",
+                                        'Successfuly Updated Profile');
+                                  } else {
+                                    Get.snackbar("Error", 'Error Occured...');
+                                  }
                                 }
-                              }
-                            },
-                            child: Text('Edit Profile'),
-                          ),
-                        ),
+                              },
+                              child: profileController.isLoading
+                                  ? SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
+                                    )
+                                  : Text('Edit Profile'),
+                            ),
+                          );
+                        }),
                       ],
                     )),
               )

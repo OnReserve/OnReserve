@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:on_reserve/helpers/network/interceptors/network_cache.dart';
+// import 'package:on_reserve/helpers/network/interceptors/network_cache.dart';
 import 'package:on_reserve/helpers/network/interceptors/network_log.dart';
 
 Dio provider(final header) {

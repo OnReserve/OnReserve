@@ -1,4 +1,3 @@
-import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
@@ -18,7 +17,7 @@ class MyCompanies extends StatelessWidget {
         title: Text("My Companies"),
         centerTitle: true,
       ),
-      backgroundColor: Theme.of(context).colorScheme.primary.lighten(45),
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: AnimationLimiter(
         child: GridView.count(
           physics:

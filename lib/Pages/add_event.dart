@@ -405,13 +405,24 @@ class MultiSectionForm extends StatelessWidget {
                       });
                       x.addAll(map2);
                       debugPrint(jsonEncode(x));
-                      if (await controller.addEvent(x)) {
-                        Get.back();
-                        Get.snackbar('Success', 'Event Added',
-                            snackPosition: SnackPosition.BOTTOM);
+                      if (controller.args['event'] != null) {
+                        if (await controller.addEvent(x)) {
+                          Get.back();
+                          Get.snackbar('Success', 'Event Added',
+                              snackPosition: SnackPosition.BOTTOM);
+                        } else {
+                          Get.snackbar('Error', 'Something went wrong',
+                              snackPosition: SnackPosition.BOTTOM);
+                        }
                       } else {
-                        Get.snackbar('Error', 'Something went wrong',
-                            snackPosition: SnackPosition.BOTTOM);
+                        if (await controller.addEvent(x)) {
+                          Get.back();
+                          Get.snackbar('Success', 'Event Added',
+                              snackPosition: SnackPosition.BOTTOM);
+                        } else {
+                          Get.snackbar('Error', 'Something went wrong',
+                              snackPosition: SnackPosition.BOTTOM);
+                        }
                       }
                     },
                     child: Text(controller.args['event'] != null

@@ -59,7 +59,7 @@ class AppRoutes {
   static final pages = [
     GetPage(
       name: Routes.test,
-      page: () => BookingDetailsPage(),
+      page: () => QRPage(),
     ),
     GetPage(
       name: Routes.booking,

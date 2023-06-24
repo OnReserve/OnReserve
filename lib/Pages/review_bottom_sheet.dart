@@ -209,7 +209,10 @@ class ReviewsBottomSheet extends StatelessWidget {
                       Icons.star,
                       color: rating > index
                           ? Colors.yellow[600]
-                          : Colors.grey[400],
+                          : Theme.of(context)
+                              .colorScheme
+                              .background
+                              .withAlpha(100),
                       size: 75.r,
                     ),
                   )),
@@ -217,8 +220,8 @@ class ReviewsBottomSheet extends StatelessWidget {
               ),
               Text(
                 text,
-                style: TextStyle(
-                    color: Theme.of(context).colorScheme.onBackground),
+                style:
+                    TextStyle(color: Theme.of(context).colorScheme.background),
               ),
             ],
           ),
@@ -249,7 +252,7 @@ class ReviewsBottomSheet extends StatelessWidget {
                       Icons.star,
                       color: rating > index
                           ? Colors.yellow[600]
-                          : Colors.grey[400],
+                          : Colors.grey[500],
                       size: 75.r,
                     ),
                   )),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -59,12 +60,18 @@ class Home2 extends StatelessWidget {
                         itemCount: homeController.events.length,
                         onPageChanged: homeController.changePage,
                         itemBuilder: (_, index) {
-                          return homeController.events
-                              .map((event) => Image.asset(
-                                    "assets/Images/${event.imageURL}",
-                                    fit: BoxFit.cover,
-                                  ))
-                              .toList()[index % homeController.events.length];
+                          return homeController.events.map((event) {
+                            if (event.imageURL.startsWith('http')) {
+                              return CachedNetworkImage(
+                                imageUrl: event.imageURL,
+                                fit: BoxFit.cover,
+                              );
+                            }
+                            return Image.asset(
+                              "assets/Images/${event.imageURL}",
+                              fit: BoxFit.cover,
+                            );
+                          }).toList()[index % homeController.events.length];
                         },
                       ),
                     ),
@@ -192,7 +199,12 @@ class Home2 extends StatelessWidget {
                                   margin: EdgeInsets.only(top: 20),
                                   width: width * 0.38,
                                   child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      Get.toNamed(Routes.eventDetail,
+                                          arguments: homeController
+                                                  .popularEvents[
+                                              homeController.currentPageIndex]);
+                                    },
                                     child: Text(
                                       'Book Now',
                                       style: TextStyle(
@@ -247,15 +259,7 @@ class Home2 extends StatelessWidget {
               height: 750.h,
               child: FutureBuilder(
                   future: homeController.getPopularEvents(),
-                  initialData: [
-                    // ContinueCard(
-                    //   index: 1,
-                    //   datetime: '12/12/2021',
-                    //   title: 'Event Name',
-                    //   bgImage:
-                    //       'http://res.cloudinary.com/dsgpxgwxs/image/upload/v1686106147/onReserve/Profile/s9r9od8ty6wm5czt3bme.png',
-                    // ),
-                  ],
+                  initialData: [],
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       // Show a loading indicator while the future is waiting

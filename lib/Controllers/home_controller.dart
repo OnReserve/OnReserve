@@ -69,6 +69,8 @@ class HomeController extends GetxController {
     });
   }
 
+  Future<void> getTopProduct() async {}
+
   Future<List> getCategories() async {
     var response = await NetworkHandler.get(endpoint: 'categories/');
     if (response[1] == 200) {
@@ -91,6 +93,25 @@ class HomeController extends GetxController {
         logger(HomeController).e("Error: $e");
       }
     } else {}
+    try {
+      var res = popularEvents
+          .map((e) => Event(
+                title: e['title'],
+                subtitle: e['desc'],
+                types: ['VIP', 'Regular'],
+                imageURL: e['galleries'].length > 0
+                    ? e['galleries'][0]['eventPhoto']
+                    : 'Rophnan.png',
+              ))
+          .toList();
+      if (events.length > 2) {
+        events = res.sublist(0, 3);
+      }
+    } catch (e) {
+      logger(HomeController).e("Error: $e");
+    }
+
+    update();
     return popularEvents;
   }
 }

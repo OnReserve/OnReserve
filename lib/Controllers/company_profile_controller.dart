@@ -133,9 +133,14 @@ class CompanyProfileController extends GetxController {
   Future<Map> getCompanyProfile() async {
     var response =
         await NetworkHandler.get(endpoint: 'company/${args['company']['id']}');
+
     if (response[1] == 200) {
       companyProfile = response[0];
-      return {"admin": response[0]['users'], "events": response[0]['events']};
+      return {
+        "admin": response[0]['users'],
+        "events": response[0]['events'],
+        "company": response[0]
+      };
     } else {
       return {"admin": [], "events": []};
     }

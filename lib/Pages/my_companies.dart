@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:on_reserve/Components/revenue_counter.dart';
+// import 'package:on_reserve/Components/revenue_counter.dart';
 import 'package:on_reserve/Controllers/my_companies_controller.dart';
 import 'package:on_reserve/helpers/routes.dart';
 
@@ -151,18 +151,22 @@ class MyCompanies extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        Stat(
-                                          w: _w / 2.5,
-                                          h: _w / 6,
-                                          icon: Icon(Icons.verified_user),
-                                          title: 'No. of Users',
-                                          value: RevenueCountUpAnimation(
-                                            endValue: double.parse(
-                                                "${controller.args['companies'][index]['company']['_count']['users']}"),
-                                            duration:
-                                                const Duration(seconds: 3),
-                                          ),
+                                        SizedBox(
+                                          height: _w / 8,
+                                          width: _w / 2.5,
                                         ),
+                                        // Stat(
+                                        //   w: _w / 2.5,
+                                        //   h: _w / 6,
+                                        //   icon: Icon(Icons.verified_user),
+                                        //   title: 'Total ',
+                                        //   value: RevenueCountUpAnimation(
+                                        //     endValue: double.parse(
+                                        //         "${controller.args['companies'][index]['company']['_count']['users']}"),
+                                        //     duration:
+                                        //         const Duration(seconds: 3),
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                     Column(
@@ -176,7 +180,7 @@ class MyCompanies extends StatelessWidget {
                                             h: _w / 6,
                                             title: 'Admins',
                                             value: Text(
-                                              "2",
+                                              "${controller.args['companies'][index]['company']['_count']['users']}",
                                               style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.bold,

@@ -31,7 +31,7 @@ class AddEventController extends GetxController {
     return '$iso8601String' + 'Z';
   }
 
-  Future<bool> addEvent(Map<String, dynamic> x) async {
+  Future<bool> addEvent(Map<String, dynamic> x, {bool edit = false}) async {
     late FormData formData;
 
     var eventStartTime =
@@ -70,16 +70,31 @@ class AddEventController extends GetxController {
           await MultipartFile.fromFile(filePath, filename: fileName)));
     }
 
-    var response =
-        await NetworkHandler.post(body: formData, endpoint: 'event/add/');
+    if (edit) {
+      var response = await NetworkHandler.put(
+          body: formData, endpoint: "event/${x['id']}");
 
-    if (response[1] == 200) {
-      try {
-        update();
-        return true;
-      } catch (e) {
-        logger(AddEventController).e(e);
-        return false;
+      if (response[1] == 200) {
+        try {
+          update();
+          return true;
+        } catch (e) {
+          logger(AddEventController).e(e);
+          return false;
+        }
+      }
+    } else {
+      var response =
+          await NetworkHandler.post(body: formData, endpoint: 'event/add/');
+
+      if (response[1] == 200) {
+        try {
+          update();
+          return true;
+        } catch (e) {
+          logger(AddEventController).e(e);
+          return false;
+        }
       }
     }
     return false;

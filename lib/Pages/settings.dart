@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:on_reserve/Controllers/profile_controller.dart';
 import 'package:on_reserve/Controllers/theme_controller.dart';
 import 'package:on_reserve/Pages/Profile%20Bottom%20Sheets/edit_profile.dart';
+import 'package:on_reserve/Pages/Settings%20Bottom%20Sheets/application_info.dart';
+import 'package:on_reserve/helpers/routes.dart';
 
 import 'Settings Bottom Sheets/choose_theme.dart';
 
@@ -85,11 +87,16 @@ class AppSettingsPage extends StatelessWidget {
               settingsGroupTitle: 'General',
               items: [
                 SettingsItem(
-                  onTap: () {},
-                  icons: Icons.abc,
+                  onTap: () async {
+                    var profileController = Get.find<ProfileController>();
+                    Get.toNamed(Routes.myCompanies, arguments: {
+                      'companies': await profileController.getCompanies()
+                    });
+                  },
+                  icons: Icons.list,
                   iconStyle: IconStyle(),
-                  title: 'Appearance',
-                  subtitle: "Make Onreserve yours",
+                  title: 'Commpanies',
+                  subtitle: "List of your companies",
                 ),
                 SettingsItem(
                   icons: Icons.dark_mode_rounded,
@@ -133,7 +140,16 @@ class AppSettingsPage extends StatelessWidget {
             SettingsGroup(
               items: [
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () {
+                    Get.bottomSheet(
+                      const AppVersionBottomSheet(),
+                      shape: Get.theme.bottomSheetTheme.shape,
+                      isScrollControlled: true,
+                      clipBehavior: Clip.hardEdge,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                    );
+                  },
                   icons: Icons.info_rounded,
                   iconStyle: IconStyle(
                     backgroundColor: Colors.purple,

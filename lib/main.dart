@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+// import 'package:on_reserve/Controllers/qr_controller.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/helpers/storage/secure_store.dart';

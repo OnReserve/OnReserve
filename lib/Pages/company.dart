@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+// import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
@@ -287,13 +287,39 @@ class EventTab extends StatelessWidget {
                                   ),
                                   label: 'Delete',
                                   onPress: () async {
-                                    if (await controller.removeEvent(snapshot
-                                        .data!['events'][index]['id'])) {
-                                      Get.snackbar('Success', 'Event Deleted');
-                                    } else {
-                                      Get.snackbar(
-                                          'Error', 'Event Not Deleted');
-                                    }
+                                    // Dialog
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text('Delete'),
+                                          content: Text(
+                                              'Are you sure you want to Delete The Event?'),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () async {
+                                                  if (await controller
+                                                      .removeEvent(snapshot
+                                                              .data!['events']
+                                                          [index]['id'])) {
+                                                    Get.snackbar('Success',
+                                                        'Event Deleted');
+                                                  } else {
+                                                    Get.snackbar('Error',
+                                                        'Event Not Deleted');
+                                                  }
+                                                  Get.back();
+                                                },
+                                                child: Text('Yes')),
+                                            TextButton(
+                                                onPressed: () {
+                                                  Get.back();
+                                                },
+                                                child: Text('No')),
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                 ),
                               ],
@@ -309,7 +335,7 @@ class EventTab extends StatelessWidget {
                                     ? snapshot.data!['events'][index]
                                         ['galleries'][0]['eventPhoto']
                                     : 'https://wallpaperaccess.com/full/3787594.jpg',
-                                eventRating: '3',
+                                eventRating: 3,
                                 totalRevenue: 100.0,
                               ),
                             ),
@@ -632,7 +658,7 @@ class EventCard extends StatelessWidget {
   final String eventName;
   final String eventDate;
   final String eventPic;
-  final String eventRating;
+  final int eventRating;
   final double totalRevenue;
 
   @override
@@ -693,23 +719,42 @@ class EventCard extends StatelessWidget {
                       fontSize: 20,
                     ),
                   ),
-                  RatingBar.builder(
-                    initialRating: double.parse(eventRating),
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemSize: 20,
-                    itemCount: 5,
-                    itemPadding:
-                        EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-                    itemBuilder: (context, _) => Icon(
-                      Icons.star,
-                      color: Colors.amber,
+                  Expanded(
+                    child: Container(
+                      width: 600.w,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                            children: List.generate(
+                          5,
+                          (index) => Icon(
+                            Icons.star,
+                            color: eventRating > index
+                                ? Colors.yellow[600]
+                                : Colors.grey[400],
+                            size: 75.r,
+                          ),
+                        )),
+                      ),
                     ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
                   ),
+                  // RatingBar.builder(
+                  //   initialRating: double.parse(eventRating),
+                  //   minRating: 1,
+                  //   direction: Axis.horizontal,
+                  //   allowHalfRating: true,
+                  //   itemSize: 20,
+                  //   itemCount: 5,
+                  //   itemPadding:
+                  //       EdgeInsets.symmetric(horizontal: 2, vertical: 5),
+                  //   itemBuilder: (context, _) => Icon(
+                  //     Icons.star,
+                  //     color: Colors.amber,
+                  //   ),
+                  //   onRatingUpdate: (rating) {
+                  //     print(rating);
+                  //   },
+                  // ),
                   const SizedBox(height: 15),
                   Stat(
                     w: 200,

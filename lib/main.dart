@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:on_reserve/helpers/routes.dart';
 import 'package:on_reserve/Pages/Auth/welcome.dart';
 import 'package:on_reserve/helpers/storage/secure_store.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -85,7 +86,8 @@ class OnReserve extends StatelessWidget {
         splitScreenMode: true,
         builder: (context, child) {
           return GetBuilder<ThemeController>(builder: (theme) {
-            return GetMaterialApp(
+            return OverlaySupport.global(
+                child: GetMaterialApp(
               initialRoute: initialRoute,
               getPages: AppRoutes.pages,
               title: 'OnReserve',
@@ -120,7 +122,7 @@ class OnReserve extends StatelessWidget {
               ),
               themeMode: theme.dark ? ThemeMode.dark : ThemeMode.light,
               debugShowCheckedModeBanner: false,
-            );
+            ));
           });
         });
   }

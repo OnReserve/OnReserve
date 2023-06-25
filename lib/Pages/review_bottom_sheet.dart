@@ -51,43 +51,47 @@ class ReviewsBottomSheet extends StatelessWidget {
                   ),
                 ),
                 GetBuilder<EventController>(builder: (controller) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 2),
-                    child: Row(
-                      children: [
-                        RatingBar.builder(
-                          initialRating: 3,
-                          minRating: 1,
-                          tapOnlyMode: false,
-                          direction: Axis.horizontal,
-                          allowHalfRating: true,
-                          itemSize: 20,
-                          itemCount: 5,
-                          itemPadding:
-                              EdgeInsets.symmetric(horizontal: 2, vertical: 5),
-                          itemBuilder: (context, _) => Icon(
-                            Icons.star,
-                            color: Colors.amber,
+                  return controller.rated
+                      ? SizedBox()
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0, vertical: 2),
+                          child: Row(
+                            children: [
+                              RatingBar.builder(
+                                initialRating: 3,
+                                minRating: 1,
+                                tapOnlyMode: false,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemSize: 20,
+                                itemCount: 5,
+                                itemPadding: EdgeInsets.symmetric(
+                                    horizontal: 2, vertical: 5),
+                                itemBuilder: (context, _) => Icon(
+                                  Icons.star,
+                                  color: Colors.amber,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  controller.userRating = rating;
+                                  controller.update();
+                                },
+                              ),
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                child: Text(
+                                  controller.userRating.toString(),
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onBackground,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              )
+                            ],
                           ),
-                          onRatingUpdate: (rating) {
-                            controller.userRating = rating;
-                            controller.update();
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            controller.userRating.toString(),
-                            style: TextStyle(
-                                color:
-                                    Theme.of(context).colorScheme.onBackground,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        )
-                      ],
-                    ),
-                  );
+                        );
                 }),
                 GetBuilder<EventController>(builder: (controller) {
                   return Expanded(
@@ -145,6 +149,7 @@ class ReviewsBottomSheet extends StatelessWidget {
                       Expanded(
                         child: TextField(
                           controller: controller.textEditingController,
+                          enabled: !controller.rated,
                           maxLines: 5,
                           minLines: 1,
                           decoration: InputDecoration(
@@ -157,10 +162,15 @@ class ReviewsBottomSheet extends StatelessWidget {
                         return controller.isLoading
                             ? CircularProgressIndicator.adaptive()
                             : IconButton(
-                                onPressed: () {
-                                  controller.addReview();
-                                  controller.textEditingController.clear();
-                                },
+                                onPressed: controller.rated
+                                    ? null
+                                    : () {
+                                        controller.addReview();
+                                        controller.textEditingController
+                                            .clear();
+                                        controller.rated = true;
+                                        controller.update();
+                                      },
                                 icon: Icon(
                                   Icons.send,
                                   color: Theme.of(context).colorScheme.primary,

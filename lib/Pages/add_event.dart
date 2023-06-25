@@ -55,11 +55,11 @@ class MultiSectionForm extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<AddEventController>();
     var controller2 = Get.find<ThemeController>();
-    return Padding(
-      padding: const EdgeInsets.only(left: 12.0, right: 12, top: 10),
-      child: Column(
-        children: [
-          Expanded(
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 12.0, right: 12, top: 10),
             child: SingleChildScrollView(
               child: form = GSForm.multiSection(
                 context,
@@ -95,6 +95,7 @@ class MultiSectionForm extends StatelessWidget {
                     key: const Key('Event information'),
                     fields: [
                       GSField.spinner(
+                        key: const Key('companyId'),
                         tag: 'companyId',
                         title: "Company",
                         weight: 12,
@@ -109,7 +110,9 @@ class MultiSectionForm extends StatelessWidget {
                         ),
                       ),
                       GSField.text(
+                        key: const Key('title'),
                         tag: 'title',
+                        required: true,
                         title: "Event Title",
                         value: controller.args['event'] != null
                             ? controller.args['event']['title']
@@ -118,6 +121,7 @@ class MultiSectionForm extends StatelessWidget {
                         maxLine: 1,
                       ),
                       GSField.textPlain(
+                        key: const Key('desc'),
                         tag: 'desc',
                         title: "Event Description",
                         value: controller.args['event'] != null
@@ -127,6 +131,7 @@ class MultiSectionForm extends StatelessWidget {
                         maxLength: 90,
                       ),
                       GSField.checkList(
+                          key: const Key('categories'),
                           tag: 'categories',
                           title: "Event Category",
                           searchable: false,
@@ -159,13 +164,14 @@ class MultiSectionForm extends StatelessWidget {
                     fields: [
                       GSField.datePicker(
                         tag: 'eventStart',
+                        required: true,
+                        key: Key('Event Date'),
                         title: 'Event Date',
                         weight: 12,
                         value: controller.args['event'] != null
                             ? formatTimestampToDateAndTime(
                                 controller.args['event']['eventStartTime'])[0]
                             : null,
-                        required: true,
                         postfixWidget: const Icon(
                           Icons.calendar_month,
                           color: Color(0xff676767),
@@ -185,6 +191,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.time(
                         tag: 'eventStartTime',
+                        key: Key('Start Time'),
                         title: 'Start Time',
                         weight: 6,
                         value: controller.args['event'] != null
@@ -197,6 +204,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.time(
                         tag: 'eventEndTime',
+                        key: Key('End Time'),
                         title: 'End Time',
                         weight: 6,
                         value: controller.args['event'] != null
@@ -209,13 +217,14 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.datePicker(
                         tag: 'Deadline Date',
+                        required: true,
+                        key: Key('Deadline Date'),
                         title: 'Deadline Date & Time',
                         weight: 8,
                         value: controller.args['event'] != null
                             ? formatTimestampToDateAndTime(
                                 controller.args['event']['eventDeadline'])[0]
                             : null,
-                        required: true,
                         postfixWidget: const Icon(
                           Icons.calendar_month,
                           color: Color(0xff676767),
@@ -230,6 +239,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.time(
                         tag: 'eventDeadline',
+                        key: Key('Deadline Time'),
                         weight: 4,
                         value: controller.args['event'] != null
                             ? formatTimestampToDateAndTime(
@@ -243,9 +253,11 @@ class MultiSectionForm extends StatelessWidget {
                   ),
                   GSSection(
                     sectionTitle: 'Location Information',
+                    key: const Key('Location Information'),
                     fields: [
                       GSField.text(
                         tag: 'city',
+                        key: Key('City'),
                         title: "City",
                         value: controller.args['event'] != null
                             ? controller.args['event']['locations'][0]["city"]
@@ -255,6 +267,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.text(
                         tag: 'street',
+                        key: Key('Street'),
                         title: "Street",
                         value: controller.args['event'] != null
                             ? controller.args['event']['locations'][0]["street"]
@@ -264,6 +277,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.text(
                         tag: 'venue',
+                        key: Key('Venue'),
                         title: "Venue",
                         value: controller.args['event'] != null
                             ? controller.args['event']['locations'][0]["venue"]
@@ -273,6 +287,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.number(
                         tag: 'latitude',
+                        key: Key('Latitude'),
                         title: "Latitude",
                         value: controller.args['event'] != null
                             ? '${controller.args['event']['locations'][0]["latitude"]}'
@@ -282,6 +297,7 @@ class MultiSectionForm extends StatelessWidget {
                       ),
                       GSField.number(
                         tag: 'longitude',
+                        key: Key('Longitude'),
                         title: "Longitude",
                         value: controller.args['event'] != null
                             ? '${controller.args['event']['locations'][0]["longitude"]}'
@@ -293,15 +309,18 @@ class MultiSectionForm extends StatelessWidget {
                   ),
                   GSSection(
                     sectionTitle: 'Seat Information',
+                    key: const Key('Seat Information'),
                     fields: [
                       form2 = GSForm.multiSection(
                         context,
                         sections: [
                           GSSection(
                             sectionTitle: 'VIP',
+                            key: const Key('VIP'),
                             fields: [
                               GSField.number(
                                 tag: 'vipSeats',
+                                key: Key('VIP Seats'),
                                 title: "No. of Seats",
                                 value: controller.args['event'] != null
                                     ? "${controller.args['event']["vipSeats"]}"
@@ -311,6 +330,7 @@ class MultiSectionForm extends StatelessWidget {
                               ),
                               GSField.price(
                                 tag: "vipPrice",
+                                key: Key('VIP Price'),
                                 title: "Price",
                                 value: controller.args['event'] != null
                                     ? "${controller.args['event']["vipPrice"]}"
@@ -321,35 +341,42 @@ class MultiSectionForm extends StatelessWidget {
                               ),
                             ],
                           ),
-                          GSSection(sectionTitle: 'Economy', fields: [
-                            GSField.number(
-                              tag: 'economySeats',
-                              title: "No. of Seats",
-                              value: controller.args['event'] != null
-                                  ? "${controller.args['event']["economySeats"]}"
-                                  : null,
-                              weight: 6,
-                              required: true,
-                            ),
-                            GSField.price(
-                              tag: "economyPrice",
-                              title: "Price",
-                              value: controller.args['event'] != null
-                                  ? "${controller.args['event']["economyPrice"]}"
-                                  : null,
-                              currencyName: 'ETB',
-                              weight: 6,
-                              required: true,
-                            ),
-                          ]),
+                          GSSection(
+                              key: const Key('Regular'),
+                              sectionTitle: 'Economy',
+                              fields: [
+                                GSField.number(
+                                  key: Key('Economy Seats'),
+                                  tag: 'economySeats',
+                                  title: "No. of Seats",
+                                  value: controller.args['event'] != null
+                                      ? "${controller.args['event']["economySeats"]}"
+                                      : null,
+                                  weight: 6,
+                                  required: true,
+                                ),
+                                GSField.price(
+                                  key: Key('Economy Price'),
+                                  tag: "economyPrice",
+                                  title: "Price",
+                                  value: controller.args['event'] != null
+                                      ? "${controller.args['event']["economyPrice"]}"
+                                      : null,
+                                  currencyName: 'ETB',
+                                  weight: 6,
+                                  required: true,
+                                ),
+                              ]),
                         ],
                       ),
                     ],
                   ),
                   GSSection(
                     sectionTitle: 'Event Pictures',
+                    key: const Key('Event Pictures'),
                     fields: [
                       GSField.multiImagePicker(
+                        key: Key('Event Pictures'),
                         tag: 'images',
                         required: false,
                         title: 'Event Pictures',
@@ -372,69 +399,69 @@ class MultiSectionForm extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      bool isValid = form.isValid();
-                      Map<String, dynamic> map = form.onSubmit();
-                      Map<String, dynamic> map2 = form2.onSubmit();
-                      debugPrint(isValid.toString());
-                      var x = map.map((key, value) {
-                        var val;
-                        if (value is SpinnerDataModel) {
-                          val = value.id;
-                        }
-                        if (key == 'categories' && value != null) {
-                          val = (value as List<CheckDataModel>)
-                              .where((element) => element.isSelected)
-                              .map((e) => e.data)
-                              .toList();
-                        }
-                        if (value is DateDataModel) {
-                          val = value.showDateStr;
-                        }
-                        if (value is TimeDataModel) {
-                          val = value.displayTime;
-                        }
-                        return MapEntry(key, val ?? value);
-                      });
-                      x.addAll(map2);
-                      debugPrint(jsonEncode(x));
-                      if (controller.args['event'] != null) {
-                        if (await controller.addEvent(x)) {
-                          Get.back();
-                          Get.snackbar('Success', 'Event Added',
-                              snackPosition: SnackPosition.BOTTOM);
-                        } else {
-                          Get.snackbar('Error', 'Something went wrong',
-                              snackPosition: SnackPosition.BOTTOM);
-                        }
-                      } else {
-                        if (await controller.addEvent(x)) {
-                          Get.back();
-                          Get.snackbar('Success', 'Event Added',
-                              snackPosition: SnackPosition.BOTTOM);
-                        } else {
-                          Get.snackbar('Error', 'Something went wrong',
-                              snackPosition: SnackPosition.BOTTOM);
-                        }
+        ),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 1,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    bool isValid = form.isValid();
+                    Map<String, dynamic> map = form.onSubmit();
+                    Map<String, dynamic> map2 = form2.onSubmit();
+                    debugPrint(isValid.toString());
+                    var x = map.map((key, value) {
+                      var val;
+                      if (value is SpinnerDataModel) {
+                        val = value.id;
                       }
-                    },
-                    child: Text(controller.args['event'] != null
-                        ? 'Edit Event'
-                        : 'Add Event'),
-                  ),
+                      if (key == 'categories' && value != null) {
+                        val = (value as List<CheckDataModel>)
+                            .where((element) => element.isSelected)
+                            .map((e) => e.data)
+                            .toList();
+                      }
+                      if (value is DateDataModel) {
+                        val = value.showDateStr;
+                      }
+                      if (value is TimeDataModel) {
+                        val = value.displayTime;
+                      }
+                      return MapEntry(key, val ?? value);
+                    });
+                    x.addAll(map2);
+                    debugPrint(jsonEncode(x));
+                    if (controller.args['event'] != null) {
+                      if (await controller.addEvent(x)) {
+                        Get.back();
+                        Get.snackbar('Success', 'Event Added',
+                            snackPosition: SnackPosition.BOTTOM);
+                      } else {
+                        Get.snackbar('Error', 'Something went wrong',
+                            snackPosition: SnackPosition.BOTTOM);
+                      }
+                    } else {
+                      if (await controller.addEvent(x)) {
+                        Get.back();
+                        Get.snackbar('Success', 'Event Added',
+                            snackPosition: SnackPosition.BOTTOM);
+                      } else {
+                        Get.snackbar('Error', 'Something went wrong',
+                            snackPosition: SnackPosition.BOTTOM);
+                      }
+                    }
+                  },
+                  child: Text(controller.args['event'] != null
+                      ? 'Edit Event'
+                      : 'Add Event'),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

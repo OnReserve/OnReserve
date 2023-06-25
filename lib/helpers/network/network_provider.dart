@@ -135,7 +135,7 @@ class NetworkHandler {
         //     const Text(
         //         "It takes too long to respond, Check your Internet Connection ..."),
         //     background: Colors.yellow);
-        return [[], 0];
+        return [[], e.response?.statusCode];
       } else if (e.response == null) {
         logger(DioException).e("ERROR WHILE POSTING: $e");
         // showSimpleNotification(
@@ -165,7 +165,7 @@ class NetworkHandler {
         //       const Text('Something went wrong, Please try again later'),
         //       background: Colors.red);
       }
-      return [[], 0];
+      return [[], e.response?.statusCode];
     } on SocketException {
       return [[], 0];
     }
@@ -187,10 +187,10 @@ class NetworkHandler {
       if (e.type == DioExceptionType.receiveTimeout ||
           e.type == DioExceptionType.sendTimeout) {
         logger(DioException).e("TIMEOUT ERROR: $e");
-        return [[], 0];
+        return [[], e.response?.statusCode];
       } else {
         logger(DioException).e("$e");
-        return [[], 0];
+        return [[], e.response?.statusCode];
       }
     } on SocketException {
       return [0, 0];
@@ -213,7 +213,7 @@ class NetworkHandler {
       return [response.data, response.statusCode];
     } on DioException catch (e) {
       logger(DioException).e("$e");
-      return [[], 0];
+      return [[], e.response?.statusCode];
     } on SocketException {
       return [0, 0];
     }
@@ -233,7 +233,7 @@ class NetworkHandler {
       return [response.data, response.statusCode];
     } on DioException catch (e) {
       logger(DioException).e("$e");
-      return [[], 0];
+      return [[], e.response?.statusCode];
     } on SocketException {
       return [0, 0];
     }
@@ -253,13 +253,13 @@ class NetworkHandler {
       return [response.data, response.statusCode];
     } on DioException catch (e) {
       logger(DioException).e("$e");
-      return [[], 0];
+      return [[], e.response?.statusCode];
     } on SocketException {
       return [0, 0];
     }
   }
 
   static String buildStringUrl(String endpoint) =>
-      'http://192.168.34.240:5000/api/$endpoint';
+      'http://192.168.1.135:5000/api/$endpoint';
   // 'http://localhost:5000/api/$endpoint';
 }

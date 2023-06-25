@@ -136,7 +136,7 @@ class ListOfCategories extends StatelessWidget {
                 growable: true,
               ));
 
-              String timestamp = snapshot.data![index]['event']['createdAt'];
+              String timestamp = snapshot.data![index]['createdAt'];
 
               // Parse the given timestamp into a DateTime object
               DateTime parsedTime = DateTime.parse(timestamp);

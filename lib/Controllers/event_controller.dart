@@ -1,6 +1,7 @@
 // import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:on_reserve/Controllers/profile_controller.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 
@@ -13,6 +14,8 @@ class EventController extends GetxController {
   double rating = 3.0;
   double userRating = 3.0;
   bool isLoading = false;
+  bool rated = false;
+  String bookingToken = '';
 
   int economySeats = 1;
   int vipSeats = 0;
@@ -55,6 +58,15 @@ class EventController extends GetxController {
               review: response[0]['reviews'][index]['comment'],
               userId: response[0]['reviews'][index]['userId']);
         });
+
+        var controller2 = Get.find<ProfileController>();
+        for (var i = 0; i < res.length; i++) {
+          if (res[i].userId == controller2.user!.id) {
+            rated = true;
+            break;
+          }
+        }
+
         return res;
       } catch (e) {
         logger(EventController).e("Error: $e");
@@ -113,7 +125,7 @@ class EventController extends GetxController {
     );
     if (response[1] == 200) {
       try {
-        print(response[0]);
+        bookingToken = response[0]['bookingToken'];
         return true;
       } catch (e) {
         logger(EventController).e("Error: $e");

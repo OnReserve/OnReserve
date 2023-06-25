@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:on_reserve/Controllers/qr_controller.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class QRPage extends StatefulWidget {
@@ -49,20 +52,31 @@ class _QRPageState extends State<QRPage> with SingleTickerProviderStateMixin {
 
   void onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) {
-      setState(() {
-        result = scanData;
-      });
-      if (_isValidCode(scanData.code)) {
+    controller.scannedDataStream.listen((scanData) async {
+      // check if state is mounted
+      if (!mounted) {
+        setState(() {
+          result = scanData;
+        });
+      }
+      if (await _isValidCode(scanData.code)) {
         controller.pauseCamera();
         _showSuccessSnackbar();
+      } else {
+        controller.pauseCamera();
+        _showErrorSnackbar();
       }
     });
   }
 
-  bool _isValidCode(String? code) {
+  Future<bool> _isValidCode(String? code) async {
     // Here you can add your own code validation logic
-
+    var controller = Get.find<QRController>();
+    print(code);
+    try {
+      var codes = jsonDecode(code ?? "");
+      return await controller.isValidCode(codes['bookingToken']);
+    } catch (e) {}
     return code != null && code.startsWith('{"bookingToken":');
   }
 
@@ -70,6 +84,19 @@ class _QRPageState extends State<QRPage> with SingleTickerProviderStateMixin {
     ScaffoldMessenger.of(context)
         .showSnackBar(SnackBar(
           content: Text('QR code scanned successfully'),
+          behavior: SnackBarBehavior.floating,
+          duration: Duration(seconds: 2),
+        ))
+        .closed
+        .then((_) {
+      Navigator.of(context).pop();
+    });
+  }
+
+  void _showErrorSnackbar() {
+    ScaffoldMessenger.of(context)
+        .showSnackBar(SnackBar(
+          content: Text('QR code not valid'),
           behavior: SnackBarBehavior.floating,
           duration: Duration(seconds: 2),
         ))

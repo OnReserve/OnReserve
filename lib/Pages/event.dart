@@ -316,6 +316,18 @@ class _EventState extends State<Event> {
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                   child: SizedBox(
                     child: Text(
+                      "Economy Price :- ${controller.args['economyPrice']}\nVIP Price :- ${controller.args['vipPrice']}",
+                      style: TextStyle(
+                        fontSize: 50.sp,
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                  child: SizedBox(
+                    child: Text(
                       controller.args['desc'],
                       style: TextStyle(
                         fontSize: 50.sp,
@@ -336,9 +348,9 @@ class _EventState extends State<Event> {
                         )),
                   ],
                 ),
-                SizedBox(
-                  height: 50.h,
-                ),
+                // SizedBox(
+                //   height: 50.h,
+                // ),
                 Padding(
                   padding: const EdgeInsets.only(bottom: 24.0),
                   child: SizedBox(
@@ -352,9 +364,9 @@ class _EventState extends State<Event> {
                         : SizedBox(),
                   ),
                 ),
-                SizedBox(
-                  height: 120.h,
-                ),
+                // SizedBox(
+                //   height: 10.h,
+                // ),
                 Row(
                   children: [
                     true

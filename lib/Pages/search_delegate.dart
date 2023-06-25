@@ -40,6 +40,35 @@ class MySearchDelegate extends SearchDelegate<String> {
       future: _search(query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
+          if (snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // SizedBox(
+                  //   height: 200.h,
+                  // ),
+                  Icon(
+                    Icons.search_off,
+                    size: 220.sp,
+                    color: Get.find<ThemeController>().dark
+                        ? Color(0xFF706788)
+                        : Color(0xFFb3a8d1),
+                  ),
+                  Text(
+                    "No results found",
+                    style: TextStyle(
+                      color: Get.find<ThemeController>().dark
+                          ? Color(0xFF706788)
+                          : Color(0xFFb3a8d1),
+                      fontSize: 60.sp,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
           return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
@@ -82,6 +111,7 @@ class MySearchDelegate extends SearchDelegate<String> {
     // Return a list of search results
     // For example:
 
+    // ignore: unused_local_variable
     Color color = Get.find<ThemeController>().dark
         ? Color(0xFF706788)
         : Color(0xFFb3a8d1);

@@ -10,6 +10,7 @@ import 'package:on_reserve/Pages/company.dart';
 import 'package:on_reserve/Pages/event.dart';
 import 'package:on_reserve/Pages/main_menu.dart';
 import 'package:on_reserve/Pages/my_companies.dart';
+// import 'package:on_reserve/Pages/onboarding.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
@@ -77,7 +78,7 @@ class AppRoutes {
     ),
     GetPage(
       name: Routes.addEvent,
-      page: () => const AddEvent(),
+      page: () => AddEvent(),
       binding: AddEventBindings(),
     ),
     GetPage(
@@ -95,6 +96,10 @@ class AppRoutes {
       page: () => AppSettingsPage(),
       binding: SettingsBindings(),
     ),
+    // GetPage(
+    //   name: Routes.onBoarding,
+    //   page: () => IntroScreenDemo(),
+    // ),
     GetPage(
       name: Routes.profile,
       page: () => ProfilePage(),

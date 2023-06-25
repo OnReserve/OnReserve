@@ -222,7 +222,7 @@ class ReserveBottomSheet extends StatelessWidget {
                             }
                             Get.back();
                             _launchUrl(Uri.parse(
-                                'https://yenepay.com/checkout/Home/Process/?ItemName=12&ItemId=adf&UnitPrice=${controller.totalPrice / (controller.vipSeats + controller.economySeats)}&Quantity=${controller.vipSeats + controller.economySeats}&Process=Express&ExpiresAfter=&DeliveryFee=&HandlingFee=&Tax1=&Tax2=&Discount=&SuccessUrl=&IPNUrl=&MerchantId=26459'));
+                                'https://yenepay.com/checkout/Home/Process/?ItemName=${controller.args['title']}&ItemId=${controller.bookingToken}&UnitPrice=${controller.totalPrice / (controller.vipSeats + controller.economySeats)}&Quantity=${controller.vipSeats + controller.economySeats}&Process=Express&ExpiresAfter=&DeliveryFee=&HandlingFee=&Tax1=&Tax2=&Discount=&SuccessUrl=&IPNUrl=&MerchantId=26459'));
                           },
                           child: Text('Pay Now'),
                         ),

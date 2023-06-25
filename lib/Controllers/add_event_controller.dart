@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:get/get.dart' hide FormData, MultipartFile;
 import 'package:path/path.dart';
-import 'package:flutter/material.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 
@@ -11,13 +10,7 @@ class AddEventController extends GetxController {
   var events = [];
   var args = Get.arguments;
 
-  final TextEditingController searchController = TextEditingController();
-
-  @override
-  void onInit() {
-    super.onInit();
-    // getEvents();
-  }
+  // final TextEditingController searchController = TextEditingController();
 
   String formatDateAndTimeToTimestamp(String dateStr, String timeStr) {
     // Parse the date and time strings using the DateFormat class

@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:awesome_notifications/awesome_notifications.dart';
+// import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:on_reserve/helpers/log/logger.dart';
 import 'package:on_reserve/helpers/network/network_provider.dart';
 import 'package:on_reserve/helpers/storage/secure_store.dart';
@@ -85,21 +85,21 @@ class SettingsController extends GetxController {
       await requestPermission().then((value) async {
         if (value) {
           // Schedule next notification
-          await AwesomeNotifications().createNotification(
-            content: NotificationContent(
-              id: 1,
-              channelKey: 'schedule_reminder',
-              title: 'Notification Enabled',
-              body: 'Successfully enabled notifications',
-            ),
-            schedule: NotificationCalendar(
-              weekday: DateTime.now().weekday,
-              hour: DateTime.now().hour,
-              minute: DateTime.now().minute + 1,
-            ),
-          );
+          // await AwesomeNotifications().createNotification(
+          //   content: NotificationContent(
+          //     id: 1,
+          //     channelKey: 'schedule_reminder',
+          //     title: 'Notification Enabled',
+          //     body: 'Successfully enabled notifications',
+          //   ),
+          //   schedule: NotificationCalendar(
+          //     weekday: DateTime.now().weekday,
+          //     hour: DateTime.now().hour,
+          //     minute: DateTime.now().minute + 1,
+          //   ),
+          // );
         } else {
-          await AwesomeNotifications().cancelAllSchedules();
+          // await AwesomeNotifications().cancelAllSchedules();
         }
       });
     } else {

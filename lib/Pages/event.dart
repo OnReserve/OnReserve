@@ -60,384 +60,506 @@ class _EventState extends State<Event> {
         "${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
 
     return Scaffold(
-      body: Column(
-        children: [
-          Stack(
-            children: [
-              ShaderMask(
-                blendMode: BlendMode.srcATop,
-                shaderCallback: (Rect bounds) {
-                  return LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      Theme.of(context)
-                          .colorScheme
-                          .background
-                          .withOpacity(0.58),
-                      Theme.of(context).colorScheme.background
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ).createShader(bounds);
-                },
-                child: CarouselSlider(
-                  options: CarouselOptions(
-                    height: height * 0.45,
-                    viewportFraction: 1,
-                    initialPage: 0,
-                    enableInfiniteScroll: true,
-                    reverse: false,
-                    autoPlay: true,
-                    autoPlayInterval: Duration(seconds: 10),
-                    autoPlayAnimationDuration: Duration(seconds: 1),
-                    autoPlayCurve: Curves.fastOutSlowIn,
-                    // enlargeCenterPage: true,
-                    enlargeFactor: 0.3,
-                    // onPageChanged: callbackFunction,
-                    scrollDirection: Axis.horizontal,
-                  ),
-                  items:
-                      List<Widget>.from(controller.args['galleries'].map((i) {
-                    return Container(
-                        decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.background),
-                        child: CachedNetworkImage(
-                          imageUrl: i['eventPhoto'],
-                          fit: BoxFit.cover,
-                        ));
-                  })),
-                ),
-              ),
-              Positioned(
-                top: 140.h,
-                left: 100.w,
-                child: Container(
-                  height: 140.r,
-                  width: 140.r,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.65),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 3.0),
+      // bottom floating button
+      floatingActionButton: Container(
+        margin: EdgeInsets.fromLTRB(35, 25, 8, 0),
+        child: Row(
+          children: [
+            true
+                ? Container(
+                    margin: EdgeInsets.only(left: 10, right: 20),
+                    decoration: BoxDecoration(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.55),
+                        borderRadius: BorderRadius.circular(20)),
                     child: IconButton(
                       onPressed: () {
-                        Get.back();
+                        controller.resetBottomSheet();
+                        Get.bottomSheet(
+                          ReviewsBottomSheet(),
+                          shape: Get.theme.bottomSheetTheme.shape,
+                          isScrollControlled: true,
+                          clipBehavior: Clip.hardEdge,
+                          useRootNavigator: true,
+                          enableDrag: true,
+                        );
                       },
                       icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Theme.of(context).colorScheme.onBackground,
-                        weight: 2,
-                        size: 60.r,
+                        Icons.reviews,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        size: 80.r,
+                      ),
+                    ),
+                  )
+                // ignore: dead_code
+                : SizedBox(),
+            Expanded(
+              child: SizedBox(
+                height: 180.h,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.bottomSheet(
+                      const ReserveBottomSheet(),
+                      shape: Get.theme.bottomSheetTheme.shape,
+                      isScrollControlled: true,
+                      clipBehavior: Clip.hardEdge,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      maximumSize: Size.fromHeight(180.h)),
+                  child: Text(
+                    "Reserve",
+                    style: TextStyle(
+                        fontSize: 60.sp,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 1.7,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        fontFamily: "Inter"),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          children: [
+            Stack(
+              children: [
+                ShaderMask(
+                  blendMode: BlendMode.srcATop,
+                  shaderCallback: (Rect bounds) {
+                    return LinearGradient(
+                      colors: [
+                        Colors.transparent,
+                        Theme.of(context)
+                            .colorScheme
+                            .background
+                            .withOpacity(0.58),
+                        Theme.of(context).colorScheme.background
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ).createShader(bounds);
+                  },
+                  child: CarouselSlider(
+                    options: CarouselOptions(
+                      height: height * 0.45,
+                      viewportFraction: 1,
+                      initialPage: 0,
+                      enableInfiniteScroll: true,
+                      reverse: false,
+                      autoPlay: true,
+                      autoPlayInterval: Duration(seconds: 10),
+                      autoPlayAnimationDuration: Duration(seconds: 1),
+                      autoPlayCurve: Curves.fastOutSlowIn,
+                      // enlargeCenterPage: true,
+                      enlargeFactor: 0.3,
+                      // onPageChanged: callbackFunction,
+                      scrollDirection: Axis.horizontal,
+                    ),
+                    items:
+                        List<Widget>.from(controller.args['galleries'].map((i) {
+                      return Container(
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.background),
+                          child: CachedNetworkImage(
+                            imageUrl: i['eventPhoto'],
+                            fit: BoxFit.cover,
+                          ));
+                    })),
+                  ),
+                ),
+                Positioned(
+                  top: 140.h,
+                  left: 100.w,
+                  child: Container(
+                    height: 140.r,
+                    width: 140.r,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .background
+                          .withOpacity(0.65),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 3.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Get.back();
+                        },
+                        icon: Icon(
+                          Icons.arrow_back_ios,
+                          color: Theme.of(context).colorScheme.onBackground,
+                          weight: 2,
+                          size: 60.r,
+                        ),
                       ),
                     ),
                   ),
                 ),
-              ),
-              Positioned(
-                top: 140.h,
-                right: 100.w,
-                child: Container(
-                  height: 140.r,
-                  width: 140.r,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .background
-                        .withOpacity(0.65),
-                    borderRadius: BorderRadius.circular(50),
-                  ),
-                  child: IconButton(
-                    onPressed: () {
-                      setState(() {
-                        liked = !liked;
-                      });
-                    },
-                    splashColor: Colors.pink,
-                    color: Colors.pink,
-                    icon: Icon(
-                      liked ? Icons.favorite : Icons.favorite_border,
-                      color: Colors.pink,
-                      weight: 2,
-                      size: 75.r,
+                // Positioned(
+                //   top: 140.h,
+                //   right: 100.w,
+                //   child: Container(
+                //     height: 140.r,
+                //     width: 140.r,
+                //     decoration: BoxDecoration(
+                //       color: Theme.of(context)
+                //           .colorScheme
+                //           .background
+                //           .withOpacity(0.65),
+                //       borderRadius: BorderRadius.circular(50),
+                //     ),
+                //     child: IconButton(
+                //       onPressed: () {
+                //         setState(() {
+                //           liked = !liked;
+                //         });
+                //       },
+                //       splashColor: Colors.pink,
+                //       color: Colors.pink,
+                //       icon: Icon(
+                //         liked ? Icons.favorite : Icons.favorite_border,
+                //         color: Colors.pink,
+                //         weight: 2,
+                //         size: 75.r,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                Positioned(
+                  bottom: 10,
+                  left: 0,
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: width,
                     ),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 10,
-                left: 0,
-                child: ConstrainedBox(
-                  constraints: BoxConstraints(
-                    maxWidth: width,
-                  ),
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: 900.w,
-                                ),
-                                child: Text(
-                                  controller.args['title'],
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: TextStyle(
-                                    fontSize: 70.sp,
-                                    fontWeight: FontWeight.bold,
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ConstrainedBox(
+                                  constraints: BoxConstraints(
+                                    maxWidth: 900.w,
                                   ),
+                                  child: Text(
+                                    controller.args['title'],
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 70.sp,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  controller.args['locations'] != null
+                                      ? controller.args['locations'][0]['city']
+                                      : '',
+                                  style: TextStyle(
+                                    fontSize: 58.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                time,
+                                style: TextStyle(
+                                  fontSize: 55.sp,
                                 ),
                               ),
                               Text(
-                                controller.args['locations'] != null
-                                    ? controller.args['locations'][0]['city']
-                                    : '',
+                                date,
                                 style: TextStyle(
-                                  fontSize: 58.sp,
+                                  fontSize: 55.sp,
                                 ),
                               ),
                             ],
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            Text(
-                              time,
-                              style: TextStyle(
-                                fontSize: 55.sp,
-                              ),
-                            ),
-                            Text(
-                              date,
-                              style: TextStyle(
-                                fontSize: 55.sp,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
-            ],
-          ),
-          Expanded(
-              child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 4.h),
-                Row(
-                  children: [
-                    // Review Stars
-                    Expanded(
-                      child: Container(
-                        width: 600.w,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4),
-                          child: Row(
-                              children: List.generate(
-                            5,
-                            (index) => Icon(
-                              Icons.star,
-                              color: controller.rating > index
-                                  ? Colors.yellow[600]
-                                  : Colors.grey[400],
-                              size: 75.r,
-                            ),
-                          )),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      child: Row(
-                        children: [
-                          Container(
-                            margin: EdgeInsets.only(right: 3),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.55),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Text(
-                                "ECO",
-                                style: TextStyle(
-                                  fontSize: 30.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.55),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 4),
-                              child: Text(
-                                "VIP",
-                                style: TextStyle(
-                                  fontSize: 30.sp,
-                                  fontWeight: FontWeight.bold,
-                                  color:
-                                      Theme.of(context).colorScheme.onPrimary,
-                                ),
-                              ),
-                            ),
-                          )
                         ],
                       ),
-                    )
-                  ],
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                  child: SizedBox(
-                    child: Text(
-                      "Economy Price :- ${controller.args['economyPrice']}\nVIP Price :- ${controller.args['vipPrice']}",
-                      style: TextStyle(
-                        fontSize: 50.sp,
-                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
-                  child: SizedBox(
-                    child: Text(
-                      controller.args['desc'],
-                      style: TextStyle(
-                        fontSize: 50.sp,
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  children: [
-                    Icon(
-                      Icons.location_on,
-                      size: 60.r,
-                    ),
-                    Text(controller.args['locations'][0]['venue'],
-                        style: TextStyle(
-                          fontSize: 60.sp,
-                          fontWeight: FontWeight.bold,
-                        )),
-                  ],
-                ),
-                // SizedBox(
-                //   height: 50.h,
-                // ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 24.0),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 750.h,
-                    child: Platform.isAndroid
-                        ? GoogleMap(
-                            mapType: MapType.hybrid,
-                            initialCameraPosition: kGooglePlex,
-                          )
-                        : SizedBox(),
-                  ),
-                ),
-                // SizedBox(
-                //   height: 10.h,
-                // ),
-                Row(
-                  children: [
-                    true
-                        ? Container(
-                            margin: EdgeInsets.only(left: 10, right: 20),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.55),
-                                borderRadius: BorderRadius.circular(20)),
-                            child: IconButton(
-                              onPressed: () {
-                                controller.resetBottomSheet();
-                                Get.bottomSheet(
-                                  ReviewsBottomSheet(),
-                                  shape: Get.theme.bottomSheetTheme.shape,
-                                  isScrollControlled: true,
-                                  clipBehavior: Clip.hardEdge,
-                                  useRootNavigator: true,
-                                  enableDrag: true,
-                                );
-                              },
-                              icon: Icon(
-                                Icons.reviews,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                size: 80.r,
+                )
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 4.h),
+                  Row(
+                    children: [
+                      // Review Stars
+                      Expanded(
+                        child: Container(
+                          width: 600.w,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                                children: List.generate(
+                              5,
+                              (index) => Icon(
+                                Icons.star,
+                                color: controller.rating > index
+                                    ? Colors.yellow[600]
+                                    : Colors.grey[400],
+                                size: 75.r,
                               ),
-                            ),
-                          )
-                        // ignore: dead_code
-                        : SizedBox(),
-                    Expanded(
-                      child: SizedBox(
-                        height: 180.h,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const ReserveBottomSheet(),
-                              shape: Get.theme.bottomSheetTheme.shape,
-                              isScrollControlled: true,
-                              clipBehavior: Clip.hardEdge,
-                              useRootNavigator: true,
-                              enableDrag: true,
-                            );
-                          },
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                              ),
-                              maximumSize: Size.fromHeight(180.h)),
-                          child: Text(
-                            "Reserve",
-                            style: TextStyle(
-                                fontSize: 60.sp,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1.7,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                fontFamily: "Inter"),
+                            )),
                           ),
                         ),
                       ),
+                      SizedBox(
+                        child: Row(
+                          children: [
+                            Container(
+                              margin: EdgeInsets.only(right: 3),
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.55),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                child: Text(
+                                  "ECO",
+                                  style: TextStyle(
+                                    fontSize: 30.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                              decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withOpacity(0.55),
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8, vertical: 4),
+                                child: Text(
+                                  "VIP",
+                                  style: TextStyle(
+                                    fontSize: 30.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Expanded(child: SizedBox()),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 4),
+                        child: SizedBox(
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: "Eco Price: ",
+                                  style: TextStyle(
+                                    fontSize: 50.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary, // Style for the label
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      " ${controller.args['economyPrice']} ETB\n",
+                                  style: TextStyle(
+                                    fontSize: 50.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground, // Style for the price
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: "VIP Price: ",
+                                  style: TextStyle(
+                                    fontSize: 50.sp,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary, // Style for the label
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: " ${controller.args['vipPrice']} ETB",
+                                  style: TextStyle(
+                                    fontSize: 50.sp,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground, // Style for the price
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  Padding(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                    child: SizedBox(
+                      child: Text(
+                        controller.args['desc'],
+                        style: TextStyle(
+                          fontSize: 50.sp,
+                        ),
+                      ),
                     ),
-                  ],
-                ),
-              ],
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 60.r,
+                      ),
+                      Text(controller.args['locations'][0]['venue'],
+                          style: TextStyle(
+                            fontSize: 60.sp,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 50.h,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 24.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      height: 750.h,
+                      child: Platform.isAndroid
+                          ? GoogleMap(
+                              mapType: MapType.hybrid,
+                              initialCameraPosition: kGooglePlex,
+                            )
+                          : SizedBox(
+                              height: 500,
+                            ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 300,
+                  )
+                  // SizedBox(
+                  //   height: 10.h,
+                  // ),
+                  // Row(
+                  //   children: [
+                  //     true
+                  //         ? Container(
+                  //             margin: EdgeInsets.only(left: 10, right: 20),
+                  //             decoration: BoxDecoration(
+                  //                 color: Theme.of(context)
+                  //                     .colorScheme
+                  //                     .primary
+                  //                     .withOpacity(0.55),
+                  //                 borderRadius: BorderRadius.circular(20)),
+                  //             child: IconButton(
+                  //               onPressed: () {
+                  //                 controller.resetBottomSheet();
+                  //                 Get.bottomSheet(
+                  //                   ReviewsBottomSheet(),
+                  //                   shape: Get.theme.bottomSheetTheme.shape,
+                  //                   isScrollControlled: true,
+                  //                   clipBehavior: Clip.hardEdge,
+                  //                   useRootNavigator: true,
+                  //                   enableDrag: true,
+                  //                 );
+                  //               },
+                  //               icon: Icon(
+                  //                 Icons.reviews,
+                  //                 color: Theme.of(context).colorScheme.onPrimary,
+                  //                 size: 80.r,
+                  //               ),
+                  //             ),
+                  //           )
+                  //         // ignore: dead_code
+                  //         : SizedBox(),
+                  //     Expanded(
+                  //       child: SizedBox(
+                  //         height: 180.h,
+                  //         child: ElevatedButton(
+                  //           onPressed: () {
+                  //             Get.bottomSheet(
+                  //               const ReserveBottomSheet(),
+                  //               shape: Get.theme.bottomSheetTheme.shape,
+                  //               isScrollControlled: true,
+                  //               clipBehavior: Clip.hardEdge,
+                  //               useRootNavigator: true,
+                  //               enableDrag: true,
+                  //             );
+                  //           },
+                  //           style: ElevatedButton.styleFrom(
+                  //               backgroundColor:
+                  //                   Theme.of(context).colorScheme.primary,
+                  //               shape: RoundedRectangleBorder(
+                  //                 borderRadius: BorderRadius.circular(50),
+                  //               ),
+                  //               maximumSize: Size.fromHeight(180.h)),
+                  //           child: Text(
+                  //             "Reserve",
+                  //             style: TextStyle(
+                  //                 fontSize: 60.sp,
+                  //                 fontWeight: FontWeight.bold,
+                  //                 letterSpacing: 1.7,
+                  //                 color: Theme.of(context).colorScheme.onPrimary,
+                  //                 fontFamily: "Inter"),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                ],
+              ),
             ),
-          )),
-        ],
+          ],
+        ),
       ),
     );
   }

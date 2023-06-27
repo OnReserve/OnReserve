@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 // import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:form_validator/form_validator.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:on_reserve/Components/card_action_button.dart';
@@ -113,11 +114,18 @@ class CompanyProfile extends StatelessWidget {
         child: DataTable(
           columns: [
             DataColumn(
-              label: Text(
-                controller.args['company']['name'],
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+              label: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: 120),
+                  child: Text(
+                    controller.args['company']['name'],
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 19,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
             ),
@@ -153,15 +161,6 @@ class CompanyProfile extends StatelessWidget {
               DataCell(Text(
                   controller.args['company']['_count']['events'].toString())),
             ]),
-            DataRow(cells: [
-              DataCell(Text(
-                'Total Revenue',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
-              )),
-              DataCell(Text('500 ETB')),
-            ]),
           ],
         ));
   }
@@ -171,7 +170,8 @@ class CompanyProfile extends StatelessWidget {
       width: double.infinity,
       color: Colors.grey[300],
       child: CachedNetworkImage(
-        imageUrl: controller.args['company']['coverPic'],
+        imageUrl: controller.args['company']['coverPic'] ??
+            'https://wallpaperaccess.com/full/3787594.jpg',
         fit: BoxFit.cover,
         height: coverHeight,
         errorWidget: (context, url, error) => Icon(Icons.error),
@@ -188,7 +188,8 @@ class CompanyProfile extends StatelessWidget {
         borderRadius: BorderRadius.circular(50),
         image: DecorationImage(
           image: CachedNetworkImageProvider(
-            controller.args['company']['profPic'],
+            controller.args['company']['profPic'] ??
+                'https://img.freepik.com/free-icon/user_318-159711.jpg',
           ),
           fit: BoxFit.cover,
         ),
@@ -400,15 +401,21 @@ Widget buildAdminTab(
   TextEditingController _emailController = TextEditingController();
   void showEmailDialog(BuildContext context) {
     var controller = Get.find<CompanyProfileController>();
+    final GlobalKey<FormState> emailFormKey = GlobalKey<FormState>();
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Enter Admin Email', style: TextStyle(fontSize: 16)),
-          content: TextField(
-            controller: _emailController,
-            decoration: InputDecoration(
-              hintText: 'Enter email address',
+          content: Form(
+            key: emailFormKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            child: TextFormField(
+              controller: _emailController,
+              validator: ValidationBuilder().email().maxLength(50).build(),
+              decoration: InputDecoration(
+                hintText: 'Enter email address',
+              ),
             ),
           ),
           actions: <Widget>[
@@ -419,17 +426,21 @@ Widget buildAdminTab(
             TextButton(
               child: Text('Submit'),
               onPressed: () async {
-                String email = _emailController.text;
-                // Do something with email, such as send it to a server for verification
-                if (await controller.addAdmin(email)) {
-                  Navigator.of(context).pop();
-                  controller.getCompanyProfile();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Admin Succesfully Added")));
-                } else {
-                  Navigator.of(context).pop();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Check Admin Email")));
+                if (emailFormKey.currentState!.validate()) {
+                  String email = _emailController.text;
+                  // Do something with email, such as send it to a server for verification
+                  if (await controller.addAdmin(email)) {
+                    Navigator.of(context).pop();
+                    controller.getCompanyProfile();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text("Admin Succesfully Added")));
+                  } else {
+                    Navigator.of(context).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Check Admin Email"),
+                      backgroundColor: Colors.red,
+                    ));
+                  }
                 }
               },
             ),

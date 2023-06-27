@@ -14,6 +14,7 @@ import 'package:on_reserve/Pages/my_companies.dart';
 import 'package:on_reserve/Pages/payment.dart';
 import 'package:on_reserve/Pages/profile.dart';
 import 'package:on_reserve/Pages/qr_code.dart';
+import 'package:on_reserve/Pages/request_money.dart';
 import 'package:on_reserve/Pages/reserve.dart';
 import 'package:on_reserve/Pages/settings.dart';
 import 'package:on_reserve/helpers/bindings/add_event_bindings.dart';
@@ -28,6 +29,7 @@ import 'package:on_reserve/helpers/bindings/my_companies_binidings.dart';
 import 'package:on_reserve/helpers/bindings/payment_bindings.dart';
 import 'package:on_reserve/helpers/bindings/profile_bindings.dart';
 import 'package:on_reserve/helpers/bindings/qr_bindings.dart';
+import 'package:on_reserve/helpers/bindings/request_money_bindings.dart';
 import 'package:on_reserve/helpers/bindings/reserve_bindings.dart';
 import 'package:on_reserve/helpers/bindings/settings_bindings.dart';
 import 'package:on_reserve/helpers/bindings/signup_bindings.dart';
@@ -51,6 +53,7 @@ class Routes {
   static const String bookingHistory = "/bookingHistory";
   static const String booking = "/booking";
   static const String welcome = "/welcome";
+  static const String requestPayment = "/requestPayment";
   static const String test = "/test";
   static const String myCompanies = "/mycompanies";
   static const String root = "/";
@@ -136,6 +139,11 @@ class AppRoutes {
       name: Routes.qr,
       page: () => const QRPage(),
       binding: QrBindings(),
+    ),
+    GetPage(
+      name: Routes.requestPayment,
+      page: () => const RequestMoney(),
+      binding: RequestMoneyBindings(),
     ),
     GetPage(
       name: Routes.welcome,

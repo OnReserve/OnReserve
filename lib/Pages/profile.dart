@@ -226,11 +226,11 @@ class ProfilePage extends StatelessWidget {
                                                 borderRadius:
                                                     BorderRadius.circular(5),
                                                 image: DecorationImage(
-                                                  image:
-                                                      CachedNetworkImageProvider(
-                                                          snapshot.data![index]
+                                                  image: CachedNetworkImageProvider(
+                                                      snapshot.data![index]
                                                                   ['company']
-                                                              ['profPic']),
+                                                              ['profPic'] ??
+                                                          'https://img.freepik.com/free-icon/user_318-159711.jpg'),
                                                   fit: BoxFit.cover,
                                                 ),
                                               )),
@@ -364,9 +364,13 @@ class ProfilePage extends StatelessWidget {
                             itemBuilder: (BuildContext context, int index) {
                               String timestamp =
                                   snapshot.data![index]['createdAt'];
+                              String deadLine =
+                                  snapshot.data![index]['eventDeadline'];
 
                               // Parse the given timestamp into a DateTime object
                               DateTime parsedTime = DateTime.parse(timestamp);
+                              DateTime parsedDeadLine =
+                                  DateTime.parse(deadLine);
 
                               // Get the current time
                               // DateTime currentTime = DateTime.now();
@@ -381,95 +385,122 @@ class ProfilePage extends StatelessWidget {
 
                               // Format the remaining time using the timeago package
                               String remainingTime = formatTimeAgo(parsedTime);
-                              return Container(
-                                margin: EdgeInsets.symmetric(
-                                    vertical: 5, horizontal: 5),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withOpacity(0.4),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        padding: EdgeInsets.all(10),
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              snapshot.data![index]['title'],
-                                              style: TextStyle(
-                                                  fontSize: 60.sp,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .background),
-                                            ),
-                                            Text(
-                                              remainingTime,
-                                              style: TextStyle(
-                                                  fontSize: 50.sp,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .background
-                                                      .withAlpha(200)),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                    ShaderMask(
-                                      blendMode: BlendMode.srcATop,
-                                      shaderCallback: (Rect bounds) {
-                                        return LinearGradient(
-                                          colors: [
-                                            Colors.transparent,
-                                            color.withOpacity(0.5),
-                                            color
-                                          ],
-                                          begin: Alignment.centerRight,
-                                          end: Alignment.centerLeft,
-                                        ).createShader(bounds);
-                                      },
-                                      child: Container(
-                                        width: 330.w,
-                                        height: 230.h,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(5),
-                                            bottomRight: Radius.circular(5),
+                              return GestureDetector(
+                                onTap: () {
+                                  if (parsedDeadLine.isBefore(DateTime.now())) {
+                                    Get.toNamed(Routes.requestPayment,
+                                        arguments: {
+                                          'event': snapshot.data![index]
+                                        });
+                                  } else {
+                                    Get.snackbar(
+                                      'Event not yet open',
+                                      'The event is not yet open for registration',
+                                      snackPosition: SnackPosition.BOTTOM,
+                                      backgroundColor: const Color.fromARGB(
+                                          255, 226, 102, 93),
+                                      colorText: Colors.white,
+                                      margin: EdgeInsets.all(10),
+                                      borderRadius: 10,
+                                      duration: Duration(seconds: 3),
+                                      isDismissible: true,
+                                      dismissDirection:
+                                          DismissDirection.horizontal,
+                                      forwardAnimationCurve: Curves.easeOutBack,
+                                    );
+                                  }
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 5),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withOpacity(0.4),
+                                    borderRadius: BorderRadius.circular(5),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          padding: EdgeInsets.all(10),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                snapshot.data![index]['title'],
+                                                style: TextStyle(
+                                                    fontSize: 60.sp,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .background),
+                                              ),
+                                              Text(
+                                                remainingTime,
+                                                style: TextStyle(
+                                                    fontSize: 50.sp,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .background
+                                                        .withAlpha(200)),
+                                              ),
+                                            ],
                                           ),
-                                          image: snapshot
-                                                      .data![index]['galleries']
-                                                      .length >
-                                                  0
-                                              ? DecorationImage(
-                                                  image: NetworkImage(
-                                                    snapshot.data![index]
-                                                            ['galleries'][0]
-                                                        ['eventPhoto'],
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                  opacity: 0.6,
-                                                )
-                                              : DecorationImage(
-                                                  image:
-                                                      CachedNetworkImageProvider(
-                                                    'https://wallpaperaccess.com/full/3787594.jpg',
-                                                  ),
-                                                  fit: BoxFit.cover,
-                                                  opacity: 0.6,
-                                                ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      ShaderMask(
+                                        blendMode: BlendMode.srcATop,
+                                        shaderCallback: (Rect bounds) {
+                                          return LinearGradient(
+                                            colors: [
+                                              Colors.transparent,
+                                              color.withOpacity(0.5),
+                                              color
+                                            ],
+                                            begin: Alignment.centerRight,
+                                            end: Alignment.centerLeft,
+                                          ).createShader(bounds);
+                                        },
+                                        child: Container(
+                                          width: 330.w,
+                                          height: 230.h,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.only(
+                                              topRight: Radius.circular(5),
+                                              bottomRight: Radius.circular(5),
+                                            ),
+                                            image: snapshot
+                                                        .data![index]
+                                                            ['galleries']
+                                                        .length >
+                                                    0
+                                                ? DecorationImage(
+                                                    image: NetworkImage(
+                                                      snapshot.data![index]
+                                                              ['galleries'][0]
+                                                          ['eventPhoto'],
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    opacity: 0.6,
+                                                  )
+                                                : DecorationImage(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      'https://wallpaperaccess.com/full/3787594.jpg',
+                                                    ),
+                                                    fit: BoxFit.cover,
+                                                    opacity: 0.6,
+                                                  ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             },
@@ -530,7 +561,7 @@ class ProfilePage extends StatelessWidget {
       height: 30,
       width: 30,
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.background.withAlpha(100),
+        color: Theme.of(context).colorScheme.primary.withAlpha(220),
         borderRadius: BorderRadius.circular(50),
       ),
       child: IconButton(
@@ -555,7 +586,7 @@ class ProfilePage extends StatelessWidget {
         icon: Icon(
           Icons.edit,
           size: 15,
-          color: Theme.of(context).colorScheme.primary,
+          color: Theme.of(context).colorScheme.background,
         ),
       ),
     );

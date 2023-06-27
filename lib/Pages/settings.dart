@@ -120,21 +120,21 @@ class AppSettingsPage extends StatelessWidget {
                     },
                   ),
                 ),
-                SettingsItem(
-                  onTap: () {},
-                  icons: Icons.notifications,
-                  iconStyle: IconStyle(
-                    iconsColor: Colors.white,
-                    withBackground: true,
-                    backgroundColor: Colors.red,
-                  ),
-                  title: 'Notification',
-                  subtitle: "On",
-                  trailing: Switch.adaptive(
-                    value: false,
-                    onChanged: (value) {},
-                  ),
-                ),
+                // SettingsItem(
+                //   onTap: () {},
+                //   icons: Icons.notifications,
+                //   iconStyle: IconStyle(
+                //     iconsColor: Colors.white,
+                //     withBackground: true,
+                //     backgroundColor: Colors.red,
+                //   ),
+                //   title: 'Notification',
+                //   subtitle: "On",
+                //   trailing: Switch.adaptive(
+                //     value: false,
+                //     onChanged: (value) {},
+                //   ),
+                // ),
               ],
             ),
             SettingsGroup(
@@ -191,39 +191,39 @@ class AppSettingsPage extends StatelessWidget {
                   icons: Icons.exit_to_app_rounded,
                   title: "Log Out",
                 ),
-                SettingsItem(
-                  onTap: () {
-                    // Dialog
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text('Delete account'),
-                            content: Text(
-                                'Are you sure you want to delete your account? This action cannot be undone. All your data will be lost.'),
-                            actions: [
-                              TextButton(
-                                  onPressed: () {
-                                    controller.deleteAccount();
-                                    Get.back();
-                                  },
-                                  child: Text('Yes')),
-                              TextButton(
-                                  onPressed: () {
-                                    Get.back();
-                                  },
-                                  child: Text('No')),
-                            ],
-                          );
-                        });
-                  },
-                  icons: Icons.delete,
-                  title: "Delete account",
-                  titleStyle: TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                // SettingsItem(
+                //   onTap: () {
+                //     // Dialog
+                //     showDialog(
+                //         context: context,
+                //         builder: (BuildContext context) {
+                //           return AlertDialog(
+                //             title: Text('Delete account'),
+                //             content: Text(
+                //                 'Are you sure you want to delete your account? This action cannot be undone. All your data will be lost.'),
+                //             actions: [
+                //               TextButton(
+                //                   onPressed: () {
+                //                     controller.deleteAccount();
+                //                     Get.back();
+                //                   },
+                //                   child: Text('Yes')),
+                //               TextButton(
+                //                   onPressed: () {
+                //                     Get.back();
+                //                   },
+                //                   child: Text('No')),
+                //             ],
+                //           );
+                //         });
+                //   },
+                //   icons: Icons.delete,
+                //   title: "Delete account",
+                //   titleStyle: TextStyle(
+                //     color: Colors.red,
+                //     fontWeight: FontWeight.bold,
+                //   ),
+                // ),
               ],
             ),
           ],

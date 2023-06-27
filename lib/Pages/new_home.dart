@@ -165,13 +165,19 @@ class Home2 extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            homeController
-                                .events[homeController.currentPageIndex].title,
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 35,
-                              fontWeight: FontWeight.bold,
+                          ConstrainedBox(
+                            constraints: BoxConstraints(maxWidth: 280),
+                            child: Text(
+                              homeController
+                                  .events[homeController.currentPageIndex]
+                                  .title,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Container(
@@ -181,6 +187,8 @@ class Home2 extends StatelessWidget {
                                 homeController
                                     .events[homeController.currentPageIndex]
                                     .subtitle,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,

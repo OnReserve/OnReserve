@@ -75,9 +75,10 @@ class MyCompanies extends StatelessWidget {
                                   ),
                                 ],
                                 image: DecorationImage(
-                                  image: NetworkImage(
-                                      controller.args['companies'][index]
-                                          ['company']['coverPic']),
+                                  image: NetworkImage(controller
+                                              .args['companies'][index]
+                                          ['company']['coverPic'] ??
+                                      'https://wallpaperaccess.com/full/3787594.jpg'),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -155,18 +156,6 @@ class MyCompanies extends StatelessWidget {
                                           height: _w / 8,
                                           width: _w / 2.5,
                                         ),
-                                        // Stat(
-                                        //   w: _w / 2.5,
-                                        //   h: _w / 6,
-                                        //   icon: Icon(Icons.verified_user),
-                                        //   title: 'Total ',
-                                        //   value: RevenueCountUpAnimation(
-                                        //     endValue: double.parse(
-                                        //         "${controller.args['companies'][index]['company']['_count']['users']}"),
-                                        //     duration:
-                                        //         const Duration(seconds: 3),
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                     Column(
@@ -271,8 +260,9 @@ class Stat extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(width: 12),
           icon,
-          SizedBox(width: 8),
+          SizedBox(width: 16),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,

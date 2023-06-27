@@ -26,17 +26,19 @@ class _QRPageState extends State<QRPage> with SingleTickerProviderStateMixin {
     super.initState();
 
     // Initialize the animation controller and animation
-    _animationController = AnimationController(
-      duration: const Duration(milliseconds: 1200),
-      vsync: this,
-    )..repeat(reverse: true);
-    _animation = Tween<Offset>(
-      begin: Offset(0, -30),
-      end: Offset(0, 30),
-    ).animate(CurvedAnimation(
-      parent: _animationController,
-      curve: Curves.easeInOut,
-    ));
+    if (mounted) {
+      _animationController = AnimationController(
+        duration: const Duration(milliseconds: 1200),
+        vsync: this,
+      )..repeat(reverse: true);
+      _animation = Tween<Offset>(
+        begin: Offset(0, -30),
+        end: Offset(0, 30),
+      ).animate(CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeInOut,
+      ));
+    }
   }
 
   @override
@@ -52,21 +54,20 @@ class _QRPageState extends State<QRPage> with SingleTickerProviderStateMixin {
 
   void onQRViewCreated(QRViewController controller) {
     this.controller = controller;
-    controller.scannedDataStream.listen((scanData) async {
-      // check if state is mounted
-      if (!mounted) {
-        setState(() {
-          result = scanData;
-        });
-      }
-      if (await _isValidCode(scanData.code)) {
-        controller.pauseCamera();
-        _showSuccessSnackbar();
-      } else {
-        controller.pauseCamera();
-        _showErrorSnackbar();
-      }
-    });
+    if (mounted) {
+      controller.scannedDataStream.listen((scanData) async {
+        final validCode = await _isValidCode(scanData.code);
+        // check if state is mounted
+
+        if (validCode) {
+          controller.pauseCamera();
+          _showSuccessSnackbar();
+        } else {
+          controller.pauseCamera();
+          _showErrorSnackbar();
+        }
+      });
+    }
   }
 
   Future<bool> _isValidCode(String? code) async {

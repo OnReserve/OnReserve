@@ -90,9 +90,9 @@ class ReserveBottomSheet extends StatelessWidget {
                               child: SpinBox(
                                   keyboardType: TextInputType.number,
                                   digits: 1,
-                                  min: 1,
+                                  min: 0,
                                   max: 10,
-                                  value: 1,
+                                  value: 0,
                                   onChanged: (value) =>
                                       controller.setEconomySeats(value)),
                             ),
@@ -175,8 +175,13 @@ class ReserveBottomSheet extends StatelessWidget {
                                 ),
                                 child: RevenueCountUpAnimation(
                                   startValue: controller.oldPrice + 0.0,
+                                  money: true,
                                   endValue: controller.totalPrice == 0.0
-                                      ? controller.args['economyPrice'] + 0.0
+                                      ? controller.economySeats == 0 &&
+                                              controller.vipSeats == 0
+                                          ? 0.0
+                                          : controller.args['economyPrice'] +
+                                              0.0
                                       : controller.totalPrice,
                                   duration: const Duration(milliseconds: 800),
                                 ),
@@ -188,45 +193,66 @@ class ReserveBottomSheet extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(15),
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.primary,
-                            foregroundColor:
-                                Theme.of(context).colorScheme.onPrimary,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
-                          onPressed: () async {
-                            if (await controller.reserveTicket()) {
-                              Get.snackbar(
-                                'Success',
-                                'Your ticket has been reserved successfully',
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: Colors.green,
-                                colorText: Colors.white,
-                                duration: Duration(seconds: 3),
-                              );
-                            } else {
-                              Get.snackbar(
-                                'Error',
-                                'Something went wrong',
-                                snackPosition: SnackPosition.BOTTOM,
-                                backgroundColor: Colors.red,
-                                colorText: Colors.white,
-                                duration: Duration(seconds: 3),
-                              );
-                            }
-                            Get.back();
-                            _launchUrl(Uri.parse(
-                                'https://yenepay.com/checkout/Home/Process/?ItemName=${controller.args['title']}&ItemId=${controller.bookingToken}&UnitPrice=${controller.totalPrice / (controller.vipSeats + controller.economySeats)}&Quantity=${controller.vipSeats + controller.economySeats}&Process=Express&ExpiresAfter=&DeliveryFee=&HandlingFee=&Tax1=&Tax2=&Discount=&SuccessUrl=&IPNUrl=&MerchantId=26459'));
-                          },
-                          child: Text('Pay Now'),
-                        ),
-                      ),
+                      GetBuilder<EventController>(builder: (controller) {
+                        return Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                              ),
+                              onPressed: controller.economySeats == 0 &&
+                                      controller.vipSeats == 0
+                                  ? null
+                                  : () async {
+                                      if (await controller.reserveTicket()) {
+                                        Get.snackbar(
+                                          'Success',
+                                          'Your ticket has been reserved successfully',
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          colorText: Colors.white,
+                                          duration: Duration(seconds: 3),
+                                        );
+                                      } else {
+                                        Get.snackbar(
+                                          'Error',
+                                          'Something went wrong',
+                                          snackPosition: SnackPosition.BOTTOM,
+                                          backgroundColor: Colors.red,
+                                          colorText: Colors.white,
+                                          duration: Duration(seconds: 3),
+                                        );
+                                      }
+                                      Get.back();
+                                      _launchUrl(Uri.parse(
+                                          'https://yenepay.com/checkout/Home/Process/?ItemName=${controller.bookingToken}&ItemId=${controller.bookingToken}&UnitPrice=${controller.totalPrice / (controller.vipSeats + controller.economySeats)}&Quantity=${controller.vipSeats + controller.economySeats}&Process=Express&ExpiresAfter=&DeliveryFee=&HandlingFee=&Tax1=&Tax2=&Discount=&SuccessUrl=&IPNUrl=&MerchantId=26459'));
+                                    },
+                              child: !controller.isLoading
+                                  ? Text('Pay Now')
+                                  : Container(
+                                      width: 15,
+                                      margin:
+                                          EdgeInsets.symmetric(horizontal: 25),
+                                      child: ConstrainedBox(
+                                        constraints: const BoxConstraints(
+                                          maxHeight: 15,
+                                          maxWidth: 15,
+                                        ),
+                                        child: CircularProgressIndicator(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
+                                        ),
+                                      ),
+                                    )),
+                        );
+                      }),
                     ],
                   ))
             ],

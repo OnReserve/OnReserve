@@ -4,11 +4,13 @@ import 'package:flutter/widgets.dart';
 class RevenueCountUpAnimation extends StatefulWidget {
   final double endValue;
   final double startValue;
+  final bool money;
   final Duration duration;
 
   const RevenueCountUpAnimation({
     Key? key,
     required this.endValue,
+    this.money = false,
     this.startValue = 0.0,
     required this.duration,
   }) : super(key: key);
@@ -79,13 +81,15 @@ class _RevenueCountUpAnimationState extends State<RevenueCountUpAnimation>
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              TextSpan(
-                text: 'ETB',
-                style: TextStyle(
-                  fontSize: 12.0,
-                  fontWeight: FontWeight.normal,
-                ),
-              ),
+              widget.money
+                  ? TextSpan(
+                      text: 'ETB',
+                      style: TextStyle(
+                        fontSize: 12.0,
+                        fontWeight: FontWeight.normal,
+                      ),
+                    )
+                  : TextSpan(),
             ],
           ),
         );

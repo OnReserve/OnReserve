@@ -9,6 +9,7 @@ class CompanyProfileController extends GetxController {
   var args = Get.arguments;
   var formKey = GlobalKey<FormState>();
   XFile? profilePic;
+
   XFile? coverPic;
   bool isLoading = false;
   TextEditingController name = TextEditingController();

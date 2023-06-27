@@ -216,12 +216,16 @@ class Ticket extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    snapshot.data![index]['event']['title'],
-                    style: TextStyle(
-                      fontSize: _w / 20,
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.onPrimary,
+                  ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: 180),
+                    child: Text(
+                      snapshot.data![index]['event']['title'],
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: _w / 20,
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                     ),
                   ),
                   Text(
@@ -236,7 +240,10 @@ class Ticket extends StatelessWidget {
                   ClipRect(
                     child: SizedBox(
                       width: 650.w,
-                      child: Row(children: count),
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: count),
+                      ),
                     ),
                   ),
                 ],

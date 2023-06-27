@@ -17,14 +17,14 @@ class EventController extends GetxController {
   bool rated = false;
   String bookingToken = '';
 
-  int economySeats = 1;
+  int economySeats = 0;
   int vipSeats = 0;
 
   num totalPrice = 0;
   num oldPrice = 0;
 
   void resetBottomSheet() {
-    economySeats = 1;
+    economySeats = 0;
     vipSeats = 0;
     totalPrice = 0;
     oldPrice = 0;
@@ -115,6 +115,8 @@ class EventController extends GetxController {
   }
 
   Future<bool> reserveTicket() async {
+    isLoading = true;
+    update();
     var response = await NetworkHandler.post(
       endpoint: 'booking/add/',
       body: {
@@ -126,11 +128,15 @@ class EventController extends GetxController {
     if (response[1] == 200) {
       try {
         bookingToken = response[0]['bookingToken'];
+        isLoading = false;
+        update();
         return true;
       } catch (e) {
         logger(EventController).e("Error: $e");
       }
     } else {
+      isLoading = false;
+      update();
       return false;
     }
     return false;

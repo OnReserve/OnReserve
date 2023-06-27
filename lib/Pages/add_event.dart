@@ -21,6 +21,7 @@ class AddEvent extends StatelessWidget {
   Widget build(BuildContext context) {
     var controller = Get.find<AddEventController>();
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         title:
             Text(controller.args['event'] != null ? 'Edit Event' : 'Add Event'),

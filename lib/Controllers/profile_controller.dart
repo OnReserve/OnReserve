@@ -191,6 +191,8 @@ class ProfileController extends GetxController {
       },
     );
 
+    print(formData);
+
     var response =
         await NetworkHandler.post(body: formData, endpoint: 'company/add/');
     if (response[1] == 200) {

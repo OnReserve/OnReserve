@@ -250,16 +250,21 @@ class ProfilePage extends StatelessWidget {
                                                         .colorScheme
                                                         .background),
                                               ),
-                                              Text(
-                                                snapshot.data![index]['company']
-                                                    ['bio'],
-                                                maxLines: 1,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    fontSize: 42.sp,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .background),
+                                              ConstrainedBox(
+                                                constraints: BoxConstraints(
+                                                    maxWidth: 600.w),
+                                                child: Text(
+                                                  snapshot.data![index]
+                                                      ['company']['bio'],
+                                                  maxLines: 1,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      fontSize: 42.sp,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .background),
+                                                ),
                                               ),
                                             ],
                                           ),

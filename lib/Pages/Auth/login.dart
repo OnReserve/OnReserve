@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                             focusNode: passwordFocusNode,
                             controller: loginController.passwordController,
                             validator: ValidationBuilder()
-                                .minLength(8, 'Password Length < 8 😟')
+                                .minLength(6, 'Password Length < 6 😟')
                                 .build(),
                             onFieldSubmitted: (value) {
                               if (logInFormKey.currentState!.validate())
